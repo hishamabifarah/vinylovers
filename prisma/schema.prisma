@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id           String   @id // this field is unique identifier in prisma
+  username     String   @unique
+  displayName  String
+  email        String?  @unique // optional because user might use google signin
+  passwordHash String? // optional because user might use google signin
+  googleId     String?  @unique // optional because user might use google signin
+  avatarUrl    String?
+  bio          String?
+  createdAt    DateTime @default(now())
+
+  sessions Session[] // named sessions not session because one user might have multiple sessions
+
+  @@map("users") // rename table to users but model for each user is User
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+
+  // created automatically by prisma if we format the code
+  // one to many relationship between Session and User
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
