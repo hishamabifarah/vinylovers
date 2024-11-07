@@ -27,6 +27,8 @@ model User {
   createdAt    DateTime @default(now())
 
   sessions Session[] // named sessions not session because one user might have multiple sessions
+  vinyls    Vinyl[]
+  posts Post[]
 
   @@map("users") // rename table to users but model for each user is User
 }
@@ -38,7 +40,31 @@ model Session {
 
   // created automatically by prisma if we format the code
   // one to many relationship between Session and User
-  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model Vinyl {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  userId      String
+  genre       String
+
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("vinyls")
+}
+
+model Post {
+  id                  String         @id @default(cuid())
+  content             String
+  userId              String
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("posts")
 }

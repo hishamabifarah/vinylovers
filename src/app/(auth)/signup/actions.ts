@@ -81,7 +81,7 @@ export async function signUp(
       sessionCookie.attributes,
     );
 
-    return redirect("/");
+    return redirect("/home");
   } catch (error) {
 
     //redirect throws a special error, and catch function catches it , we have to check isRedirect() we rethrow it so we get redirected

@@ -1,9 +1,21 @@
-import logo from "@/assets/viny.png";
+"use client";
 
+import logo from "@/assets/viny.png";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+
+  const handleLoginRedirect = () => {
+    router.push("/login");
+  };
+  const handleSignupRedirect = () => {
+    router.push("/signup");
+  };
+  const handleHomeRedirect = () => {
+    router.push("/home");
+  };
 
   return (
     <div className="flex h-screen flex-col items-center justify-start">
@@ -17,29 +29,35 @@ export default function Page() {
           className="h-full w-full object-cover"
         />
 
-        <div className="bg-custom-black absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center">
-          <div className="custom-logo p-5">
-            <Image src={logo} alt="vinylovers" className="w-[512px]" />
-          </div>
-          <h1 className="pb-6 text-4xl text-primary text-center" >
-            <strong>Welcome to vinylovers.net</strong>
+        <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center bg-custom-black">
+          <Image src={logo} alt="vinylovers" className="mb-6 w-[512px]" />
+          <h1 className="mb-4 text-4xl font-bold text-primary md:text-6xl">
+            Welcome to vinylovers.net
           </h1>
-          <p className="text-center text-3xl text-primary">
+          <p className="mb-6 text-center text-lg text-primary md:text-xl">
             the ultimate online community for vinyl enthusiasts around the
             world.
           </p>
-
-          <Link href="/signup" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+          <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+            <button
+              onClick={handleLoginRedirect}
+              className="hover:bg-primary-dark rounded bg-primary px-8 py-4 text-white transition duration-300"
+            >
+              Login
+            </button>
+            <button
+              onClick={handleSignupRedirect}
+              className="hover:bg-primary-dark rounded bg-primary px-8 py-4 text-white transition duration-300"
+            >
               Sign up
-            </Link>
-            
-          <Link href="/login" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-              Sign In
-            </Link>
-            
-          <Link href="/home" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-              Home
-            </Link>
+            </button>
+            <button
+              onClick={handleHomeRedirect}
+              className="hover:bg-primary-dark rounded bg-primary px-8 py-4 text-white transition duration-300"
+            >
+              Check it out!
+            </button>
+          </div>
         </div>
       </div>
     </div>
