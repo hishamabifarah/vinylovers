@@ -29,12 +29,12 @@ export default function Page() {
           className="h-full w-full object-cover"
         />
 
-        <div className="absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center bg-custom-black">
+        <div className="p-4 absolute bottom-0 left-0 right-0 top-0 flex flex-col items-center justify-center bg-custom-black">
           <Image src={logo} alt="vinylovers" className="mb-6 w-[512px]" />
-          <h1 className="mb-4 text-4xl font-bold text-primary md:text-6xl">
+          <h1 className="mb-4 text-4xl font-bold text-primary md:text-6xl text-center">
             Welcome to vinylovers.net
           </h1>
-          <p className="mb-6 text-center text-lg text-primary md:text-xl">
+          <p className="mb-6 text-center text-lg text-primary md:text-xl p-2">
             the ultimate online community for vinyl enthusiasts around the
             world.
           </p>
