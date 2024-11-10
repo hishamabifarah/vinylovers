@@ -9,7 +9,7 @@ import { verify } from "./actions";
 import Image from "next/image";
 import verifyImage from "@/assets/verifyrobot.jpg"
 
-export default function LoginForm() {
+export default function Page() {
   const [error, setError] = useState<string>();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();

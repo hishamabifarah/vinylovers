@@ -27,7 +27,7 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
     try {
       // Step 2: Create the verification link
       const verificationToken = await createEmailVerificationToken(userId, email);
-      const BASE_URL = process.env.BASE_URL || "http://localhostt:3001"; // Use environment variable for base URL
+      const BASE_URL = process.env.BASE_URL || "http://localhost:3001"; // Use environment variable for base URL
       const verificationLink = `${BASE_URL}/email-verification/?token=${verificationToken}`;
   
       // Step 3: Create the email template
@@ -37,7 +37,7 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
       const { data, error } = await resend.emails.send({
         from: 'Vinyl Lovers <no-reply@vinylovers.net>',
         to: [email],
-        subject: 'Email Verification',
+        subject: 'Vinyl Lovers - Email Verification',
         html: emailContent,
       });
   

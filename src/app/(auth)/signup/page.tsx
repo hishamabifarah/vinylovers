@@ -25,9 +25,6 @@ export default function Page() {
             <Link href="/login" className="block text-center hover:underline">
               Already have an account? Log in
             </Link>
-            <Link  href="/reset-password" className="block text-center hover:underline mt-3">
-              Forgot Password?
-            </Link>
           </div>
         </div>
         <Image
