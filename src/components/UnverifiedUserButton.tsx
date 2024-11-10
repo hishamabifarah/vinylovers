@@ -1,12 +1,9 @@
 "use client";
 
-import { useSession } from "@/app/(main)/home/SessionProvider";
-import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
-import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
+import { Check, Monitor, Moon, Sun, UserIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import UnverifiedUserButton from './UnverifiedUserButton';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,30 +18,26 @@ import {
 } from "./ui/dropdown-menu";
 import UserAvatar from "./UserAvatar";
 
+
 interface UserButtonProps {
     className?: string;
   }
 
   export default function UserButton({ className }: UserButtonProps) {
 
-    // get session from our provider because this is a client component we cant use validateRequest()
-    // user and session from useSession are guaranteed not to be null, as long as we wrap app with sessionprovider it wont throw the error inside usession function
-    const { user } = useSession();
     const { theme, setTheme } = useTheme();
-    // const queryClient = useQueryClient();
 
-    if(user && user?.verified){
-    return (
+      return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className={cn("flex-none rounded-full", className)}>
-              <UserAvatar avatarUrl={user.avatarUrl} size={40} />
+              {/* <UserAvatar avatarUrl={UserDefaultAvatar} size={40} /> */}
+              <UserAvatar size={40} />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>Logged in as @{user.username}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <Link href={`/users/${user.username}`}>
+            <Link href='/login'>
               <DropdownMenuItem>
                 <UserIcon className="mr-2 size-4" />
                 Profile
@@ -76,21 +69,8 @@ interface UserButtonProps {
               </DropdownMenuPortal>
             </DropdownMenuSub>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                // queryClient.clear();
-                logout();
-              }}
-            >
-              <LogOutIcon className="mr-2 size-4" />
-              Logout
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
-    }else{
-      return (
-        <UnverifiedUserButton/>
       )
     }
-  }
+  

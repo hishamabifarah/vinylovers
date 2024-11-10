@@ -14,6 +14,7 @@ interface DatabaseUserAttributes {
     displayName: string;
     avatarUrl: string | null;
     googleId: string | null;
+    verified: boolean
   }
 
 // change type in the lucia object, and we have to do this so DatabaseUserAttributes contains the fields in the interface
@@ -41,6 +42,7 @@ export const lucia = new Lucia(adapter, {
       displayName: databaseUserAttributes.displayName,
       avatarUrl: databaseUserAttributes.avatarUrl,
       googleId: databaseUserAttributes.googleId,
+      verified: databaseUserAttributes.verified
     };
   },
 });

@@ -15,6 +15,20 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+model EmailVerificationToken {
+  id         String   @id
+  userId     String
+  email      String
+  expires_at DateTime
+
+}
+
+model PasswordResetToken {
+  token_hash String @unique
+  user_id String
+  expires_at DateTime
+}
+
 model User {
   id           String   @id // this field is unique identifier in prisma
   username     String   @unique
@@ -25,10 +39,11 @@ model User {
   avatarUrl    String?
   bio          String?
   createdAt    DateTime @default(now())
+  verified     Boolean  @default(false)
 
   sessions Session[] // named sessions not session because one user might have multiple sessions
-  vinyls    Vinyl[]
-  posts Post[]
+  vinyls   Vinyl[]
+  posts    Post[]
 
   @@map("users") // rename table to users but model for each user is User
 }
@@ -46,23 +61,23 @@ model Session {
 }
 
 model Vinyl {
-  id          String   @id @default(cuid())
+  id          String @id @default(cuid())
   title       String
   description String
   userId      String
   genre       String
 
-  createdAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("vinyls")
 }
 
 model Post {
-  id                  String         @id @default(cuid())
-  content             String
-  userId              String
-  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String @id @default(cuid())
+  content String
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 

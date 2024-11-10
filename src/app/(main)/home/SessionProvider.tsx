@@ -4,10 +4,9 @@ import { Session, User } from "lucia";
 import React, { createContext, useContext } from "react";
 
 interface SessionContext {
-  user: User;
-  session: Session;
+  user: User | null; // Allow null
+  session: Session | null; // Allow null
 }
-
 const SessionContext = createContext<SessionContext | null>(null); // initialized with null
 
 export default function SessionProvider({

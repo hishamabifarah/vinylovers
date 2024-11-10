@@ -10,6 +10,8 @@ export const userDataSelect = {
   username: true,
   displayName: true,
   avatarUrl: true,
+  verified: true,
+
 } satisfies Prisma.UserSelect;
 
 

@@ -1,8 +1,3 @@
-// server actions file
-// we write backend code with nextjs
-// we can create functions generate post endpoints
-
-// turns all functions we export from here into server actions
 "use server"
 
 import { lucia } from "@/auth";
@@ -13,7 +8,8 @@ import { generateIdFromEntropySize } from "lucia";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
+import { Resend } from 'resend';
+import { sendVerificationEmail } from "../hooks/useSendVerificationEmail";
 
 // return type of Promise can contain this error, if nothing wrong redirect the user .
 // in the code we have to return the specific error for signup, we can't catch it in the front
@@ -23,6 +19,7 @@ export async function signUp(
 ): Promise<{ error: string }> { 
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const existingUsername = await prisma.user.findFirst({
         where: {
@@ -72,16 +69,25 @@ export async function signUp(
         passwordHash,
       },
     });
+    
+    try {
+      await sendVerificationEmail(userId, email, username);
 
-    const session = await lucia.createSession(userId, {});
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    } catch (error) {
+      return {
+        error: "Something went wrong. Please try again.",
+      };
+    }
 
+    // const session = await lucia.createSession(userId, {});
+    // const sessionCookie = lucia.createSessionCookie(session.id);
+    // cookies().set(
+    //   sessionCookie.name,
+    //   sessionCookie.value,
+    //   sessionCookie.attributes,
+    // );
     return redirect("/home");
+
   } catch (error) {
 
     //redirect throws a special error, and catch function catches it , we have to check isRedirect() we rethrow it so we get redirected
