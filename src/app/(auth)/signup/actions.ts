@@ -1,14 +1,11 @@
 "use server"
 
-import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
 import { signUpSchema, SignUpValues } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { isRedirectError } from "next/dist/client/components/redirect";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { Resend } from 'resend';
 import { sendVerificationEmail } from "../hooks/useSendVerificationEmail";
 
 // return type of Promise can contain this error, if nothing wrong redirect the user .
@@ -19,7 +16,6 @@ export async function signUp(
 ): Promise<{ error: string }> { 
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
-    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const existingUsername = await prisma.user.findFirst({
         where: {

@@ -61,13 +61,13 @@ export async function reset(
         },
       });
     
-      const session = await lucia.createSession(token.user_id, {});
-      const sessionCookie = lucia.createSessionCookie(session.id);
-      cookies().set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes,
-      );
+      // const session = await lucia.createSession(token.user_id, {});
+      // const sessionCookie = lucia.createSessionCookie(session.id);
+      // cookies().set(
+      //   sessionCookie.name,
+      //   sessionCookie.value,
+      //   sessionCookie.attributes,
+      // );
     
       redirect('/login')
   } catch (error) {
