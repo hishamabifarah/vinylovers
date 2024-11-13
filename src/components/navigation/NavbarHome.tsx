@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Menu, Search, X, ChevronDown } from "lucide-react"
 import { useState, useEffect } from "react"
+import Logo from '@/assets/logo192.png'
 
 import { Button } from "@/components/ui/button"
 import Footer from "./Footer"
@@ -19,14 +20,11 @@ export default function Header() {
     '/vinyl4.jpg',
   ];
   
-
   useEffect(() => {
     setIsMounted(true)
-    console.log("Component mounted")
   }, [])
 
   const toggleMenu = () => {
-    console.log("Toggle menu clicked")
     setIsMenuOpen((prev) => !prev)
   }
 
@@ -42,15 +40,17 @@ export default function Header() {
   }
 
   return (
-    <div className="bg-black text-white">
+    <div className="bg-custom-black text-white">
       {/* Navigation Bar */}
-      <header className="fixed left-0 right-0 top-0 z-10 border-b border-gray-800 bg-black bg-opacity-50">
+      <header className=" left-0 right-0 top-0 z-10 border-b border-gray-800 bg-custom-black bg-opacity-50">
         <div className="container mx-auto px-4">
           <nav className="flex h-16 items-center justify-between">
-            <Link href="#" className="text-2xl font-bold text-red-500">
+            <div className="flex items-center ">
+            <Image src={Logo} alt="" role="presentation" className="mt-2 h-12 w-12 p-2"/>
+            <Link href="/home" className="text-2xl font-bold text-primary">
               Vinylovers{" "}
             </Link>
-
+            </div>
             <div className="hidden items-center space-x-4 md:flex">
               <Button
                 variant="ghost"
@@ -107,7 +107,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-20 bg-black bg-opacity-90 md:hidden">
+        <div className=" inset-0 z-20 bg-custom-black bg-opacity-90 md:hidden">
           <div className="flex h-full flex-col items-center justify-center">
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Live
@@ -143,7 +143,7 @@ export default function Header() {
             playsInline
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-50" />
+          <div className="absolute inset-0 bg-custom-black bg-opacity-50" />
         </div>
 
         {/* Content */}
@@ -157,11 +157,7 @@ export default function Header() {
                 We bring together your favourite music services and join up
                 listening, watching and sharing to connect your musical world.
               </p>
-              <p className="text-gray-400">
-                Below you can visualise, in real-time, the listening habits &
-                trends of Vinylovers global community. Go Explore.
-              </p>
-              <Button className="mt-6 bg-red-600 text-white hover:bg-red-700">
+              <Button className="mt-6 bg-primary text-white hover:bg-red-700">
                 Start Exploring
               </Button>
             </div>
@@ -181,7 +177,7 @@ export default function Header() {
       </section>
 
       {/* Vinyls Section */}
-      <section id="vinyls-section" className="py-16">
+      <section id="vinyls-section" className="py-16 bg-custom-black">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
             <div className="md:w-1/2">
@@ -199,20 +195,20 @@ export default function Header() {
                 {images.map((src, index) => (
                   <div
                     key={index}
-                    className="group relative overflow-hidden rounded-lg"
+                    className="relative group overflow-hidden rounded-lg aspect-square"
                   >
-                    <Image
+                  <Image
                       src={src}
                       alt={`Album cover ${index}`}
                       width={300}
                       height={300}
-                      className="h-auto w-full transition-transform duration-300 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 flex flex-col justify-end bg-black bg-opacity-0 p-4 transition-opacity duration-300 group-hover:bg-opacity-75">
-                      <p className="translate-y-full transform font-bold text-white transition-transform duration-300 group-hover:translate-y-0">
+                    <div className="absolute inset-0 bg-custom-black bg-opacity-0 group-hover:bg-opacity-75 transition-opacity duration-300 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100">
+                      <p className="text-white font-bold">
                         Artist Name
                       </p>
-                      <p className="translate-y-full transform text-gray-300 transition-transform delay-100 duration-300 group-hover:translate-y-0">
+                      <p className="text-gray-300">
                         Album Title
                       </p>
                     </div>
@@ -236,14 +232,14 @@ export default function Header() {
       </section>
 
       {/* CTA Section */}
-      <section id="cta-section" className="bg-white py-20 text-black">
+      <section id="cta-section" className="bg-custom-black py-20 text-white">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-8 md:flex-row">
             <div className="md:w-1/2">
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">
                 Join the Vinylovers community
               </h2>
-              <p className="mb-6 text-lg text-gray-700">
+              <p className="mb-6 text-lg text-white">
                 Connect with music lovers, discover new artists, and keep track
                 of your listening habits. With Vinyloversyoull never miss a beat
                 in your musical journey.
@@ -256,7 +252,7 @@ export default function Header() {
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">
                 Join the Vinylovers community
               </h2>
-              <p className="mb-6 text-lg text-gray-700">
+              <p className="mb-6 text-lg text-white">
                 Connect with music lovers, discover new artists, and keep track
                 of your listening habits. With Vinyloversyoull never miss a beat
                 in your musical journey.
