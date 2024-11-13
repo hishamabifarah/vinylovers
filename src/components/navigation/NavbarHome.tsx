@@ -54,32 +54,19 @@ export default function Header() {
             <div className="hidden items-center space-x-4 md:flex">
               <Button
                 variant="ghost"
-                className="flex items-center justify-start gap-3"
-                title="Home"
-                asChild
+                className="text-gray-300 hover:text-white"
               >
-                <Link href="/login">
-                  Login
-                </Link>
+                Discover
               </Button>
               <Button
                 variant="ghost"
                 className="text-gray-300 hover:text-white"
               >
-                Music
-              </Button>
-              <Button
-                variant="ghost"
-                className="text-gray-300 hover:text-white"
-              >
-                Charts
+                Genres
               </Button>
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon">
-                <Search className="h-5 w-5" />
-              </Button>
               <Button
                 variant="ghost"
                 className="hidden text-gray-300 hover:text-white md:inline-flex"
@@ -110,13 +97,10 @@ export default function Header() {
         <div className=" inset-0 z-20 bg-custom-black bg-opacity-90 md:hidden">
           <div className="flex h-full flex-col items-center justify-center">
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
-              Live
+              Discover
             </button>
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
-              Music
-            </button>
-            <button className="py-4 text-xl text-white" onClick={toggleMenu}>
-              Charts
+              Genres
             </button>
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Log In

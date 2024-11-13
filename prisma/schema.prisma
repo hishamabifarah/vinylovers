@@ -44,6 +44,8 @@ model User {
   sessions Session[] // named sessions not session because one user might have multiple sessions
   vinyls   Vinyl[]
   posts    Post[]
+  following    Follow[]  @relation("Following")
+  followers    Follow[]  @relation("Followers")
 
   @@map("users") // rename table to users but model for each user is User
 }
@@ -58,6 +60,16 @@ model Session {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model Follow {
+  followerId  String
+  follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId]) // many to many uniqye Ids, makes sure each user follows other user once 
+  @@map("follows")
 }
 
 model Vinyl {
