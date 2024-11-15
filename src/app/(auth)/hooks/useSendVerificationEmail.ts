@@ -38,7 +38,7 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
         from: 'Vinyl Lovers <no-reply@vinylovers.net>',
         to: [email],
         subject: 'Vinyl Lovers - Email Verification',
-        html: emailContent,
+        react: emailContent,
       });
   
       if (error) {
