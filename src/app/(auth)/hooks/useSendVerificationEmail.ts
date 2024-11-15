@@ -13,7 +13,7 @@ const tokenId = generateIdFromEntropySize(25); // 40 characters long
       id: tokenId,
       userId: userId,
       email,
-      expires_at: createDate(new TimeSpan(20, "m")),
+      expires_at: createDate(new TimeSpan(1, "d")),
     },
   });
 

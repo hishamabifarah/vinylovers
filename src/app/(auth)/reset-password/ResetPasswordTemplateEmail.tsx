@@ -123,6 +123,8 @@ const button = {
   textAlign: 'center' as const,
   display: 'block',
   width: '100%',
+  padding: '12px'
+  
 };
 
 const link = {

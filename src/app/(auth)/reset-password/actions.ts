@@ -31,7 +31,7 @@ async function createPasswordResetToken(userId: string): Promise<string> {
       data: {
         token_hash: tokenHash,
         user_id: userId,
-        expires_at: createDate(new TimeSpan(20, "m")),
+        expires_at: createDate(new TimeSpan(1, "d")),
       },
     });
     return tokenId;
