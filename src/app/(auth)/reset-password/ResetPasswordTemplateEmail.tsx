@@ -26,23 +26,23 @@ export const ResetPasswordTemplateEmail = ({
 }: ResetPasswordTemplateEmailProps) => (
   <Html>
     <Head />
-    <Preview>Reset your VinylSocial password</Preview>
+    <Preview>Reset your Vinylovers password</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
           src="https://vinylovers.vercel.app/viny.png"
-          width="80"
-          height="80"
+          width="100%"
+          height="auto"
           alt="Vinylovers logo"
           style={logo}
         />
         <Heading style={h1}>Password Reset Request</Heading>
         <Text style={text}>Hello {username},</Text>
         <Text style={text}>
-          We received a request to reset your password for your VinylSocial account. If you didn&apos;t make this request, you can safely ignore this email.
+          We received a request to reset your password for your Vinylovers account. If you didn&apos;t make this request, you can safely ignore this email.
         </Text>
         <Section style={buttonContainer}>
-          <Button className="bg-primary"  style={button} href={verificationLink}>
+          <Button style={button} href={verificationLink}>
             Reset Your Password
           </Button>
         </Section>
@@ -58,7 +58,7 @@ export const ResetPasswordTemplateEmail = ({
         </Text>
         <Hr style={hr} />
         <Text style={footer}>
-          This email was sent by VinylSocial, 123 Vinyl Street, Music City, MC 12345
+          This email was sent by Vinylovers.net, Beirut, Lebanon
         </Text>
       </Container>
     </Body>
@@ -112,6 +112,7 @@ const buttonContainer = {
 };
 
 const button = {
+  backgroundColor: '#e30613',
   borderRadius: '4px',
   color: '#ffffff',
   fontFamily:
