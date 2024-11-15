@@ -49,7 +49,7 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
         from: 'Vinyl Lovers <no-reply@vinylovers.net>',
         to: [email],
         subject: 'Vinyl Lovers - Password Reset',
-        html: emailContent,
+        react: emailContent,
       });
   
       if (error) {
