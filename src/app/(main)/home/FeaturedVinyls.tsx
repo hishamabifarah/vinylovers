@@ -32,7 +32,7 @@ export default function FeaturedVinyls() {
   ];
   return (
    
-      <div className="lg:col-span-2 mt-4">
+      <div className="lg:col-span-2 mt-4 ">
         <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
           Featured Vinyl
         </h2>
@@ -40,7 +40,7 @@ export default function FeaturedVinyls() {
           {albums.map((album) => (
             <div
               key={album.id}
-              className="overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800"
+              className="overflow-hidden rounded-lg  shadow-md bg-card "
             >
               <div className="flex sm:flex-col">
                 <Image

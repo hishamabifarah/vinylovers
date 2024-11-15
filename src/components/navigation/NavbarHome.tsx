@@ -47,7 +47,7 @@ export default function Header() {
           <nav className="flex h-16 items-center justify-between">
             <div className="flex items-center ">
             <Image src={Logo} alt="" role="presentation" className="mt-2 h-12 w-12 p-2"/>
-            <Link href="/home" className="text-2xl font-bold text-primary">
+            <Link href="/home" className="text-2xl font-bold text-primary mt-1">
               Vinylovers{" "}
             </Link>
             </div>

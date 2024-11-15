@@ -48,12 +48,29 @@ export function getPostDataInclude(loggedInUserId: string) {
   } satisfies Prisma.PostInclude;
 }
 
+export function getVinylDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+  } satisfies Prisma.VinylInclude;
+}
+
 export type PostData = Prisma.PostGetPayload<{
   include: ReturnType<typeof getPostDataInclude>;
 }>;
 
+export type VinylData = Prisma.VinylGetPayload<{
+  include: ReturnType<typeof getVinylDataInclude>;
+}>;
+
 export interface PostsPage {
   posts: PostData[];
+  nextCursor: string | null;
+}
+
+export interface VinylsPage {
+  vinyls: VinylData[];
   nextCursor: string | null;
 }
 

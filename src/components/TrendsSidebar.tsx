@@ -31,16 +31,14 @@ export default function TrendsSidebar() {
         <WhoToFollow />
         <TrendingGenres/>
         <TrendingTopics />
-       
       </Suspense>
     </div>
   );
 }
 
-
 function TrendingGenres() {
   return (
-    <div className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800">
+    <div className="rounded-lg  p-6 shadow-md bg-card ">
       <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
         Top Genres
       </h2>

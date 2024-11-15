@@ -74,8 +74,8 @@ model Follow {
 
 model Vinyl {
   id          String @id @default(cuid())
-  title       String
-  description String
+  artist      String
+  album       String
   userId      String
   genre       String
 

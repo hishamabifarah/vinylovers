@@ -28,15 +28,6 @@ export default function Home() {
     { id: 5, name: "VinylVoyager", vinylCount: 1000, avatar: "/placeholder.svg?height=40&width=40" }
   ]
 
-  // return (
-  //   <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-
-  //     <main className="container mx-auto px-4 py-8">
-  //       <TrendsSidebar/>
-  //     </main>
-  //   </div>
-  // )
-
   return (
     <main className="flex w-full min-w-0 gap-5">
       <div className="w-full min-w-0 space-y-5">

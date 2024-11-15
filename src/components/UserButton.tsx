@@ -3,7 +3,7 @@
 import { useSession } from "@/app/(main)/home/SessionProvider";
 import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
-import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
+import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon ,Disc } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import UnverifiedUserButton from './UnverifiedUserButton';
@@ -48,6 +48,12 @@ interface UserButtonProps {
               <DropdownMenuItem>
                 <UserIcon className="mr-2 size-4" />
                 Profile
+              </DropdownMenuItem>
+            </Link>
+            <Link href={"/vinyls/add-vinyl"}>
+              <DropdownMenuItem>
+                <Disc className="mr-2 size-4" />
+                Add Vinyl
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSub>

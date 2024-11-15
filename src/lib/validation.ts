@@ -2,6 +2,17 @@ import { z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
 
+export const newVinylSchema = z.object({
+  artist: requiredString,
+  album: requiredString,
+  genre: requiredString,
+}) .refine((data) => data.genre=== 'Select genre', {
+  message: "Genresrequired",
+  path: ["genre"], 
+});
+
+
+
 export const signUpSchema = z.object({
   email: requiredString.email("Invalid email address"),
   username: requiredString.regex(
@@ -28,8 +39,9 @@ export const loginSchema = z.object({
     password: requiredString,
   });
 
-// generate schema signup and login type, to work with it in our frontend
+// generate schemas to work with it in our frontend
 export type SignUpValues = z.infer<typeof signUpSchema>;
 export type LoginValues = z.infer<typeof loginSchema>;
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 export type ResetPassworEmaildValues = z.infer<typeof resetPasswordEmailSchema>;
+export type NewVinylValues = z.infer<typeof newVinylSchema>;
