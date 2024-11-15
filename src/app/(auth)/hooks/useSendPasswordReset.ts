@@ -38,7 +38,7 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
     try {
       // Step 2: Create the verification link
       const verificationToken = await createPasswordResetToken(userId);
-      const BASE_URL = process.env.BASE_URL || "http://localhost:3001"; 
+      const BASE_URL = process.env.BASE_URL || "http://localhost:3000"; 
       const verificationLink = `${BASE_URL}/reset-password-email/?token=${verificationToken}`;
   
       // Step 3: Create the email template

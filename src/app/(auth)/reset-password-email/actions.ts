@@ -5,7 +5,6 @@ import prisma from "@/lib/prisma";
 import { isWithinExpirationDate } from "oslo";
 import { lucia } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
-import { cookies } from "next/headers";
 
 import { hash } from "@node-rs/argon2";
 import { sha256 } from "oslo/crypto";
@@ -60,15 +59,7 @@ export async function reset(
           passwordHash: passwordHash,
         },
       });
-    
-      // const session = await lucia.createSession(token.user_id, {});
-      // const sessionCookie = lucia.createSessionCookie(session.id);
-      // cookies().set(
-      //   sessionCookie.name,
-      //   sessionCookie.value,
-      //   sessionCookie.attributes,
-      // );
-    
+        
       redirect('/login')
   } catch (error) {
     //redirect throws a special error, and catch function catches it , we have to check isRedirect() we rethrow it so we get redirected

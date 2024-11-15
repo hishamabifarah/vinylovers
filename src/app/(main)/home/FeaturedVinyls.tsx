@@ -48,7 +48,7 @@ export default function FeaturedVinyls() {
                   height={100}
                   src={album.image}
                   alt={album.title}
-                  className="h-24 w-1/3 object-cover sm:h-48 sm:w-full"
+                  className="h-24 w-1/3 object-cover sm:h-48 sm:w-full m-auto"
                 />
                 <div className="flex flex-1 flex-col justify-between p-4">
                   <div>

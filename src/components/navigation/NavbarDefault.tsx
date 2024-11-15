@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function NavbarDefault() {
   return (
-    <header className="dark:bg-customNavbar sticky top-0 z-10 bg-card shadow-sm">
+    <header className="dark:bg-customNavbar sticky top-0 z-10 bg-card shadow-sm  lg:hidden">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-5 px-5 py-3">
         <div className="flex items-center justify-center">
           <Image src={logo} alt="" className="mt-2 h-10 w-10" />

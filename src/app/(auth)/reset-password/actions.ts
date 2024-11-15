@@ -60,7 +60,7 @@ export async function verifyEmail(
     try {
       // Step 2: Create the verification link
       const verificationToken = await createPasswordResetToken(userEmail.id);
-      const BASE_URL = process.env.BASE_URL || "http://localhost:3001"; 
+      const BASE_URL = process.env.BASE_URL || "http://localhost:3000"; 
       const verificationLink = `${BASE_URL}/reset-password-email/?token=${verificationToken}`;
   
       // Step 3: Create the email template
@@ -74,7 +74,7 @@ export async function verifyEmail(
         from: 'Vinyl Lovers <no-reply@vinylovers.net>',
         to: [email],
         subject: 'Vinyl Lovers - Password Reset',
-        html: emailContent,
+        react: emailContent,
       });
   
       if (error) {
