@@ -77,7 +77,7 @@ model Vinyl {
   artist      String
   album       String
   userId      String
-  genre       String
+  genreId       String
 
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])

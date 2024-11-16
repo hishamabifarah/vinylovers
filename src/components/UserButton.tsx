@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import UserAvatar from "./UserAvatar";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UserButtonProps {
     className?: string;
@@ -31,7 +32,7 @@ interface UserButtonProps {
     // user and session from useSession are guaranteed not to be null, as long as we wrap app with sessionprovider it wont throw the error inside usession function
     const { user } = useSession();
     const { theme, setTheme } = useTheme();
-    // const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
     if(user && user?.verified){
     return (
@@ -84,7 +85,7 @@ interface UserButtonProps {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                // queryClient.clear();
+                queryClient.clear();
                 logout();
               }}
             >

@@ -9,18 +9,21 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { submitVinyl } from "./actions";
+import { NewVinylValues } from "@/lib/validation";
 
 export function useSubmitVinylMutation() {
 
-  console.log('useSubmitVinylMutation insde')
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
 
-  const { user } = useSession()
+  // const { user } = useSession()
   
+  // mutationFn: ({ id, variables }: { id: number, variables: UpdateCustomerType }) => updateCustomer(id, variables),
+
   const mutation = useMutation({
-    mutationFn: submitVinyl, //submitPost server action
+    // mutationFn: ({ values }: { values: NewVinylValues}) => submitVinyl(values),
+    mutationFn: (values: NewVinylValues) => submitVinyl(values),
     onSuccess: async (newVinyl) => {
 
       // const queryFilter: QueryFilters = { queryKey: ["post-feed", "for-you"] };
@@ -71,7 +74,8 @@ export function useSubmitVinylMutation() {
         //   return !query.state.data; // no data in query
         // },
         predicate(query) {
-          return queryFilter.predicate(query) && !query.state.data;
+          // return queryFilter.predicate(query) && !query.state.data;
+          return !query.state.data;
         },
       });
 

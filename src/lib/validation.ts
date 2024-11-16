@@ -5,13 +5,8 @@ const requiredString = z.string().trim().min(1, "Required");
 export const newVinylSchema = z.object({
   artist: requiredString,
   album: requiredString,
-  genre: requiredString,
-}) .refine((data) => data.genre=== 'Select genre', {
-  message: "Genresrequired",
-  path: ["genre"], 
+  genreId: requiredString
 });
-
-
 
 export const signUpSchema = z.object({
   email: requiredString.email("Invalid email address"),

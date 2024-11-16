@@ -110,7 +110,7 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
             <span>
               Posts:{" "}
               <span className="font-semibold">
-                {formatNumber(user._count.posts)}
+                {formatNumber(user._count.vinyls)}
               </span>
             </span>
             <FollowerCount userId={user.id} initialState={followerInfo} />
