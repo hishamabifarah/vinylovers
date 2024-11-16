@@ -1,3 +1,5 @@
+
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -23,7 +25,7 @@ export const metadata: Metadata = {
   description: "The social media app for Vinyl Lovers",
 };
 
-const session = await validateRequest();
+// const session = await validateRequest();
 
 export default function RootLayout({
   children,
@@ -33,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      <SessionProvider value={session}>
+      {/* <SessionProvider value={session}> */}
       <ReactQueryProvider>
       <ThemeProvider
           attribute="class"
@@ -44,7 +46,7 @@ export default function RootLayout({
         {children}
         </ThemeProvider>
         </ReactQueryProvider>
-        </SessionProvider>
+        {/* </SessionProvider> */}
       </body>
       
     </html>

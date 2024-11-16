@@ -1,3 +1,4 @@
+"use server"
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { FollowerInfo } from "@/lib/types";

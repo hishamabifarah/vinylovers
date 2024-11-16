@@ -1,3 +1,4 @@
+"use server"
 import { validateRequest } from "@/auth";
 import FollowButton from "@/components/FollowButton";
 import FollowerCount from "@/components/FollowersCount";
@@ -73,7 +74,7 @@ export default async function Page({ params: { username } }: PageProps) {
         </div>
         {/* <UserPosts userId={user.id} /> */}
       </div>
-      <TrendsSidebar />
+  
     </main>
   );
 }
