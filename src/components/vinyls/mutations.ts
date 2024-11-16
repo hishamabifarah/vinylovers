@@ -39,13 +39,14 @@ export function useDeleteVinylMutation() {
         },
       );
 
-      toast({
-        description: "Post deleted",
-      });
+      // console.log('deleted')
+      // toast({
+      //   description: "Post deleted",
+      // });
 
-      if (pathname === `/posts/${deletedVinyl.id}`) {
-        router.push(`/users/${deletedVinyl.user.username}`);
-      }
+      // if (pathname === `/posts/${deletedVinyl.id}`) {
+      //   router.push(`/users/${deletedVinyl.user.username}`);
+      // }
     },
     onError(error) {
       console.error(error);
