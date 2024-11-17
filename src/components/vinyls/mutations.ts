@@ -38,21 +38,13 @@ export function useDeleteVinylMutation() {
           };
         },
       );
-
-<<<<<<< HEAD
       toast({
-        description: "Vinyl deleted",
+        description: "Post deleted",
       });
-=======
-      // console.log('deleted')
-      // toast({
-      //   description: "Post deleted",
-      // });
->>>>>>> bf5a12cd96ffe31dc95ad6c956620ceb4ab5a368
 
-      // if (pathname === `/posts/${deletedVinyl.id}`) {
-      //   router.push(`/users/${deletedVinyl.user.username}`);
-      // }
+      if (pathname === `/posts/${deletedVinyl.id}`) {
+        router.push(`/users/${deletedVinyl.user.username}`);
+      }
     },
     onError(error) {
       console.error(error);
