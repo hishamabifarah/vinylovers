@@ -12,7 +12,9 @@ import { formatDate } from "date-fns";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-// import UserPosts from "./UserPosts";
+import UserVinyls from "./UserVinyls";
+import EditProfileButton from "./EditProfileButton";
+
 
 interface PageProps {
   params: { username: string };
@@ -69,10 +71,10 @@ export default async function Page({ params: { username } }: PageProps) {
         <UserProfile user={user} loggedInUserId={loggedInUser.id} />
         <div className="rounded-2xl bg-card p-5 shadow-sm">
           <h2 className="text-center text-2xl font-bold">
-            {user.displayName}&apos;s posts
+            {user.displayName}&apos;s vinyls
           </h2>
         </div>
-        {/* <UserPosts userId={user.id} /> */}
+        <UserVinyls userId={user.id} />
       </div>
   
     </main>
@@ -117,10 +119,11 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
           </div>
         </div>
         {user.id === loggedInUserId ? (
-          <Button>Edit profile</Button>
+          <EditProfileButton user={user} />
         ) : (
           <FollowButton userId={user.id} initialState={followerInfo} />
         )}
+
       </div>
       {user.bio && (
         <>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "@/app/(main)/home/SessionProvider";
+import { useSession } from "@/app/(main)/SessionProvider";
 import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
 import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon ,Disc } from "lucide-react";

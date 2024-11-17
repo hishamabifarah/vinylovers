@@ -40,7 +40,7 @@ export function useDeleteVinylMutation() {
       );
 
       toast({
-        description: "Post deleted",
+        description: "Vinyl deleted",
       });
 
       if (pathname === `/posts/${deletedVinyl.id}`) {
@@ -51,7 +51,7 @@ export function useDeleteVinylMutation() {
       console.error(error);
       toast({
         variant: "destructive",
-        description: "Failed to delete post. Please try again.",
+        description: "Failed to delete vinyl. Please try again.",
       });
     },
   });

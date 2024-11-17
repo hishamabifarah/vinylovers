@@ -5,7 +5,7 @@ import { formatRelativeDate } from "@/lib/utils";
 import Link from "next/link";
 import UserAvatar from "../UserAvatar";
 import VinylMoreButton from "./VinylMoreButton";
-import { useSession } from "@/app/(main)/home/SessionProvider";
+import { useSession } from "@/app/(main)/SessionProvider";
 
 interface PostProps {
   vinyl: VinylData;
@@ -36,12 +36,18 @@ export default function Vinyl({ vinyl }: PostProps) {
             </Link>
           </div>
         </div>
-        {vinyl.user.id === user.id && (
+        {user && user.id === vinyl.user.id && (
           <VinylMoreButton
             vinyl={vinyl}
             className="opacity-0 transition-opacity group-hover/post:opacity-100"
           />
         )}
+        {/* {vinyl.user.id === user.id && (
+          <VinylMoreButton
+            vinyl={vinyl}
+            className="opacity-0 transition-opacity group-hover/post:opacity-100"
+          />
+        )} */}
       </div>
       <div className="whitespace-pre-line break-words">{vinyl.artist}</div>
     </article>

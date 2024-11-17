@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import { withUt } from "uploadthing/tw"; // if we want to use uploadthings default component like resizer , we wrap the export default with it 'export default withUt(config);'
 
 const config = {
   darkMode: ["class"],
@@ -83,4 +84,4 @@ const config = {
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
 
-export default config
+export default withUt(config);

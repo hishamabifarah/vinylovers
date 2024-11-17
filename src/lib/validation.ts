@@ -1,11 +1,15 @@
-import { z } from "zod";
+import { optional, z } from "zod";
 
 const requiredString = z.string().trim().min(1, "Required");
 
 export const newVinylSchema = z.object({
   artist: requiredString,
   album: requiredString,
-  genreId: requiredString
+  genreId: requiredString,
+  // subgenre : z.string().optional(),
+  // year: z.string().max(4).min(1,"Required"),
+  // notes: z.string().optional(),
+  // condition: requiredString,
 });
 
 export const signUpSchema = z.object({
@@ -34,9 +38,17 @@ export const loginSchema = z.object({
     password: requiredString,
   });
 
+export const updateUserProfileSchema = z.object({
+  displayName: requiredString,
+  bio: z.string().max(1000, "Must be at most 1000 characters").optional(),
+});
+  
+
 // generate schemas to work with it in our frontend
 export type SignUpValues = z.infer<typeof signUpSchema>;
 export type LoginValues = z.infer<typeof loginSchema>;
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 export type ResetPassworEmaildValues = z.infer<typeof resetPasswordEmailSchema>;
 export type NewVinylValues = z.infer<typeof newVinylSchema>;
+export type UpdateUserProfileValues = z.infer<typeof updateUserProfileSchema>;
+

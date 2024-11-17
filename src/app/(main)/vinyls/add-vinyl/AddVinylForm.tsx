@@ -80,6 +80,7 @@ export default function AddVinylForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <FormField
           control={form.control}
           name="artist"
@@ -106,9 +107,9 @@ export default function AddVinylForm() {
             </FormItem>
           )}
         />
-                  {/* genre and subgenre */}
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {/* {errors.genreId && <p className="text-red-500 text-sm mt-1">{errors.genreId.message}</p>} */}
+        </div>
+          {/* genre and subgenre */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
               name="genreId"

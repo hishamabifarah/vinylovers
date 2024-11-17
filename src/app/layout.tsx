@@ -5,8 +5,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import ReactQueryProvider from "./ReactQueryProvider";
-import SessionProvider from "./(main)/home/SessionProvider";
+import SessionProvider from "./(main)/SessionProvider";
 import { validateRequest } from "@/auth";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,6 +47,7 @@ export default function RootLayout({
         {children}
         </ThemeProvider>
         </ReactQueryProvider>
+        <Toaster />
         {/* </SessionProvider> */}
       </body>
       
