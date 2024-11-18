@@ -1,0 +1,28 @@
+1. what if user didn't verify or token expired? implement it
+2. add toast when verified.
+3. all destructive message for user to verify in home page
+4 Check: Make sure to implement rate limiting based on IP addresses.
+5. only show verified users in who to follow 
+6. share button each vinyl
+7. add support email including in reset and verify passwords email
+8. change logo url in sending email when you go live
+9. add page for followers and following 
+10. check all page url if user can access them if not signed in , like add vinyl which is accessible from menu only if logged in
+but what if url pasted in another browser or incognito (if user profile page a message uauthorized shows) but check all urls
+11. add title and meta data to all pages including dynamic ones.
+12. when no internet and clicked on add vinyl prisma error in browser (check in production and implement fix)
+
+GENRES URL IMAGE
+Metal:https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSMjNf4Sxus6aOxobEi19TXfWQpdcPgU5wHvjz
+rock: https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSSn6GRnKoHY3Rlrq81ZDdaVWFheLyA9Omw7fB
+new age: https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSmGgZkibFoEbpTqlDUL368runt51Bjv9XZhMY
+hiphop : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMS079NT1ERksH8qK0RfXgTcaPSE5yLJuxIjvAb
+jazz : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSfcVKcKIljSPq2k4uKLURGnYvofwEB7sAZc1H
+pop: https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSUeEDp4uQ8E1ub4BgesA5Zinm0OYyoH63aRF7
+latin: https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSAcFRTtwFvpDNLXJ4nZ5oY0eRCVMcgmTtPlxi
+r&b: https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSZz46Acjg3Oyim0qxUYE9GtJ4kcdj7lM1nKXr
+blues : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSSlTkwgKoHY3Rlrq81ZDdaVWFheLyA9Omw7fB
+danceelectronic : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMS5rnLWYQSQhGE7cd0iqNIDes3KF8w4gfBLy96
+classical : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSf1reRbIljSPq2k4uKLURGnYvofwEB7sAZc1H
+country : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMS3nQ9AOfEsxPBL5U2ift89rndGpamHge7JcDY
+folk acoustic : https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMS4VjO1TZ5qMgFWQ3KSLd8ecslkB90f7PxwONZ

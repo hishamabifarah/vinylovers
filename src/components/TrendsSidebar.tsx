@@ -12,15 +12,6 @@ import { Badge } from "@/components/ui/badge"
 import { Music } from 'lucide-react'
 
 
-const topGenres = [
-  { name: "Rock", count: 1250 },
-  { name: "Jazz", count: 980 },
-  { name: "Hip Hop", count: 875 },
-  { name: "Electronic", count: 720 },
-  { name: "Classical", count: 650 },
-  { name: "R&B", count: 590 }
-]
-
 
 export default function TrendsSidebar() {
   return (
@@ -29,37 +20,84 @@ export default function TrendsSidebar() {
         we could put each in its own suspense but it's better for both to load */}
       <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
         <WhoToFollow />
-        <TrendingGenres/>
-        <TrendingTopics />
+        <GetGenres/>
+        <TrendingTopics />  
       </Suspense>
     </div>
   );
 }
 
-function TrendingGenres() {
+interface Genre {
+  id: string;
+  name: string;
+  count: number;
+}
+
+async function GetGenres() {
+
+  const genres = await getTopGenres();
+
   return (
-    <div className="rounded-lg  p-6 shadow-md bg-card ">
+    <div className="rounded-lg bg-card p-6 shadow-md">
+      <Link href='/vinyls/genres'>
       <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
         Top Genres
       </h2>
+      </Link>
       <div className="flex flex-wrap gap-2">
-        {topGenres.map((genre) => (
+        {genres.map(({ name, id, count }) => (
           <Badge
-            key={genre.name}
+            key={id}
             variant="secondary"
             className="flex items-center space-x-1"
           >
             <Music className="h-3 w-3" />
-            <span>{genre.name}</span>
+            <span>{name}</span>
             <span className="text-xs text-gray-500 dark:text-gray-400">
-              ({genre.count})
+             {count.toLocaleString()}
             </span>
           </Badge>
         ))}
       </div>
     </div>
   );
+
 }
+
+  const getTopGenres = unstable_cache(
+    async (): Promise<Genre[]> => {
+      try {
+        const genres = await prisma.genre.findMany({
+          select: {
+            id: true,
+            name: true,
+            _count: {
+              select: { vinyls: true }
+            }
+          },
+          orderBy: {
+            vinyls: { _count: 'desc' }
+          }
+        })
+  
+        return genres.map((row) => ({
+          id: row.id,
+          name: row.name,
+          count: row._count.vinyls,
+        }));
+      } catch (error) {
+        console.error('Error fetching top genres:', error);
+        throw new Error('Failed to fetch top genres');
+      }
+    },
+    ["top_genres"],
+    {
+      revalidate: 1 * 60 * 60,
+      tags: ['genres'],
+    }
+  );
+
+
 
 async function WhoToFollow() {
   const { user } = await validateRequest();

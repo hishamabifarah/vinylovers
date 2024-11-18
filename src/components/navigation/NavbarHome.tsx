@@ -14,8 +14,8 @@ export default function Header() {
   const [isMounted, setIsMounted] = useState(false)
 
   const images = [
-    '/vinyl1.jpg',
-    '/vinyl2.jpg',
+    'https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSMjNf4Sxus6aOxobEi19TXfWQpdcPgU5wHvjz',
+    'https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSSn6GRnKoHY3Rlrq81ZDdaVWFheLyA9Omw7fB',
     '/vinyl3.jpg',
     '/vinyl4.jpg',
   ];
@@ -42,14 +42,22 @@ export default function Header() {
   return (
     <div className="bg-custom-black text-white">
       {/* Navigation Bar */}
-      <header className=" left-0 right-0 top-0 z-10 border-b border-gray-800 bg-custom-black bg-opacity-50">
+      <header className="left-0 right-0 top-0 z-10 border-b border-gray-800 bg-custom-black bg-opacity-50">
         <div className="container mx-auto px-4">
           <nav className="flex h-16 items-center justify-between">
-            <div className="flex items-center ">
-            <Image src={Logo} alt="" role="presentation" className="mt-2 h-12 w-12 p-2"/>
-            <Link href="/home" className="text-2xl font-bold text-primary mt-1">
-              Vinylovers{" "}
-            </Link>
+            <div className="flex items-center">
+              <Image
+                src={Logo}
+                alt=""
+                role="presentation"
+                className="mt-2 h-12 w-12 p-2"
+              />
+              <Link
+                href="/home"
+                className="mt-1 text-2xl font-bold text-primary"
+              >
+                Vinylovers{" "}
+              </Link>
             </div>
             <div className="hidden items-center space-x-4 md:flex">
               <Button
@@ -58,11 +66,17 @@ export default function Header() {
               >
                 Discover
               </Button>
+
               <Button
                 variant="ghost"
-                className="text-gray-300 hover:text-white"
+                className="flex items-center justify-start gap-3"
+                title="Bookmarks"
+                asChild
               >
-                Genres
+                <Link href="/vinyls/genres">
+                  Genres
+                  {/* <span className="hidden lg:inline">Bookmarks</span> */}
+                </Link>
               </Button>
             </div>
 
@@ -94,7 +108,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className=" inset-0 z-20 bg-custom-black bg-opacity-90 md:hidden">
+        <div className="inset-0 z-20 bg-custom-black bg-opacity-90 md:hidden">
           <div className="flex h-full flex-col items-center justify-center">
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Discover
@@ -161,7 +175,7 @@ export default function Header() {
       </section>
 
       {/* Vinyls Section */}
-      <section id="vinyls-section" className="py-16 bg-custom-black">
+      <section id="vinyls-section" className="bg-custom-black py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
             <div className="md:w-1/2">
@@ -179,22 +193,18 @@ export default function Header() {
                 {images.map((src, index) => (
                   <div
                     key={index}
-                    className="relative group overflow-hidden rounded-lg aspect-square"
+                    className="group relative aspect-square overflow-hidden rounded-lg"
                   >
-                  <Image
+                    <Image
                       src={src}
                       alt={`Album cover ${index}`}
                       width={300}
                       height={300}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-custom-black bg-opacity-0 group-hover:bg-opacity-75 transition-opacity duration-300 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100">
-                      <p className="text-white font-bold">
-                        Artist Name
-                      </p>
-                      <p className="text-gray-300">
-                        Album Title
-                      </p>
+                    <div className="absolute inset-0 flex flex-col justify-end bg-custom-black bg-opacity-0 p-4 opacity-0 transition-opacity duration-300 group-hover:bg-opacity-75 group-hover:opacity-100">
+                      <p className="font-bold text-white">Artist Name</p>
+                      <p className="text-gray-300">Album Title</p>
                     </div>
                   </div>
                 ))}

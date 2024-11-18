@@ -77,12 +77,24 @@ model Vinyl {
   artist      String
   album       String
   userId      String
-  genreId       String
+  genreId     String
 
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
+  genre     Genre    @relation(fields: [genreId], references: [id])
 
+  @@index([genreId])
+  
   @@map("vinyls")
+}
+
+model Genre {
+  id          String @id 
+  name        String
+  thumbnail   String
+  vinyls Vinyl[]
+  
+  @@map("genres")
 }
 
 model Post {
