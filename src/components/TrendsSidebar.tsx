@@ -77,7 +77,8 @@ async function GetGenres() {
           },
           orderBy: {
             vinyls: { _count: 'desc' }
-          }
+          },
+          take:8
         })
   
         return genres.map((row) => ({

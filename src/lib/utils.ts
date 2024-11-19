@@ -15,13 +15,14 @@ export function formatNumber(n: number): string {
 
 export function formatRelativeDate(from: Date) {
   const currentDate = new Date();
-  if (currentDate.getTime() - from.getTime() < 24 * 60 * 60 * 1000) {
+  const dateObject = new Date(from);
+  if (currentDate.getTime() - dateObject.getTime() < 24 * 60 * 60 * 1000) {
     return formatDistanceToNowStrict(from, { addSuffix: true });
   } else {
-    if (currentDate.getFullYear() === from.getFullYear()) {
-      return formatDate(from, "MMM d");
+    if (currentDate.getFullYear() === dateObject.getFullYear()) {
+      return formatDate(dateObject, "MMM d");
     } else {
-      return formatDate(from, "MMM d, yyyy");
+      return formatDate(dateObject, "MMM d, yyyy");
     }
   }
 }

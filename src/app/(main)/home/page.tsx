@@ -1,32 +1,11 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TrendsSidebar from "@/components/TrendsSidebar";
-
-import Image from "next/image"
-import UserAvatar from "@/components/UserAvatar"
 import ForYouFeed from "./ForYouFeed";
 import FollowingFeed from "./FollowingFeed";
 import FeaturedVinyls from "./FeaturedVinyls";
 
 export default function Home() {
-  // const [activeTab, setActiveTab] = useState("discover")
-
-  const albums = [
-    { id: 1, title: "Rumours", artist: "Fleetwood Mac", image: "/vinyl1.jpg" },
-    { id: 2, title: "Dark Side of the Moon", artist: "Pink Floyd", image: "/vinyl2.jpg" },
-    { id: 3, title: "Thriller", artist: "Michael Jackson", image: "/vinyl3.jpg" },
-    { id: 4, title: "Back in Black", artist: "AC/DC", image: "/vinyl4.jpg" },
-    { id: 5, title: "Led Zeppelin IV", artist: "Led Zeppelin", image: "/vinyl1.jpg" },
-    { id: 6, title: "Purple Rain", artist: "Prince", image: "/vinyl2.jpg" },
-  ]
-
-  const topUsers = [
-    { id: 1, name: "VinylQueen", vinylCount: 1200, avatar: "/placeholder.svg?height=40&width=40" },
-    { id: 2, name: "RecordKing", vinylCount: 1150, avatar: "/placeholder.svg?height=40&width=40" },
-    { id: 3, name: "TurntableMaster", vinylCount: 1100, avatar: "/placeholder.svg?height=40&width=40" },
-    { id: 4, name: "GroovyCollector", vinylCount: 1050, avatar: "/placeholder.svg?height=40&width=40" },
-    { id: 5, name: "VinylVoyager", vinylCount: 1000, avatar: "/placeholder.svg?height=40&width=40" }
-  ]
 
   return (
     <main className="flex w-full min-w-0 gap-5">

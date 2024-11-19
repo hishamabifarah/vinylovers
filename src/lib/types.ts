@@ -6,6 +6,20 @@ export type UserData = Prisma.UserGetPayload<{
 }>;
 
 
+export function getUserDataVinylSelect() {
+  return {
+    id: true,
+    username: true,
+    displayName: true,
+    avatarUrl: true,
+    _count: {
+      select: {
+        vinyls:true,
+      },
+    },
+  } satisfies Prisma.UserSelect;
+}
+
 export function getUserDataSelect(loggedInUserId: string) {
   return {
     id: true,
@@ -47,6 +61,14 @@ export function getVinylDataInclude(loggedInUserId: string) {
   } satisfies Prisma.VinylInclude;
 }
 
+export function getVinylFeaturedDataInclude() {
+  return {
+    user: {
+      select: getUserDataVinylSelect(),
+    },
+  } satisfies Prisma.VinylInclude;
+}
+
 export type PostData = Prisma.PostGetPayload<{
   include: ReturnType<typeof getPostDataInclude>;
 }>;
@@ -54,6 +76,11 @@ export type PostData = Prisma.PostGetPayload<{
 export type VinylData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylDataInclude>;
 }>;
+
+export type VinylFeaturedData = Prisma.VinylGetPayload<{
+  include: ReturnType<typeof getVinylFeaturedDataInclude>;
+}>;
+
 
 export interface PostsPage {
   posts: PostData[];
