@@ -53,7 +53,7 @@ export default function ForYouFeed() {
 
   return (
     <InfiniteScrollContainer
-      className="space-y-5"
+      className="grid  grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (

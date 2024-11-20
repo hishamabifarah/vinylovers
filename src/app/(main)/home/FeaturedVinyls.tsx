@@ -39,19 +39,24 @@ export default async function RandomVinylsPage() {
   const randomVinyls = await getRandomVinyls()
 
   return (
-  <div className="lg:col-span-2 mt-4 ">
-  <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-    Featured Vinyls
-  </h2>
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
-        {randomVinyls.map(vinyl => (
-          <Suspense key={vinyl.id} fallback={<div className="aspect-square bg-secondary rounded-lg animate-pulse"></div>}>
-            <VinylCard vinyl={vinyl}/>
+    <div className="mt-4 lg:col-span-2">
+      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+        Featured Vinyls
+      </h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">
+        {randomVinyls.map((vinyl) => (
+          <Suspense
+            key={vinyl.id}
+            fallback={
+              <div className="aspect-square animate-pulse rounded-lg bg-secondary"></div>
+            }
+          >
+            <VinylCard vinyl={vinyl} />
           </Suspense>
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // export const revalidate = 600 // 10 minutes in seconds

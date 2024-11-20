@@ -4,7 +4,6 @@ import Link from "next/link";
 import logo from "@/assets/logo192.png";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   return (
@@ -12,7 +11,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-5 px-5 py-3">
         <div className="flex items-center justify-center">
           <Image src={logo} alt="" className="mt-2 h-10 w-10 " />
-          <Link href="/" className="ml-2 text-2xl font-bold text-primary mt-1">
+          <Link href="/home" className="ml-2 text-2xl font-bold text-primary mt-1">
             Vinylovers
           </Link>
         </div>

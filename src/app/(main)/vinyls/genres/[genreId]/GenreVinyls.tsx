@@ -60,7 +60,7 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
 
   return (
     <InfiniteScrollContainer
-      className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2"
+      className="grid  grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (
@@ -68,6 +68,5 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>
-
   );
 }

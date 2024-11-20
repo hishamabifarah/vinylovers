@@ -37,7 +37,7 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
       const { data, error } = await resend.emails.send({
         from: 'Vinyl Lovers <no-reply@vinylovers.net>',
         to: [email],
-        subject: 'Vinyl Lovers - Email Verification',
+        subject: 'Email Verification',
         react: emailContent,
       });
   
