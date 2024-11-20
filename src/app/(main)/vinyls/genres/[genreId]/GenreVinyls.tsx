@@ -2,13 +2,18 @@
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import Vinyl from "@/components/vinyls/Vinyl";
+import { VinylCard } from "@/components/vinyls/VinylsCard";
 // import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
-export default function ForYouFeed() {
+interface GenreVinylsProps {
+  genreId: string;
+}
+
+export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
   const {
     data,
     fetchNextPage,
@@ -17,11 +22,11 @@ export default function ForYouFeed() {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["vinyl-feed", "for-you"],
+    queryKey: ["genre-feed", genreId],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
-          "/api/vinyls/for-you",
+          `/api/genres/${genreId}`,
           pageParam ? { searchParams: { cursor: pageParam } } : {},
         )
         .json<VinylsPage>(),
@@ -33,17 +38,19 @@ export default function ForYouFeed() {
 
   if (status === "pending") {
     // return <PostsLoadingSkeleton />;
+    return (<h2>loading</h2>)
   }
 
   if (status === "success" && !vinyls.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
-        No one has posted anything yet.
+        No Vinyls with this genre have been added yet!
       </p>
     );
   }
 
   if (status === "error") {
+    console.log('status', status)
     return (
       <p className="text-center text-destructive">
         An error occurred while loading posts.
@@ -53,13 +60,14 @@ export default function ForYouFeed() {
 
   return (
     <InfiniteScrollContainer
-      className="space-y-5"
+      className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-2"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (
-        <Vinyl key={vinyl.id} vinyl={vinyl} />
+        <VinylCard key={vinyl.id} vinyl={vinyl} />
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>
+
   );
 }

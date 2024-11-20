@@ -1,13 +1,18 @@
 import AddVinylForm from "./AddVinylForm";
+import prisma from "@/lib/prisma";
 
-export default function Page() {
+export default async function Page() {
+  const genres = await prisma.genre.findMany({
+    select: { id: true, name: true },
+    orderBy: { name: 'asc' },
+  })
   return (
     <main className="flex h-screen p-5 w-full">
       <div className="flex h-full max-h-[40rem]  w-full overflow-hidden rounded-2xl bg-card shadow-2xl">
         <div className="w-full space-y-10 overflow-y-auto p-10">
           <h1 className="text-center text-3xl font-bold">Add New Vinyl</h1>
           <div className="space-y-5">
-            <AddVinylForm />
+            <AddVinylForm genres={genres} />
           </div>
         </div>
       </div>

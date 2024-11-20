@@ -17,7 +17,7 @@ export default function TrendsSidebar() {
   return (
     <div className="sticky top-[5.25rem]  h-fit w-100 flex-none space-y-5 md:block lg:w-100">
         {/* Suspense is used in server components to let data load without affecting the other data loading like posts
-        we could put each in its own suspense but it's better for both to load */}
+        we could put each in its own suspense but it's better for all to load */}
       <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
         <WhoToFollow />
         <GetGenres/>
@@ -39,11 +39,12 @@ async function GetGenres() {
 
   return (
     <div className="rounded-lg bg-card p-6 shadow-md">
-      <Link href='/vinyls/genres'>
-      <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-        Top Genres
-      </h2>
-      </Link>
+      <div className="flex justify-between">
+        <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+          Top Genres
+        </h2>
+        <Link className="font-semibold mt-0.5" href="/vinyls/genres">View All</Link>
+        </div>
       <div className="flex flex-wrap gap-2">
         {genres.map(({ name, id, count }) => (
           <Badge
@@ -52,16 +53,19 @@ async function GetGenres() {
             className="flex items-center space-x-1"
           >
             <Music className="h-3 w-3" />
-            <span>{name}</span>
+            <Link href={`/vinyls/genres/${id}`}>
+              <span>{name}</span>
+              
+            </Link>
             <span className="text-xs text-gray-500 dark:text-gray-400">
-             {count.toLocaleString()}
+              {count.toLocaleString()}
             </span>
           </Badge>
         ))}
       </div>
+
     </div>
   );
-
 }
 
   const getTopGenres = unstable_cache(

@@ -15,6 +15,7 @@ const getRandomVinyls = unstable_cache(
         id: true,
         artist: true,
         thumbnail: true,
+        album: true,
         createdAt: true,
         user: {
           select: {
@@ -42,7 +43,7 @@ export default async function RandomVinylsPage() {
   <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
     Featured Vinyls
   </h2>
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
         {randomVinyls.map(vinyl => (
           <Suspense key={vinyl.id} fallback={<div className="aspect-square bg-secondary rounded-lg animate-pulse"></div>}>
             <VinylCard vinyl={vinyl}/>

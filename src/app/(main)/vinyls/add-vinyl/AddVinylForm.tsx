@@ -35,7 +35,11 @@ interface Genre {
   name: string;
 }
 
-export default function AddVinylForm() {
+interface AddVinylFormProps {
+  genres: Genre[]
+}
+
+export default function AddVinylForm({ genres }: AddVinylFormProps) {
 
   const mutation = useSubmitVinylMutation();
 
@@ -48,16 +52,6 @@ export default function AddVinylForm() {
     },
   })
 
-  const [genres, setGenres] = useState<Genre[]>([]);
-
-  useEffect(() => {
-    const loadGenres = async () => {
-      const fetchedGenres = await fetchGenres();
-      setGenres(fetchedGenres);
-    };
-    loadGenres();
-  }, []);
-
   const onSubmit = (values: NewVinylValues) => {
     console.log('Submit function called', values);
     mutation.mutate(values)
@@ -65,18 +59,6 @@ export default function AddVinylForm() {
   }
 
   
-  const fetchGenres = async (): Promise<Genre[]> => {
-    // Simulating an API call
-    return [
-      { id: "1", name: "Rock" },
-      { id: "2", name: "Jazz" },
-      { id: "3", name: "Electronic" },
-      { id: "4", name: "Hip Hop" },
-      { id: "5", name: "Classical" },
-    ];
-  };
-
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
