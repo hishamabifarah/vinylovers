@@ -60,7 +60,7 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
 
   return (
     <InfiniteScrollContainer
-      className="grid  grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6"
+      className="grid  grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-6"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (

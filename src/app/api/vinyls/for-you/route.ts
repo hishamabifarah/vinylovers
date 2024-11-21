@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined; // get cursor from front
 
-    const pageSize = 10;
+    const pageSize = 8;
 
     const { user } = await validateRequest();
 

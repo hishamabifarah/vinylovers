@@ -2,6 +2,8 @@
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import Vinyl from "@/components/vinyls/Vinyl";
+import { VinylCard } from "@/components/vinyls/VinylsCard";
+import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 // import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
@@ -32,7 +34,11 @@ export default function ForYouFeed() {
   const vinyls = data?.pages.flatMap((page) => page.vinyls) || [];
 
   if (status === "pending") {
-    // return <PostsLoadingSkeleton />;
+    return (
+      <div className="">
+        <VinylsLoadingSkeleton />
+      </div>
+    );
   }
 
   if (status === "success" && !vinyls.length && !hasNextPage) {
@@ -53,11 +59,11 @@ export default function ForYouFeed() {
 
   return (
     <InfiniteScrollContainer
-      className="grid  grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6"
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (
-        <Vinyl key={vinyl.id} vinyl={vinyl} />
+        <VinylCard key={vinyl.id} vinyl={vinyl} />
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>

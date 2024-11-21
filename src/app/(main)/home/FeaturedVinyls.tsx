@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import prisma from '@/lib/prisma'
 import { VinylCard } from '@/components/vinyls/VinylsCard'
 import { unstable_cache } from 'next/cache'
+import VinylsLoadingSkeleton from '@/components/vinyls/VinylsLoadingSkeleton'
 
 const getRandomVinyls = unstable_cache(
   async () => {
@@ -32,7 +33,7 @@ const getRandomVinyls = unstable_cache(
     })
   },
   ["vinyl-featured"],
-  { revalidate: 600 } // 10 minutes in seconds
+  { revalidate: 1 } // 10 minutes in seconds
 )
 
 export default async function RandomVinylsPage() {
@@ -43,18 +44,20 @@ export default async function RandomVinylsPage() {
       <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
         Featured Vinyls
       </h2>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-1">
+      <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4">
         {randomVinyls.map((vinyl) => (
           <Suspense
             key={vinyl.id}
             fallback={
-              <div className="aspect-square animate-pulse rounded-lg bg-secondary"></div>
+              <VinylsLoadingSkeleton/>
             }
           >
             <VinylCard vinyl={vinyl} />
           </Suspense>
         ))}
       </div>
+    </div>
     </div>
   );
 }

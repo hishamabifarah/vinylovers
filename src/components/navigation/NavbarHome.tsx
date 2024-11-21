@@ -177,8 +177,8 @@ export default function Header() {
       {/* Vinyls Section */}
       <section id="vinyls-section" className="bg-custom-black py-16">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
-            <div className="md:w-1/2">
+          <div className=" flex-col items-center gap-8 md:flex-row md:items-start">
+            <div className="md:w-full mb-5">
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">
                 Discover the Latest Vinyls Added
               </h2>
@@ -188,7 +188,7 @@ export default function Header() {
                 favorite on wax.
               </p>
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-full">
               <div className="grid grid-cols-2 gap-4">
                 {images.map((src, index) => (
                   <div
@@ -198,8 +198,8 @@ export default function Header() {
                     <Image
                       src={src}
                       alt={`Album cover ${index}`}
-                      width={300}
-                      height={300}
+                      width={200}
+                      height={200}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 flex flex-col justify-end bg-custom-black bg-opacity-0 p-4 opacity-0 transition-opacity duration-300 group-hover:bg-opacity-75 group-hover:opacity-100">
