@@ -79,6 +79,7 @@ model Vinyl {
   userId      String
   genreId     String
   thumbnail   String?
+  hashtags    String?
 
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])

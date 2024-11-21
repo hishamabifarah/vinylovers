@@ -9,6 +9,7 @@ export async function submitVinyl(input: {
   artist: string;
   album: string;
   genreId: string;
+  hashtags: string;
 }) {
 
   console.log('submitVinyl inside' , input);
@@ -16,7 +17,7 @@ export async function submitVinyl(input: {
 
   if (!user) throw new Error("Unauthorized");
 
-  const { artist , genreId , album } = newVinylSchema.parse(input);
+  const { artist , genreId , album , hashtags} = newVinylSchema.parse(input);
 
   const newVinyl = await prisma.vinyl.create({
     data: {
@@ -24,6 +25,7 @@ export async function submitVinyl(input: {
       genreId,
       album,
       userId: user.id,
+      hashtags,
     },
     include: getVinylDataInclude(user.id),
   });

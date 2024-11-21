@@ -2,6 +2,7 @@
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import Vinyl from "@/components/vinyls/Vinyl";
+import { VinylCard } from "@/components/vinyls/VinylsCard";
 import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 // import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
@@ -58,7 +59,7 @@ export default function FollowingFeed() {
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (
-        <Vinyl key={vinyl.id} vinyl={vinyl} />
+        <VinylCard key={vinyl.id} vinyl={vinyl} />
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>
