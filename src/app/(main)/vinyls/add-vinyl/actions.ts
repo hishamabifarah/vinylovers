@@ -9,10 +9,9 @@ export async function submitVinyl(input: {
   artist: string;
   album: string;
   genreId: string;
-  hashtags: string;
+  hashtags?: string
 }) {
 
-  console.log('submitVinyl inside' , input);
   const { user } = await validateRequest();
 
   if (!user) throw new Error("Unauthorized");
@@ -25,13 +24,11 @@ export async function submitVinyl(input: {
       genreId,
       album,
       userId: user.id,
-      hashtags,
+      hashtags: hashtags || null,
     },
     include: getVinylDataInclude(user.id),
   });
 
-  console.log('newVinyl' , newVinyl)
-
-  // return the new Post to add to the mutation onsucess function
+  // return the new vinyl to add to the mutation onsucess function
   return newVinyl;
 }

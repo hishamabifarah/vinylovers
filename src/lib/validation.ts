@@ -6,7 +6,7 @@ export const newVinylSchema = z.object({
   artist: requiredString,
   album: requiredString,
   genreId: requiredString,
-  hashtags: z.string().optional(),
+  hashtags: z.string().optional()
   // subgenre : z.string().optional(),
   // year: z.string().max(4).min(1,"Required"),
   // notes: z.string().optional(),
