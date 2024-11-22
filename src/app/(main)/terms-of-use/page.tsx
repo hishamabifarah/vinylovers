@@ -17,7 +17,7 @@ export default function TermsOfUsePage() {
         <p>Vinylovers is a platform that allows users to share images of their vinyl collections, discover new music, and connect with other vinyl enthusiasts.</p>
 
         <h2>3. User Conduct</h2>
-        <p>You agree to use Vinylovers only for lawful purposes and in a way that does not infringe the rights of, restrict or inhibit anyone else's use and enjoyment of the website.</p>
+        <p>You agree to use Vinylovers only for lawful purposes and in a way that does not infringe the rights of, restrict or inhibit anyone else&apos;s use and enjoyment of the website.</p>
 
         <h2>4. User Content</h2>
         <p>You are solely responsible for the content that you publish or display on Vinylovers, or transmit to other users.</p>
