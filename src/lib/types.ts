@@ -58,6 +58,12 @@ export function getVinylDataInclude(loggedInUserId: string) {
     user: {
       select: getUserDataSelect(loggedInUserId),
     },
+    genre: {
+      select: {
+        id: true,
+        name: true
+      }
+    },
   } satisfies Prisma.VinylInclude;
 }
 

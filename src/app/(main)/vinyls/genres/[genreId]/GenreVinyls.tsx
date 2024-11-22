@@ -3,6 +3,7 @@
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import Vinyl from "@/components/vinyls/Vinyl";
 import { VinylCard } from "@/components/vinyls/VinylsCard";
+import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 // import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
@@ -37,8 +38,8 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
   const vinyls = data?.pages.flatMap((page) => page.vinyls) || [];
 
   if (status === "pending") {
-    // return <PostsLoadingSkeleton />;
-    return (<h2>loading</h2>)
+    return <VinylsLoadingSkeleton />;
+  
   }
 
   if (status === "success" && !vinyls.length && !hasNextPage) {

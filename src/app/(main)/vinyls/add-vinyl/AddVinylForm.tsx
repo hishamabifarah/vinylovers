@@ -30,9 +30,9 @@ import {
 import { HashtagsInput } from "@/components/HashtagsInput";
 
 const vinylSchema = z.object({
-  artist: z.string().min(1, "Artist is required"),
-  album: z.string().min(1, "Album is required"),
-  genreId: z.string().min(1, "Genre is required"),
+  artist: z.string().min(1, "Required"),
+  album: z.string().min(1, "Required"),
+  genreId: z.string().min(1, "Required"),
   hashtags: z.string().optional(),
 });
 

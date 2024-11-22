@@ -1,10 +1,8 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
-import Vinyl from "@/components/vinyls/Vinyl";
 import { VinylCard } from "@/components/vinyls/VinylsCard";
 import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
-// import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";

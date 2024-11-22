@@ -20,11 +20,37 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Vinylovers",
-    default: "Vinylovers",
+    default: 'Vinylovers - Your Vinyl Collection Community',
+    template: '%s | Vinylovers'
   },
-  description: "The social media app for Vinyl Lovers",
-};
+  description: 'Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.',
+  keywords: ['vinyl', 'records', 'music', 'collection', 'community'],
+  authors: [{ name: 'Vinylovers' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://vinylovers.vercel.app',
+    title: 'Vinylovers - Your Vinyl Collection Community',
+    description: 'Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.',
+    siteName: 'Vinylovers',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vinylovers - Your Vinyl Collection Community',
+    description: 'Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
 
 // const session = await validateRequest();
 

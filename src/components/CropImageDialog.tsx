@@ -10,6 +10,8 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 interface CropImageDialogProps {
   src: string;
   cropAspectRatio: number;
@@ -34,19 +36,21 @@ export default function CropImageDialog({
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="flex max-h-[90vh] flex-col p-0">
+        <DialogHeader className="p-6 pb-0">
           <DialogTitle>Crop image</DialogTitle>
         </DialogHeader>
-        <Cropper
-          src={src}
-          aspectRatio={cropAspectRatio}
-          guides={false}
-          zoomable={false}
-          ref={cropperRef}
-          className="mx-auto size-fit"
-        />
-        <DialogFooter>
+        <div className="flex-1 overflow-auto p-6">
+          <Cropper
+            src={src}
+            aspectRatio={cropAspectRatio}
+            guides={false}
+            zoomable={false}
+            ref={cropperRef}
+            className="h-auto max-w-full"
+          />
+        </div>
+        <DialogFooter className="p-6 pt-0">
           <Button variant="secondary" onClick={onClose}>
             Cancel
           </Button>

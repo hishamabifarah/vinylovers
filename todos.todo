@@ -12,6 +12,8 @@ but what if url pasted in another browser or incognito (if user profile page a m
 11. add title and meta data to all pages including dynamic ones.
 12. when no internet and clicked on add vinyl prisma error in browser (check in production and implement fix)
 13. add a feature to generate an image of the user's vinyls collection like in last fm and user be able to share it.
+14. add meta title and check what else to every page
+15 on user profile image change feeds reflect the new image except for the featured vinyls section (how to revalidate?)
 
 GENRES URL IMAGE
 Metal:https://utfs.io/a/f90wrdja4t/uSfHXYZlGhMSMjNf4Sxus6aOxobEi19TXfWQpdcPgU5wHvjz

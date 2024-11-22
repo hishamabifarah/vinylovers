@@ -102,8 +102,6 @@ async function GetGenres() {
     }
   );
 
-
-
 async function WhoToFollow() {
   const { user } = await validateRequest();
 

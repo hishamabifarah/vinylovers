@@ -1,8 +1,8 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
-import Vinyl from "@/components/vinyls/Vinyl";
-// import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
+import { VinylCard } from "@/components/vinyls/VinylsCard";
+import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -36,7 +36,7 @@ export default function UserVinyls ({ userId }: UserPostsProps) {
   const vinyls = data?.pages.flatMap((page) => page.vinyls) || [];
 
   if (status === "pending") {
-    // return <PostsLoadingSkeleton />;
+    return <VinylsLoadingSkeleton />;
   }
 
   if (status === "success" && !vinyls.length && !hasNextPage) {
@@ -57,11 +57,11 @@ export default function UserVinyls ({ userId }: UserPostsProps) {
 
   return (
     <InfiniteScrollContainer
-      className="space-y-5"
+     className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (
-        <Vinyl key={vinyl.id} vinyl={vinyl} />
+        <VinylCard key={vinyl.id} vinyl={vinyl} />
       ))}
       {isFetchingNextPage && <Loader2 className="mx-auto my-3 animate-spin" />}
     </InfiniteScrollContainer>

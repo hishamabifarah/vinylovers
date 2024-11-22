@@ -56,7 +56,7 @@ export default function FollowButton({
   });
 
   return (
-    <Button
+    <Button className="text-white"
       variant={data.isFollowedByUser ? "secondary" : "default"}
       onClick={() => mutate()}
     >

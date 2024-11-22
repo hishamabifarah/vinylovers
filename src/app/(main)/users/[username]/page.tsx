@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import UserVinyls from "./UserVinyls";
 import EditProfileButton from "./EditProfileButton";
+import { VinylShelf } from "@/components/VinylShelf";
 
 
 interface PageProps {
@@ -36,6 +37,19 @@ const getUser = cache(async (username: string, loggedInUserId: string) => {
 
   return user;
 });
+
+const getUserVinyls = cache(async (userId: string) => {
+  return  await prisma.vinyl.findMany({
+        where: { userId: userId },
+        select: {
+          id: true,
+          album: true,
+          artist: true,
+          thumbnail: true,
+        },
+        orderBy: { createdAt: 'desc' },
+      })
+    })
 
 export async function generateMetadata({
   params: { username },
@@ -63,6 +77,8 @@ export default async function Page({ params: { username } }: PageProps) {
   }
 
   const user = await getUser(username, loggedInUser.id);
+  const vinyls = await getUserVinyls(user.id);
+
 
   return (
     <main className="flex w-full min-w-0 gap-5">
@@ -73,6 +89,7 @@ export default async function Page({ params: { username } }: PageProps) {
             {user.displayName}&apos;s vinyls
           </h2>
         </div>
+        <VinylShelf vinyls={vinyls} />
         <UserVinyls userId={user.id} />
       </div>
   
