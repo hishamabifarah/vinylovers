@@ -47,6 +47,32 @@ export const fileRouter = {
 
       return { avatarUrl: newAvatarUrl }; // return new avatarurl to the frontend to upddate cache of feeds immediatly
     }),
-} satisfies FileRouter;
 
-export type AppFileRouter = typeof fileRouter;
+    // vinyl media upload
+    attachment: f({
+      image: { maxFileSize: "4MB", maxFileCount: 5 },
+      video: { maxFileSize: "64MB", maxFileCount: 5 },
+    })
+      .middleware(async () => {
+        const { user } = await validateRequest();
+  
+        if (!user) throw new UploadThingError("Unauthorized");
+  
+        return {};
+      })
+      .onUploadComplete(async ({ file }) => {
+        const media = await prisma.media.create({
+          data: {
+            url: file.url.replace(
+              "/f/",
+              `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+            ),
+            type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
+          },
+        });
+  
+        return { mediaId: media.id }; // return mediaId to the frontend for each upload
+      }),
+  } satisfies FileRouter;
+  
+  export type AppFileRouter = typeof fileRouter;

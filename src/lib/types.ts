@@ -58,6 +58,7 @@ export function getVinylDataInclude(loggedInUserId: string) {
     user: {
       select: getUserDataSelect(loggedInUserId),
     },
+    attachments:true,
     genre: {
       select: {
         id: true,
@@ -116,6 +117,7 @@ export const vinylDataInclude = {
   user: {
     select: userDataSelect,
   },
+  attachments: true,
 } satisfies Prisma.VinylInclude;
 
 export interface FollowerInfo {

@@ -20,12 +20,11 @@ model EmailVerificationToken {
   userId     String
   email      String
   expires_at DateTime
-
 }
 
 model PasswordResetToken {
-  token_hash String @unique
-  user_id String
+  token_hash String   @unique
+  user_id    String
   expires_at DateTime
 }
 
@@ -41,11 +40,11 @@ model User {
   createdAt    DateTime @default(now())
   verified     Boolean  @default(false)
 
-  sessions Session[] // named sessions not session because one user might have multiple sessions
-  vinyls   Vinyl[]
-  posts    Post[]
-  following    Follow[]  @relation("Following")
-  followers    Follow[]  @relation("Followers")
+  sessions  Session[] // named sessions not session because one user might have multiple sessions
+  vinyls    Vinyl[]
+  posts     Post[]
+  following Follow[]  @relation("Following")
+  followers Follow[]  @relation("Followers")
 
   @@map("users") // rename table to users but model for each user is User
 }
@@ -68,34 +67,52 @@ model Follow {
   followingId String
   following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
 
-  @@unique([followerId, followingId]) // many to many uniqye Ids, makes sure each user follows other user once 
+  @@unique([followerId, followingId]) // many to many unique Ids, makes sure each user follows other user once 
   @@map("follows")
 }
 
 model Vinyl {
-  id          String @id @default(cuid())
-  artist      String
-  album       String
-  userId      String
-  genreId     String
-  thumbnail   String?
-  hashtags    String?
+  id        String  @id @default(cuid())
+  artist    String
+  album     String
+  userId    String
+  genreId   String
+  thumbnail String?
+  hashtags  String?
 
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
   genre     Genre    @relation(fields: [genreId], references: [id])
+  attachments Media[]
+
 
   @@index([genreId])
-  
   @@map("vinyls")
 }
 
+model Media {
+  id      String    @id @default(cuid())
+  vinylId String? // user mighjt upload media but not save the new vinyl so it wont have a vinylId
+  vinyl   Vinyl?    @relation(fields: [vinylId], references: [id], onDelete: SetNull) // same as vinylId, setNull: if we delete  a vinyl we want to still be able to find its corresponding media to delete them
+  type    MediaType
+  url     String
+
+  createdAt DateTime @default(now())
+
+  @@map("vinyls_media")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
 model Genre {
-  id          String @id 
-  name        String
-  thumbnail   String
-  vinyls Vinyl[]
-  
+  id        String  @id
+  name      String
+  thumbnail String
+  vinyls    Vinyl[]
+
   @@map("genres")
 }
 

@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 import prisma from '@/lib/prisma'
-import { VinylCard } from '@/components/vinyls/VinylsCard'
 import { unstable_cache } from 'next/cache'
 import VinylsLoadingSkeleton from '@/components/vinyls/VinylsLoadingSkeleton'
+import { FeaturedVinylsCard } from '@/components/vinyls/FeaturedVinylsCard'
 
 const getRandomVinyls = unstable_cache(
   async () => {
@@ -18,20 +18,13 @@ const getRandomVinyls = unstable_cache(
         thumbnail: true,
         album: true,
         createdAt: true,
+        attachments: true,
         genre: {
           select: {
             id: true,
             name: true
           }
         },
-        user: {
-          select: {
-            id: true,
-            username : true,
-            displayName : true,
-            avatarUrl: true
-          }
-        }
       },
       orderBy: {
         createdAt: 'desc'
@@ -56,7 +49,7 @@ export default async function RandomVinylsPage() {
           <Suspense
             key={vinyl.id}
             fallback={ <VinylsLoadingSkeleton/> }>
-            <VinylCard vinyl={vinyl} />
+            <FeaturedVinylsCard vinyl={vinyl} />
           </Suspense>
         ))}
       </div>

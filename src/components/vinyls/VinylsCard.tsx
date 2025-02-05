@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,12 +22,19 @@ import { Badge } from "../ui/badge";
 //
 //   }
 
+export interface Attachment {
+  id: string;
+  url: string;
+  type: 'IMAGE' | 'VIDEO';
+}
+
 interface VinylProps {
   id: string;
   artist: string;
   thumbnail: string | null;
   createdAt: Date;
   album: string;
+  attachments: Attachment[];
   genre:{
     id: string;
     name: string;
@@ -44,11 +52,14 @@ interface VinylCardProps {
 }
 
 export function VinylCard({ vinyl }: VinylCardProps) {
+
+  const firstImageUrl = vinyl.attachments[0]?.type === 'IMAGE' ? vinyl.attachments[0].url : null;
+
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-square">
         <Image
-          src={vinyl.thumbnail || avatarPlaceholder}
+          src={firstImageUrl || avatarPlaceholder}
           alt={`${vinyl.album} by ${vinyl.artist}`}
           layout="fill"
           objectFit="cover"

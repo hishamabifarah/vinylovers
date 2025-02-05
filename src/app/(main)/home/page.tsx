@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TrendsSidebar from "@/components/TrendsSidebar";
 import ForYouFeed from "./ForYouFeed";
@@ -10,7 +9,6 @@ export default function Home() {
   return (
     <main className="flex w-full min-w-0 gap-5">
       <div className="w-full min-w-0 space-y-5">
-        {/* <PostEditor /> */}
         <Tabs defaultValue="discover">
           <TabsList>
             <TabsTrigger className="Button" value="discover">Discover</TabsTrigger>
@@ -31,9 +29,6 @@ export default function Home() {
           </TabsContent>
         </Tabs>
       </div>
-     
     </main>
   );
 }
-
-

@@ -1,360 +1,88 @@
-// "use client"
+// React Query:
+   /**  lib allaows to fetch data and cache it , revalidate it and allows infite loading
+    implement optimistc updates, ex: toggle like button immediality 
+    another ex: when we click follow for a user, their count automaticaly changes and the follow button everuwhere becomes 'unfollow'
+    cache feed: when we click on feed to fatch the data, it's cahched so it shows right away and at the same time
+    it goes ahead and refetches data in the background and updates in the background
+    when we add a new post and in order not to wait for the while feed to refresh we mutate the cache
+    */
 
-// import Image from "next/image";
-// import image1 from "@/assets/song-1.png";
-// import image2 from "@/assets/song-2.png";
-// import image3 from "@/assets/song-3.png";
-// import image4 from "@/assets/song-4.png";
-// import trend from "@/assets/trend.png";
-// import vinylimg from '@/assets/vinyl.jpg'
-// import { Heart } from "lucide-react";
-// import Sidebar from "@/components/navigation/Sidebar";
+// React 19 compiler is not used here, remember the learn it when it becomes part of nextjs15
 
-// export default function Page() {
-//   return (
-//     <div className="container grid w-full grid-cols-[1fr_4fr_2fr] bg-gradient-to-r from-[#050405] to-[#18181d]">
-       
-//        <Sidebar  />
-//       <main className="px-9 py-5">
-//         <header className="flex items-center justify-between">
-//           <div className="nav-links flex items-center gap-5">
-//             <button className="menu-btn" id="menu-open">
-//               <i className="bx bx-menu"></i>
-//             </button>
-//             <a href="#">Music</a>
-//             <a href="#">Live</a>
-//             <a href="#">Podcast</a>
-//           </div>
+//shadcn makes it easy to customize components because its code is in our project
 
-//           <div className="search">
-//             <i className="bx bx-search"></i>
-//             <input type="text" placeholder="Type here to search" />
-//           </div>
-//         </header>
+// when we install tailwindcss inteliisense we go to settings and search for file associations and '*.css' with value tailwind
+// that way adds tailwind support to css files so the extension works.
+// then go to settings editor quick suggestions and change strings value to 'on' because tailwind classes are strings and we get 
+// automatic autocomplete suggestions for tailwind classess
 
-//         <div className="trending mt-10 flex items-center justify-between text-white">
-//           <div className="left">
-//             <h5 className="font-[bold]">Trending New Song</h5>
-//             <div className="info mt-3 p-[26px]">
-//               <h2 className="mt-1 p-[10px] text-4xl">Lost Emotions</h2>
-//               <h5 className="mt-2 p-[10px] text-1xl text-[#919191]">63 Million Plays</h5>
-//               <div className="buttons flex items-center gap-4 mt-[30px]">
-//                 <button className="bg-primary text-white font-[bold] cursor-pointer px-4 py-3 rounded-[14px] border-[none]">Listen Now</button>
-//                 <Heart className="size-12 bg-primary text-xl p-2.5 rounded-[50%] border-2 border-solid border-black" />
-//               </div>
-//             </div>
-//           </div>
-//           <Image className="h-[100%] w-[45%] object-cover object-top rounded-lg" src={vinylimg} alt="" />
-//         </div>
+// to use prettier with tailwind we create file prettier.config.js in root folder, 
+// then in settings > editor : default formatter we choose prettier     
+// then we add the string  "prettier" to .eslintrc.json which makes sure eslint works with prettier
 
-//         <div className="playlist mt-3.5 flex gap-5">
-//           <div className="music-list w-full rounded-md bg-[#202026] p-5 text-white">
-//             <div className="header flex items-center justify-between mb-[30px]">
-//               <h5>Top Songs</h5>
-//               <a href="#">See all</a>
-//             </div>
+// code in root layout.tsx:
+// template %s will display the page title we are one then " | bugbook "
+// default should be in the title object 
 
-//             <div className="items">
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image1} alt="" />
-//                   <div className="details">
-//                     <h5>Sunrise</h5>
-//                     <p>Lila Rivera</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">03:45</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image2} alt="" />
-//                   <div className="details">
-//                     <h5>Voyage</h5>
-//                     <p>Tyde br/ennnan</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">04:35</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image3} alt="" />
-//                   <div className="details">
-//                     <h5>br/eeze</h5>
-//                     <p>Sola Kim</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">04:22</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image4} alt="" />
-//                   <div className="details">
-//                     <h5>Twilight</h5>
-//                     <p>Jett Lawsonn</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">03:17</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </main>
+//client side router does not cache pages anymore by deault like it used in nextjs versions <15
+// when we navigated between different pages they are stored in client side cache for 30 seconds
+// this makes pages load faster and we need this in this project cause most of data does not need to update on each navigation
+// so we override the new default in nextjs15 so we can use this mechanism in our project
+// to enable this caching again: next.config.mjs file in experimental object.
 
-//       <div className="right-section hidden md:block">
-//         <div className="profile">
-//           <i className="bx bxs-bell"></i>
-//           <i className="bx bxs-cog"></i>
-//           <div className="user">
-//             <div className="left">{/* <img src="assets/profile.png"> */}</div>
-//             <div className="right">
-//               <h5>Jhon Doe</h5>
-//             </div>
-//           </div>
-//         </div>
+/** Setup database and prisma */
+ // create new postgres db on vercel
+ // setup prisma in the root of our project : npx prisma init , create .env file and prisma folder
+ // take env.local code from vercel db and paste it in env file
+ // take prisma code from vercel and put it in schema.prisma (replace datasource db )
+ // add  previewFeatures = ["fullTextSearch"] to schema.prismafile
+ // create new file to interact with prisma database, inside lib folder , prisma.ts
+ // the code inside in the file is from prisma doc : https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
 
-//         <div className="music-player">
-//           <div className="top-section">
-//             <div className="header">
-//               <h5>Player</h5>
-//               <i className="bx bxs-playlist"></i>
-//             </div>
-//             <div className="song-info">
-//               {/* <img src="assets/player.png"> */}
-//               <div className="description">
-//                 <h3>Ripple Echoes</h3>
-//                 <h5>Kael Fischer</h5>
-//                 <p>Best of 2024</p>
-//               </div>
-//               <div className="progress">
-//                 <p>02:45</p>
-//                 <div className="active-line"></div>
-//                 <div className="deactive-line"></div>
-//                 <p>01:02</p>
-//               </div>
-//             </div>
-//           </div>
+/** auth with lucia */
+// auth needs 2 tables, user and session, lucia is session based not jwt based like next auth which has both
+// after we create our models we : npx prisma db push to sync tables with db (any time we change in db we have to run this comment)
+// next we set up an auth.ts file as per lucia docs (notes in file)
 
-//           <div className="player-actions">
-//             <div className="buttons">
-//               <i className="bx bx-repeat"></i>
-//               <i className="bx bx-first-page"></i>
-//               <i className="bx bxs-right-arrow play-button"></i>
-//               <i className="bx bx-last-page"></i>
-//               <i className="bx bx-transfer-alt"></i>
-//             </div>
-//             <div className="lyrics">
-//               <i className="bx bx-chevron-up"></i>
-//               <h5>LYRICS</h5>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+// Zod validation can be used on front and backend
 
-// -------------------------------------------------------------------
+// add serverExternalPackages: ["@node-rs/argon2"], to next.config.js as per lucia docs it needs this package to work
+
+//page.tsx inside signup is a server componenet rendered on the server thats why we can set metadata
+// we create the SignupForm in another file with "use client" which makes it a client component, beacuse we need javascript
+
+// npx prisma studio opens a window with all models and data in them to browse.
 
 
-// "use client"
+/** Setup dark/light theme */
+// import { ThemeProvider } from "next-themes" in main layout
+// wrap main layout with ThemeProvider:
+/**       <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider> */
+//
 
-// import Image from "next/image";
-// import image1 from "@/assets/song-1.png";
-// import image2 from "@/assets/song-2.png";
-// import image3 from "@/assets/song-3.png";
-// import image4 from "@/assets/song-4.png";
-// import trend from "@/assets/trend.png";
-// import vinylimg from '@/assets/vinyl.jpg'
-// import { Heart } from "lucide-react";
-// import Sidebar from "@/components/navigation/Sidebar";
+/** ReactQuery */
+// caches data, revalidate data when it's state , 
+// avoid race conditions when using useEffect to fetch data (https://medium.com/@ak.akki907/understanding-and-avoiding-race-conditions-in-node-js-applications-fb80ba79d793) 
+// easy to implement inifinite loading and optimistic updates
+// responsible for server state only
+// runs on the client only , we have to setup server endpoints we can make requests to to fetch the pages
 
-// export default function Page() {
-//   return (
-//     <div className="container grid w-full grid-cols-[1fr_4fr_2fr] bg-gradient-to-r from-[#050405] to-[#18181d]">
-       
-//        <Sidebar  />
-//       <main className="px-9 py-5">
-//         <header className="flex items-center justify-between">
-//           <div className="nav-links flex items-center gap-5">
-//             <button className="menu-btn" id="menu-open">
-//               <i className="bx bx-menu"></i>
-//             </button>
-//             <a href="#">Music</a>
-//             <a href="#">Live</a>
-//             <a href="#">Podcast</a>
-//           </div>
+// if we have a contextprovider we need the children because this is a contextprovider that we wrap around components
 
-//           <div className="search">
-//             <i className="bx bx-search"></i>
-//             <input type="text" placeholder="Type here to search" />
-//           </div>
-//         </header>
 
-//         <div className="trending mt-10 flex items-center justify-between text-white">
-//           <div className="left">
-//             <h5 className="font-[bold]">Trending New Song</h5>
-//             <div className="info mt-3 p-[26px]">
-//               <h2 className="mt-1 p-[10px] text-4xl">Lost Emotions</h2>
-//               <h5 className="mt-2 p-[10px] text-1xl text-[#919191]">63 Million Plays</h5>
-//               <div className="buttons flex items-center gap-4 mt-[30px]">
-//                 <button className="bg-primary text-white font-[bold] cursor-pointer px-4 py-3 rounded-[14px] border-[none]">Listen Now</button>
-//                 <Heart className="size-12 bg-primary text-xl p-2.5 rounded-[50%] border-2 border-solid border-black" />
-//               </div>
-//             </div>
-//           </div>
-//           <Image className="h-[100%] w-[45%] object-cover object-top rounded-lg" src={vinylimg} alt="" />
-//         </div>
-
-//         <div className="playlist mt-3.5 flex gap-5">
-//           <div className="music-list w-full rounded-md bg-[#202026] p-5 text-white">
-//             <div className="header flex items-center justify-between mb-[30px]">
-//               <h5>Top Songs</h5>
-//               <a href="#">See all</a>
-//             </div>
-
-//             <div className="items">
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image1} alt="" />
-//                   <div className="details">
-//                     <h5>Sunrise</h5>
-//                     <p>Lila Rivera</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">03:45</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image2} alt="" />
-//                   <div className="details">
-//                     <h5>Voyage</h5>
-//                     <p>Tyde br/ennnan</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">04:35</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image3} alt="" />
-//                   <div className="details">
-//                     <h5>br/eeze</h5>
-//                     <p>Sola Kim</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">04:22</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//               <div className="item flex items-center justify-between mb-5">
-//                 <div className="info flex items-center gap-5">
-//                   <Image className="h-[50px] w-[50px] object-cover object-top rounded-lg" src={image4} alt="" />
-//                   <div className="details">
-//                     <h5>Twilight</h5>
-//                     <p>Jett Lawsonn</p>
-//                   </div>
-//                 </div>
-//                 <div className="actions flex items-center gap-1">
-//                   <p className="text-[13px] font-[bold]">03:17</p>
-//                   <div className="icon">
-//                     <i className="bx bxs-right-arrow"></i>
-//                   </div>
-//                   <i className="bx bxs-plus-square"></i>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </main>
-
-//       <div className="right-section hidden md:block">
-//         <div className="profile">
-//           <i className="bx bxs-bell"></i>
-//           <i className="bx bxs-cog"></i>
-//           <div className="user">
-//             <div className="left">{/* <img src="assets/profile.png"> */}</div>
-//             <div className="right">
-//               <h5>Jhon Doe</h5>
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className="music-player">
-//           <div className="top-section">
-//             <div className="header">
-//               <h5>Player</h5>
-//               <i className="bx bxs-playlist"></i>
-//             </div>
-//             <div className="song-info">
-//               {/* <img src="assets/player.png"> */}
-//               <div className="description">
-//                 <h3>Ripple Echoes</h3>
-//                 <h5>Kael Fischer</h5>
-//                 <p>Best of 2024</p>
-//               </div>
-//               <div className="progress">
-//                 <p>02:45</p>
-//                 <div className="active-line"></div>
-//                 <div className="deactive-line"></div>
-//                 <p>01:02</p>
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="player-actions">
-//             <div className="buttons">
-//               <i className="bx bx-repeat"></i>
-//               <i className="bx bx-first-page"></i>
-//               <i className="bx bxs-right-arrow play-button"></i>
-//               <i className="bx bx-last-page"></i>
-//               <i className="bx bx-transfer-alt"></i>
-//             </div>
-//             <div className="lyrics">
-//               <i className="bx bx-chevron-up"></i>
-//               <h5>LYRICS</h5>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
+// queryFn: kyInstance.get("/api/posts/for-you").json<PostData[]>,
+// below code can be replaced with queryFn above using ky :
+// queryFn: async () => {
+//   const res = await fetch("/api/posts/for-you");
+//   if (!res.ok) {
+//     throw Error(`Request failed with status code ${res.status}`);
+//   }
+//   return res.json();
+// },

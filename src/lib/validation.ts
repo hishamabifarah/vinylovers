@@ -6,7 +6,8 @@ export const newVinylSchema = z.object({
   artist: requiredString,
   album: requiredString,
   genreId: requiredString,
-  hashtags: z.string().optional()
+  hashtags: z.string().optional(),
+  mediaIds: z.array(z.string()).max(5,"cannot have more than 5 attachments")
   // subgenre : z.string().optional(),
   // year: z.string().max(4).min(1,"Required"),
   // notes: z.string().optional(),
