@@ -61,15 +61,37 @@ export const fileRouter = {
         return {};
       })
       .onUploadComplete(async ({ file }) => {
+        // const originalUrl = file.url;
+
+        // console.log('originalUrl', originalUrl);
+
+        // const media = await prisma.media.create({
+        //   data: {
+        //     url: file.url.replace(
+        //       "/f/",
+        //       `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
+        //     ),
+        //     type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
+        //   },
+        // });
+
+        const originalUrl = file.url
+
+        // Transform the URL to the correct format based on environment
+        const transformedUrl =
+          process.env.NODE_ENV === "production"
+            ? originalUrl // Keep the original URL in production
+            : originalUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+  
+        // Create the media record with the appropriate URL
         const media = await prisma.media.create({
           data: {
-            url: file.url.replace(
-              "/f/",
-              `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
-            ),
+            url: transformedUrl,
             type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
           },
-        });
+        })
+  
+        return { mediaId: media.id }
   
         return { mediaId: media.id }; // return mediaId to the frontend for each upload
       }),

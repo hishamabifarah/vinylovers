@@ -26,3 +26,17 @@ export function formatRelativeDate(from: Date) {
     }
   }
 }
+
+export function getMediaUrl(url: string): string {
+  if (!url) return ""
+
+  // If we're in production, ensure we're using the correct format
+  if (process.env.NODE_ENV === "production") {
+    // If the URL contains /a/{appId}, transform it to the correct format
+    if (url.includes(`/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}`)) {
+      return url.replace(`/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`, "/f/")
+    }
+  }
+
+  return url
+}
