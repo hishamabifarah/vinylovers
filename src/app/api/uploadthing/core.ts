@@ -80,7 +80,7 @@ export const fileRouter = {
         // Transform the URL to the correct format based on environment
         const transformedUrl =
           process.env.NODE_ENV === "production"
-            ? originalUrl // Keep the original URL in production
+            ? originalUrl.replace("f90wrdja4t.ufs.sh", `utfs.io`)
             : originalUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
   
         // Create the media record with the appropriate URL

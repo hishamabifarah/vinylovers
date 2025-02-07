@@ -15,11 +15,17 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "f90wrdja4t.ufs.sh/",
-        pathname: `/f/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/*`,
+        hostname: "f90wrdja4t.ufs.sh",
+        pathname: "/**",
+      },
+      {
+        // This will match any subdomain of ufs.sh
+        protocol: "https",
+        hostname: "*.ufs.sh",
+        pathname: "/**",
       },
     ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
