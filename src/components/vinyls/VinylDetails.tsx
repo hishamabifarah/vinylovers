@@ -3,10 +3,8 @@ import { MediaGallery } from "./MediaGallery"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Bookmark, Share2, Heart, CalendarCheck, Music } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import UserAvatar from "../UserAvatar";
-import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import { formatRelativeDate } from "@/lib/utils";
 
 export interface Attachment {
