@@ -59,6 +59,27 @@ export function getVinylDataInclude(loggedInUserId: string) {
       select: getUserDataSelect(loggedInUserId),
     },
     attachments:true,
+    likes: {
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
+    bookmarks:{
+      where: {
+        userId: loggedInUserId,
+      },
+      select: {
+        userId: true,
+      },
+    },
+    _count: {
+      select: {
+        likes: true,
+      },
+    },
     genre: {
       select: {
         id: true,
@@ -123,5 +144,14 @@ export const vinylDataInclude = {
 export interface FollowerInfo {
   followers: number;
   isFollowedByUser: boolean;
+}
+
+export interface LikeInfo {
+  likes: number;
+  isLikedByUser: boolean;
+}
+
+export interface BookmarkInfo {
+  isBookmarkedByUser: boolean;
 }
 

@@ -3,13 +3,7 @@
 import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Bookmark,
-  Share2,
-  Heart,
-  CalendarCheck,
-  Music
-} from "lucide-react";
+import { Bookmark, Share2, Heart, CalendarCheck, Music } from "lucide-react";
 import { formatRelativeDate } from "@/lib/utils";
 import { UserData, VinylData, VinylFeaturedData } from "@/lib/types";
 import Link from "next/link";
@@ -25,7 +19,7 @@ import { Badge } from "../ui/badge";
 export interface Attachment {
   id: string;
   url: string;
-  type: 'IMAGE' | 'VIDEO';
+  type: "IMAGE" | "VIDEO";
 }
 
 interface VinylProps {
@@ -35,10 +29,10 @@ interface VinylProps {
   createdAt: Date;
   album: string;
   attachments: Attachment[];
-  genre:{
+  genre: {
     id: string;
     name: string;
-  },
+  };
   user: {
     username: string;
     avatarUrl: string | null;
@@ -52,10 +46,10 @@ interface VinylCardProps {
 }
 
 export function VinylCard({ vinyl }: VinylCardProps) {
+  const firstImageUrl =
+    vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
 
-  const firstImageUrl = vinyl.attachments[0]?.type === 'IMAGE' ? vinyl.attachments[0].url : null;
-
-  console.log('firstImageUrl' , firstImageUrl)
+  console.log("firstImageUrl", firstImageUrl);
 
   return (
     <Card className="overflow-hidden">
@@ -63,8 +57,8 @@ export function VinylCard({ vinyl }: VinylCardProps) {
         <Image
           src={firstImageUrl || avatarPlaceholder}
           alt={`${vinyl.album} by ${vinyl.artist}`}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{objectFit:"cover"}}
         />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-1 sm:p-2">
           <h3 className="truncate text-xs font-semibold text-white sm:text-sm">
@@ -87,14 +81,17 @@ export function VinylCard({ vinyl }: VinylCardProps) {
             </Link>
           </div>
           <p className="mt-0.5 flex text-xs text-muted-foreground sm:mt-1">
-            <CalendarCheck className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-            {formatRelativeDate(vinyl.createdAt)}
+          <CalendarCheck className="mr-1 h-3 w-3 sm:h-4 sm:w-4" suppressHydrationWarning />
+            <Link href={`/vinyls/${vinyl.id}`}>
+    
+              {formatRelativeDate(vinyl.createdAt)}
+            </Link>
           </p>
         </div>
       </CardContent>
       <CardFooter className="flex justify-between p-1 sm:p-2">
         <div className="flex justify-start">
-        <Badge
+          <Badge
             key={vinyl.genre.id}
             variant="secondary"
             className="flex items-center space-x-1"
@@ -102,7 +99,6 @@ export function VinylCard({ vinyl }: VinylCardProps) {
             <Music className="h-3 w-3" />
             <Link href={`/vinyls/genres/${vinyl.genre.id}`}>
               <span>{vinyl.genre.name}</span>
-              
             </Link>
           </Badge>
         </div>

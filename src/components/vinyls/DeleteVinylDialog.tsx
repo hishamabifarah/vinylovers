@@ -1,4 +1,4 @@
-import { PostData, VinylData } from "@/lib/types";
+import { VinylData } from "@/lib/types";
 import LoadingButton from "../LoadingButton";
 import { Button } from "../ui/button";
 import {
@@ -34,9 +34,9 @@ export default function DeleteVinylDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete post?</DialogTitle>
+          <DialogTitle>Delete vinyl?</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this post? This action cannot be
+            Are you sure you want to delete this Vinyl? This action cannot be
             undone.
           </DialogDescription>
         </DialogHeader>

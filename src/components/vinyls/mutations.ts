@@ -39,10 +39,10 @@ export function useDeleteVinylMutation() {
         },
       );
       toast({
-        description: "Post deleted",
+        description: "Vinyl deleted",
       });
 
-      if (pathname === `/posts/${deletedVinyl.id}`) {
+      if (pathname === `/vinyls/${deletedVinyl.id}`) {
         router.push(`/users/${deletedVinyl.user.username}`);
       }
     },

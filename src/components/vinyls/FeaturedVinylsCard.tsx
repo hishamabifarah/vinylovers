@@ -35,8 +35,8 @@ export function FeaturedVinylsCard({ vinyl }: VinylCardProps) {
         <Image
           src={firstImageUrl || avatarPlaceholder}
           alt={`${vinyl.album} by ${vinyl.artist}`}
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{objectFit:"cover"}}
         />
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-1 sm:p-2">
           <h3 className="truncate text-xs font-semibold text-white sm:text-sm">

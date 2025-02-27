@@ -19,8 +19,8 @@ export function GenreCard({ genre }: GenreCardProps) {
             <Image
               src={genre.thumbnail}
               alt={`${genre.name} genre`}
-              layout="fill"
-              objectFit="cover"
+              style={{objectFit:"cover"}}
+              fill
             />
           </div>
           <div className="flex-grow min-w-0">

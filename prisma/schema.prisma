@@ -43,8 +43,10 @@ model User {
   sessions  Session[] // named sessions not session because one user might have multiple sessions
   vinyls    Vinyl[]
   posts     Post[]
-  following Follow[]  @relation("Following")
-  followers Follow[]  @relation("Followers")
+  following Follow[]   @relation("Following")
+  followers Follow[]   @relation("Followers")
+  likes     Like[]
+  bookmarks  Bookmark[]
 
   @@map("users") // rename table to users but model for each user is User
 }
@@ -80,11 +82,12 @@ model Vinyl {
   thumbnail String?
   hashtags  String?
 
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  genre     Genre    @relation(fields: [genreId], references: [id])
+  createdAt   DateTime   @default(now())
+  user        User       @relation(fields: [userId], references: [id])
+  genre       Genre      @relation(fields: [genreId], references: [id])
   attachments Media[]
-
+  likes       Like[]
+  bookmarks    Bookmark[]
 
   @@index([genreId])
   @@map("vinyls")
@@ -92,7 +95,7 @@ model Vinyl {
 
 model Media {
   id      String    @id @default(cuid())
-  vinylId String? // user mighjt upload media but not save the new vinyl so it wont have a vinylId
+  vinylId String? // user might upload media but not save the new vinyl so it wont have a vinylId
   vinyl   Vinyl?    @relation(fields: [vinylId], references: [id], onDelete: SetNull) // same as vinylId, setNull: if we delete  a vinyl we want to still be able to find its corresponding media to delete them
   type    MediaType
   url     String
@@ -100,6 +103,29 @@ model Media {
   createdAt DateTime @default(now())
 
   @@map("vinyls_media")
+}
+
+model Like {
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vinylId String
+  vinyl   Vinyl  @relation(fields: [vinylId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, vinylId]) // make sure each user like vinyl once
+  @@map("likes")
+}
+
+model Bookmark {
+  id      String  @id @default(cuid()) // unlike Like model, we need id here because we need cursor for loading more
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vinylId String
+  vinyl   Vinyl  @relation(fields: [vinylId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime   @default(now())
+
+  @@unique([userId, vinylId])
+  @@map("bookmarks")
 }
 
 enum MediaType {

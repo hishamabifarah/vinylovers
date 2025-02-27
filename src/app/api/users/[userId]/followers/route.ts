@@ -21,7 +21,7 @@ export async function GET(
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
-        followers: {
+        followers: { // retrieve the follow of loggedinuser
           where: {
             followerId: loggedInUser.id,
           },
@@ -65,7 +65,9 @@ export async function POST(
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await prisma.follow.upsert({ // ignores if follow exists, create throws an error, better to use upsert cause of uniqe constraint in Follow model (  @@unique([followerId, followingId]))
+    // ignores if follow exists, create throws an error, better to use upsert cause of uniqe constraint in Follow model 
+    // ( @@unique([followerId, followingId]))
+    await prisma.follow.upsert({ 
       where: {
         followerId_followingId: {
           followerId: loggedInUser.id,
@@ -76,7 +78,7 @@ export async function POST(
         followerId: loggedInUser.id,
         followingId: userId,
       },
-      update: {}, // because upsert we have to add update , because upset is add and update
+      update: {}, // because upsert we have to add update , because upsert is add and update
     });
 
     return new Response();
