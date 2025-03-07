@@ -4,7 +4,6 @@ import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
 import Vinyl from "@/components/vinyls/Vinyl";
 import { VinylCard } from "@/components/vinyls/VinylsCard";
 import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
-// import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -52,7 +51,7 @@ export default function ForYouFeed() {
   if (status === "error") {
     return (
       <p className="text-center text-destructive">
-        An error occurred while loading posts.
+        An error occurred while loading vinyls.
       </p>
     );
   }

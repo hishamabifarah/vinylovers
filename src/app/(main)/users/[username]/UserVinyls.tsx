@@ -50,7 +50,7 @@ export default function UserVinyls ({ userId }: UserPostsProps) {
   if (status === "error") {
     return (
       <p className="text-center text-destructive">
-        An error occurred while loading posts.
+        An error occurred while loading vinyls.
       </p>
     );
   }

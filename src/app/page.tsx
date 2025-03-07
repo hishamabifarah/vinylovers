@@ -1,4 +1,4 @@
-"use client";
+
 
 import NavbarHome from "@/components/navigation/NavbarHome";
 

@@ -49,8 +49,6 @@ export function VinylCard({ vinyl }: VinylCardProps) {
   const firstImageUrl =
     vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
 
-  console.log("firstImageUrl", firstImageUrl);
-
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-square">
