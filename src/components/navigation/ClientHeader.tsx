@@ -129,22 +129,19 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="inset-0 z-20 bg-custom-black bg-opacity-90 md:hidden">
-          <div className="flex h-full flex-col items-center justify-center">
+          <div className="flex h-full flex-col items-center justify-center py-4 px-4">
             {/* <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Discover
             </button>
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Genres
             </button> */}
-            <button className="py-4 text-xl text-white" onClick={toggleMenu}>
-              Log In
-            </button>
-            <button
-              className="mt-4 bg-white px-8 py-4 text-xl text-black hover:bg-gray-200"
-              onClick={toggleMenu}
-            >
-              SIGN UP
-            </button>
+              <Button onClick={() => router.push('/login')} className=" bg-white text-black hover:bg-gray-200 md:inline-flex mb-4">
+                LOG IN
+              </Button>
+            <Button onClick={() => router.push('/signup')} className=" bg-white text-black hover:bg-gray-200 md:inline-flex">
+                SIGN UP
+              </Button>
           </div>
         </div>
       )}
