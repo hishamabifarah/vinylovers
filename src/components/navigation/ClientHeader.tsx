@@ -166,11 +166,11 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
           <div className="flex flex-col items-center gap-8 md:flex-row">
             <div className="md:w-1/2">
               <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-                Explore Top Music Powered by your Scrobbles
+              Share Your Music, Connect with Vinyl Lovers
               </h1>
               <p className="mb-4 text-lg text-gray-300">
-                We bring together your favourite music services and join up
-                listening, watching and sharing to connect your musical world.
+              Join a vibrant community where you can showcase your record collection, discover new music, 
+              and connect with people who share your passion for vinyl.
               </p>
               <Button className="bg-red-600 text-white hover:bg-red-700" type="button" onClick={() => router.push('/home')}>
               Start Exploring
