@@ -166,7 +166,7 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
         </div>
 
         {/* Navigation buttons */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-30">
+        {/* <div className="absolute left-4 top-1/2 -translate-y-1/2 z-30">
           <button
             type="button"
             onClick={scrollPrev}
@@ -175,9 +175,9 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-        </div>
+        </div> */}
 
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30">
+        {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30">
           <button
             type="button"
             onClick={scrollNext}
@@ -186,7 +186,7 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
           >
             <ChevronRight className="h-6 w-6" />
           </button>
-        </div>
+        </div> */}
 
         {/* Slide indicators */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
