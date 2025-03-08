@@ -9,7 +9,7 @@ import Logo from '@/assets/logo192.png'
 import { Button } from "@/components/ui/button"
 import Footer from "./Footer"
 import { VinylCarousel } from "../vinyls/carousel/VinylsCarousel"
-
+import { useRouter } from 'next/navigation'
 
  interface VinylWithDetails {
   id: string
@@ -36,19 +36,20 @@ interface ClientHeaderProps {
 
 
 export function ClientHeader({ vinyls }: ClientHeaderProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setIsMounted(true)
+    setIsMounted(true);
   }, [])
 
   const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev)
+    setIsMenuOpen((prev) => !prev);
   }
 
   const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId)
+    const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' })
     }
@@ -72,13 +73,13 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
                 className="mt-2 h-12 w-12 p-2"
               />
               <Link
-                href="/home"
+                href="/"
                 className="mt-1 text-2xl font-bold text-primary"
               >
                 Vinylovers{" "}
               </Link>
             </div>
-            <div className="hidden items-center space-x-4 md:flex">
+            {/* <div className="hidden items-center space-x-4 md:flex">
               <Button
                 variant="ghost"
                 className="text-gray-300 hover:text-white"
@@ -94,19 +95,19 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
               >
                 <Link href="/vinyls/genres">
                   Genres
-                  {/* <span className="hidden lg:inline">Bookmarks</span> */}
                 </Link>
               </Button>
-            </div>
+            </div> */}
 
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
-                className="hidden text-gray-300 hover:text-white md:inline-flex"
+                className="hidden text-white-300  md:inline-flex"
+                onClick={() => router.push('/login')}
               >
                 Log In
               </Button>
-              <Button className="hidden bg-white text-black hover:bg-gray-200 md:inline-flex">
+              <Button onClick={() => router.push('/signup')} className="hidden bg-white text-black hover:bg-gray-200 md:inline-flex">
                 SIGN UP
               </Button>
               <button
@@ -129,12 +130,12 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
       {isMenuOpen && (
         <div className="inset-0 z-20 bg-custom-black bg-opacity-90 md:hidden">
           <div className="flex h-full flex-col items-center justify-center">
-            <button className="py-4 text-xl text-white" onClick={toggleMenu}>
+            {/* <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Discover
             </button>
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Genres
-            </button>
+            </button> */}
             <button className="py-4 text-xl text-white" onClick={toggleMenu}>
               Log In
             </button>
@@ -174,8 +175,8 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
                 We bring together your favourite music services and join up
                 listening, watching and sharing to connect your musical world.
               </p>
-              <Button className="mt-6 bg-primary text-white hover:bg-red-700">
-                Start Exploring
+              <Button className="bg-red-600 text-white hover:bg-red-700" type="button" onClick={() => router.push('/home')}>
+              Start Exploring
               </Button>
             </div>
           </div>
@@ -228,31 +229,19 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
       {/* CTA Section */}
       <section id="cta-section" className="bg-custom-black py-20 text-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center gap-8 md:flex-row">
-            <div className="md:w-1/2">
+          <div className="">
+            <div className=" text-center">
               <h2 className="mb-6 text-3xl font-bold md:text-4xl">
                 Join the Vinylovers community
               </h2>
               <p className="mb-6 text-lg text-white">
                 Connect with music lovers, discover new artists, and keep track
-                of your listening habits. With Vinyloversyoull never miss a beat
-                in your musical journey.
+                of your record collection. <br/>
+                With Vinylovers, you can share your favorite records, explore others’ collections, 
+                <br/>and connect with like-minded people who share your passion for music.
               </p>
-              <Button className="bg-red-600 text-white hover:bg-red-700">
-                Sign Up Now
-              </Button>
-            </div>
-            <div className="md:w-1/2">
-              <h2 className="mb-6 text-3xl font-bold md:text-4xl">
-                Join the Vinylovers community
-              </h2>
-              <p className="mb-6 text-lg text-white">
-                Connect with music lovers, discover new artists, and keep track
-                of your listening habits. With Vinyloversyoull never miss a beat
-                in your musical journey.
-              </p>
-              <Button className="bg-red-600 text-white hover:bg-red-700">
-                Sign Up Now
+              <Button className="bg-red-600 text-white hover:bg-red-700" type="button" onClick={() => router.push('/signup')}>
+              Sign Up Now
               </Button>
             </div>
           </div>
