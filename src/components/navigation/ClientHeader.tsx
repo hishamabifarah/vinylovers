@@ -208,7 +208,6 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
               </p>
             </div>
             <section className="py-12">
-              <h1 className="text-4xl font-bold text-center mb-8 text-white">Featured Vinyls</h1>
               <VinylCarousel vinyls={vinyls} />
             </section>
           </div>
