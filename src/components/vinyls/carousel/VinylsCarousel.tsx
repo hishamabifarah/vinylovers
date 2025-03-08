@@ -34,7 +34,7 @@ interface VinylCarouselProps {
 export function VinylCarousel({ vinyls }: VinylCarouselProps) {
   // Carousel options - slow down the transitions
   const options: EmblaOptionsType = {
-    loop: false,
+    loop: true,
     align: "center",
     containScroll: false,
     dragFree: false,
@@ -88,14 +88,36 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
     return () => clearInterval(interval)
   }, [emblaApi, vinyls.length])
 
-  // Navigation functions
+  // Fixed navigation functions to ensure they move exactly one slide
   const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev()
-  }, [emblaApi])
+    if (!emblaApi) return
+
+    // Get the current index
+    const currentIndex = emblaApi.selectedScrollSnap()
+
+    // Calculate the previous index with loop handling
+    const prevIndex = currentIndex === 0 ? vinyls.length - 1 : currentIndex - 1
+
+    // Scroll directly to the previous index
+    emblaApi.scrollTo(prevIndex)
+
+    console.log(`Scrolling from ${currentIndex} to previous: ${prevIndex}`)
+  }, [emblaApi, vinyls.length])
 
   const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext()
-  }, [emblaApi])
+    if (!emblaApi) return
+
+    // Get the current index
+    const currentIndex = emblaApi.selectedScrollSnap()
+
+    // Calculate the next index with loop handling
+    const nextIndex = currentIndex === vinyls.length - 1 ? 0 : currentIndex + 1
+
+    // Scroll directly to the next index
+    emblaApi.scrollTo(nextIndex)
+
+    console.log(`Scrolling from ${currentIndex} to next: ${nextIndex}`)
+  }, [emblaApi, vinyls.length])
 
   // Handle empty state
   if (!vinyls.length) {
@@ -137,15 +159,6 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
                   <Badge variant="secondary" className="mb-2">
                     {vinyl.genre.name}
                   </Badge>
-                  {vinyl.hashtags && (
-                    <div className="flex flex-wrap justify-center gap-2 mt-2">
-                      {vinyl.hashtags.split(",").map((tag, index) => (
-                        <Badge key={index} variant="outline">
-                          {tag.trim()}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
