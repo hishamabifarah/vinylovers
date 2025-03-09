@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+// import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { EmblaOptionsType } from "embla-carousel"
 import useEmblaCarousel from "embla-carousel-react"
 
@@ -32,14 +32,15 @@ interface VinylCarouselProps {
 }
 
 export function VinylCarousel({ vinyls }: VinylCarouselProps) {
-  // Carousel options - slow down the transitions
+  // Carousel options - disable dragging/swiping
   const options: EmblaOptionsType = {
     loop: true,
     align: "center",
     containScroll: false,
     dragFree: false,
-    duration: 10, // Slower animation (higher number = slower)
+    duration: 5, // Slower animation
     slidesToScroll: 1,
+    watchDrag: false, // Disable dragging/swiping
   }
 
   // Set up Embla carousel
@@ -73,17 +74,24 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
     }
   }, [emblaApi, onSelect])
 
-  // Auto-slide functionality - much slower interval (10 seconds)
+  // Auto-slide functionality
   useEffect(() => {
     if (!emblaApi || vinyls.length <= 1) return
 
     const interval = setInterval(() => {
       if (emblaApi.canScrollNext()) {
-        emblaApi.scrollNext()
+        // Get the current index
+        const currentIndex = emblaApi.selectedScrollSnap()
+
+        // Calculate the next index with loop handling
+        const nextIndex = currentIndex === vinyls.length - 1 ? 0 : currentIndex + 1
+
+        // Scroll directly to the next index
+        emblaApi.scrollTo(nextIndex)
       } else {
         emblaApi.scrollTo(0)
       }
-    }, 10000) // 10 seconds between slides
+    }, 5000) // 10 seconds between slides
 
     return () => clearInterval(interval)
   }, [emblaApi, vinyls.length])
@@ -100,8 +108,6 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
 
     // Scroll directly to the previous index
     emblaApi.scrollTo(prevIndex)
-
-    console.log(`Scrolling from ${currentIndex} to previous: ${prevIndex}`)
   }, [emblaApi, vinyls.length])
 
   const scrollNext = useCallback(() => {
@@ -115,8 +121,6 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
 
     // Scroll directly to the next index
     emblaApi.scrollTo(nextIndex)
-
-    console.log(`Scrolling from ${currentIndex} to next: ${nextIndex}`)
   }, [emblaApi, vinyls.length])
 
   // Handle empty state
@@ -159,6 +163,15 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
                   <Badge variant="secondary" className="mb-2">
                     {vinyl.genre.name}
                   </Badge>
+                  {/* {vinyl.hashtags && (
+                    <div className="flex flex-wrap justify-center gap-2 mt-2">
+                      {vinyl.hashtags.split(",").map((tag, index) => (
+                        <Badge key={index} variant="outline">
+                          {tag.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  )} */}
                 </div>
               </div>
             ))}
@@ -175,9 +188,9 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
-        </div> */}
+        </div>
 
-        {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30">
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 z-30">
           <button
             type="button"
             onClick={scrollNext}

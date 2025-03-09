@@ -2,7 +2,6 @@
 import { validateRequest } from "@/auth";
 import FollowButton from "@/components/FollowButton";
 import FollowerCount from "@/components/FollowersCount";
-import TrendsSidebar from "@/components/TrendsSidebar";
 import UserAvatar from "@/components/UserAvatar";
 import prisma from "@/lib/prisma";
 import { FollowerInfo, getUserDataSelect, UserData } from "@/lib/types";
@@ -13,7 +12,6 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import UserVinyls from "./UserVinyls";
 import EditProfileButton from "./EditProfileButton";
-import { VinylShelf } from "@/components/VinylShelf";
 
 
 interface PageProps {
@@ -77,8 +75,6 @@ export default async function Page({ params: { username } }: PageProps) {
   }
 
   const user = await getUser(username, loggedInUser.id);
-  const vinyls = await getUserVinyls(user.id);
-
 
   return (
     <main className="flex w-full min-w-0 gap-5">
@@ -89,10 +85,8 @@ export default async function Page({ params: { username } }: PageProps) {
             {user.displayName}&apos;s vinyls
           </h2>
         </div>
-        <VinylShelf vinyls={vinyls} />
         <UserVinyls userId={user.id} />
       </div>
-  
     </main>
   );
 }

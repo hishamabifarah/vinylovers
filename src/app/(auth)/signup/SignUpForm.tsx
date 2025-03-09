@@ -82,7 +82,7 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-        <LoadingButton loading={isPending} type="submit" className="w-full">
+        <LoadingButton loading={isPending} type="submit" className="w-full text-white">
           Create account
         </LoadingButton>
       </form>

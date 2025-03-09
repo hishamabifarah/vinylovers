@@ -53,7 +53,7 @@ export default function ResetPasswordEmailForm() {
             </FormItem>
           )}
         />
-        <LoadingButton loading={isPending} type="submit" className="w-full">
+        <LoadingButton loading={isPending} type="submit" className="w-full text-white">
           Reset Password
         </LoadingButton>
       </form>
