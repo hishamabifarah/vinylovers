@@ -14,6 +14,7 @@ import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import { Badge } from "../ui/badge";
 import { MediaGallery } from "./MediaGallery";
 import LikeButton from "./LikeButton";
+import BookmarkButton from "./BookmarkButton";
 
 interface PostProps {
   vinyl: VinylData;
@@ -90,21 +91,14 @@ export default function Vinyl({ vinyl }: PostProps) {
                       ),
                     }}
                   />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <MessageCircle className="mr-1 h-4 w-4" />
-                    {/* {comments} */}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    <Share2 className="h-4 w-4" />
-                  </Button>
+                  <BookmarkButton
+                    vinylId={vinyl.id}
+                    initialState={{
+                      isBookmarkedByUser: vinyl.bookmarks.some(
+                        (bookmark) => bookmark.userId === user?.id,
+                      ),
+                    }}
+                  />
                   {vinyl.user.id === user?.id && (
                     <VinylMoreButton
                       vinyl={vinyl}

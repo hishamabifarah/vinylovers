@@ -37,10 +37,10 @@ export default async function Page({ params: { genreId } }: PageProps) {
   const genre = await getGenre(genreId);
     return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Vinyls labelled {genre.name}</h2>
-    <div className="">
-      <GenreVinyls genreId={genreId} />
+      <h1 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Vinyls labelled {genre.name}</h1>
+        <div className="">
+          <GenreVinyls genreId={genreId} />
+        </div>
     </div>
-  </div>
   );
 }

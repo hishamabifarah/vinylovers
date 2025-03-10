@@ -1,4 +1,3 @@
-
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { getVinylDataInclude, VinylsPage } from "@/lib/types";
@@ -8,7 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
 
-    const pageSize = 10;
+    const pageSize = 8;
 
     const { user } = await validateRequest();
 

@@ -1,19 +1,15 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
+import Vinyl from "@/components/vinyls/Vinyl";
 import { VinylCard } from "@/components/vinyls/VinylsCard";
 import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
-// import PostsLoadingSkeleton from "@/components/posts/PostsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { VinylsPage } from "@/lib/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 
-interface GenreVinylsProps {
-  genreId: string;
-}
-
-export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
+export default function Bookmarks() {
   const {
     data,
     fetchNextPage,
@@ -22,11 +18,11 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["genre-feed", genreId],
+    queryKey: ["vinylfeed", "bookmarks"],
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
-          `/api/genres/${genreId}`,
+          "/api/vinyls/bookmarked",
           pageParam ? { searchParams: { cursor: pageParam } } : {},
         )
         .json<VinylsPage>(),
@@ -38,29 +34,27 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
 
   if (status === "pending") {
     return <VinylsLoadingSkeleton />;
-  
   }
 
   if (status === "success" && !vinyls.length && !hasNextPage) {
     return (
       <p className="text-center text-muted-foreground">
-        No Vinyls with this genre have been added yet!
+        You don&apos;t have any bookmarks yet.
       </p>
     );
   }
 
   if (status === "error") {
-    console.log('status', status)
     return (
       <p className="text-center text-destructive">
-        An error occurred while loading vinyls.
+        An error occurred while loading bookmarks.
       </p>
     );
   }
 
   return (
     <InfiniteScrollContainer
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (

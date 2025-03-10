@@ -166,7 +166,7 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
           <div className="flex flex-col items-center gap-8 md:flex-row">
             <div className="md:w-1/2">
               <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-              Share Your Music, Connect with Vinyl Lovers
+              Share Your Music,<br/> Connect with Vinyl Lovers
               </h1>
               <p className="mb-4 text-lg text-gray-300">
               Join a vibrant community where you can showcase your record collection, discover new music, 

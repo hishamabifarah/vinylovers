@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { getVinylDataInclude, VinylsPage } from "@/lib/types";
+import { getVinylGenreDataInclude, VinylsGenrePage, VinylsPage } from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -12,23 +12,23 @@ export async function GET(
 
     const pageSize = 8;
 
-    const { user } = await validateRequest();
+    // const { user } = await validateRequest();
 
-    if (!user) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    // if (!user) {
+    //   return Response.json({ error: "Unauthorized" }, { status: 401 });
+    // }
 
     const vinyls = await prisma.vinyl.findMany({
-      include: getVinylDataInclude(user.id),
+      include: getVinylGenreDataInclude(),
       where: { genreId: genreId },
       orderBy: { createdAt: "desc" },
-      take: pageSize + 1, // get 11 because we need the last id of the post for next ten posts request
+      take: pageSize + 1, // get 9 because we need the last id of the vinyl for next ten vinyls request
       cursor: cursor ? { id: cursor } : undefined,
     });
 
-    const nextCursor = vinyls.length > pageSize ? vinyls[pageSize].id : null; // return id of last post if size > posts.length, else null
+    const nextCursor = vinyls.length > pageSize ? vinyls[pageSize].id : null; // return id of last vinyl if size > vinyls.length, else null
 
-    const data: VinylsPage = {
+    const data: VinylsGenrePage = {
       vinyls: vinyls.slice(0, pageSize), // return the pageSize only , we remove the 11th
       nextCursor,
     };

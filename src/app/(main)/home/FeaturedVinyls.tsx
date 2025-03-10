@@ -40,9 +40,9 @@ export default async function RandomVinylsPage() {
 
   return (
     <div className="mt-4 lg:col-span-2">
-      <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+      <h1 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
         Featured Vinyls
-      </h2>
+      </h1>
       <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4">
         {randomVinyls.map((vinyl) => (

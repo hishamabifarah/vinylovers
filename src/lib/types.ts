@@ -1,10 +1,8 @@
 import { Prisma } from "@prisma/client";
 
-
 export type UserData = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserDataSelect>;
 }>;
-
 
 export function getUserDataVinylSelect() {
   return {
@@ -51,6 +49,31 @@ export function getPostDataInclude(loggedInUserId: string) {
       select: getUserDataSelect(loggedInUserId),
     },
   } satisfies Prisma.PostInclude;
+}
+
+
+
+export function getVinylGenreDataInclude() {
+  return {
+    user: true,
+    attachments:true,
+    likes: {
+      select: {
+        userId: true,
+      },
+    },
+    _count: {
+      select: {
+        likes: true,
+      },
+    },
+    genre: {
+      select: {
+        id: true,
+        name: true
+      }
+    },
+  } satisfies Prisma.VinylInclude;
 }
 
 export function getVinylDataInclude(loggedInUserId: string) {
@@ -105,6 +128,10 @@ export type VinylData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylDataInclude>;
 }>;
 
+export type VinylGenreData = Prisma.VinylGetPayload<{
+  include: ReturnType<typeof getVinylGenreDataInclude>;
+}>;
+
 export type VinylFeaturedData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylFeaturedDataInclude>;
 }>;
@@ -117,6 +144,11 @@ export interface PostsPage {
 
 export interface VinylsPage {
   vinyls: VinylData[];
+  nextCursor: string | null;
+}
+
+export interface VinylsGenrePage {
+  vinyls: VinylGenreData[];
   nextCursor: string | null;
 }
 
