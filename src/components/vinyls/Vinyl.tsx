@@ -7,8 +7,6 @@ import VinylMoreButton from "./VinylMoreButton";
 import { useSession } from "@/app/(main)/SessionProvider";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Bookmark, Share2, Heart, MessageCircle } from "lucide-react";
 import { VinylData } from "@/lib/types";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import { Badge } from "../ui/badge";

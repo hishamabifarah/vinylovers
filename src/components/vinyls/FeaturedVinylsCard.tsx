@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
+import Link from "next/link";
 
 export interface Attachment {
   id: string;
@@ -32,12 +33,15 @@ export function FeaturedVinylsCard({ vinyl }: VinylCardProps) {
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-square">
+        <Link href={`/vinyls/${vinyl.id}`}>
         <Image
+        className="transition-transform duration-300 hover:scale-105"
           src={firstImageUrl || avatarPlaceholder}
           alt={`${vinyl.album} by ${vinyl.artist}`}
           fill
           style={{objectFit:"cover"}}
         />
+        </Link>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-1 sm:p-2">
           <h3 className="truncate text-xs font-semibold text-white sm:text-sm">
             {vinyl.album}
