@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { CalendarCheck, Music } from "lucide-react";
 import { formatRelativeDate } from "@/lib/utils";
-import { UserData, VinylData, VinylFeaturedData } from "@/lib/types";
+import { VinylData } from "@/lib/types";
 import Link from "next/link";
 import UserAvatar from "../UserAvatar";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
@@ -110,33 +110,36 @@ export function VinylCard({ vinyl }: PostProps) {
             </Link>
           </Badge>
         </div>
-        <div className="flex justify-end">
-          <div className="flex space-x-2">
-            <LikeButton
-              vinylId={vinyl.id}
-              initialState={{
-                likes: vinyl._count.likes,
-                isLikedByUser: vinyl.likes.some(
-                  (like) => like.userId === user?.id,
-                ),
-              }}
-            />
-            <BookmarkButton
-              vinylId={vinyl.id}
-              initialState={{
-                isBookmarkedByUser: vinyl.bookmarks.some(
-                  (bookmark) => bookmark.userId === user?.id,
-                ),
-              }}
-            />
-            {/* {vinyl.user.id === user?.id && (
-              <VinylMoreButton
-                vinyl={vinyl}
-                className="h-4 w-4 text-muted-foreground hover:text-foreground"
+
+        {user && (
+          <div className="flex justify-end">
+            <div className="flex space-x-2">
+              <LikeButton
+                vinylId={vinyl.id}
+                initialState={{
+                  likes: vinyl._count.likes,
+                  isLikedByUser: vinyl.likes.some(
+                    (like) => like.userId === user?.id,
+                  ),
+                }}
               />
-            )} */}
+              <BookmarkButton
+                vinylId={vinyl.id}
+                initialState={{
+                  isBookmarkedByUser: vinyl.bookmarks?.some(
+                    (bookmark) => bookmark.userId === user?.id,
+                  ),
+                }}
+              />
+              {/* {vinyl.user.id === user?.id && (
+            <VinylMoreButton
+              vinyl={vinyl}
+              className="h-4 w-4 text-muted-foreground hover:text-foreground"
+            />
+          )} */}
+            </div>
           </div>
-        </div>
+        )}
       </CardFooter>
     </Card>
   );
