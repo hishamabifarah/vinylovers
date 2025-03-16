@@ -38,7 +38,7 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
     align: "center",
     containScroll: false,
     dragFree: false,
-    duration: 5, // Slower animation
+    duration: 7, // Slower animation
     slidesToScroll: 1,
     watchDrag: false, // Disable dragging/swiping
   }

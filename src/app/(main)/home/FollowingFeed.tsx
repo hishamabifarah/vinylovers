@@ -53,7 +53,7 @@ export default function FollowingFeed() {
 
   return (
     <InfiniteScrollContainer
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4"
+      className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-4"
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       {vinyls.map((vinyl) => (

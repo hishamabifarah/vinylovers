@@ -44,7 +44,7 @@ export default async function RandomVinylsPage() {
         Featured Vinyls
       </h1>
       <div className=" mx-auto  py-8">
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {randomVinyls.map((vinyl) => (
           <Suspense
             key={vinyl.id}

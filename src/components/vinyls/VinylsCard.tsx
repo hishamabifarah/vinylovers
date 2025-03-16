@@ -13,40 +13,6 @@ import { useSession } from "@/app/(main)/SessionProvider";
 import BookmarkButton from "./BookmarkButton";
 import LikeButton from "./LikeButton";
 
-// interface VinylProps {
-//     vinyl: VinylFeaturedData;
-//
-//   }
-
-export interface Attachment {
-  id: string;
-  url: string;
-  type: "IMAGE" | "VIDEO";
-}
-
-interface VinylProps {
-  id: string;
-  artist: string;
-  thumbnail: string | null;
-  createdAt: Date;
-  album: string;
-  attachments: Attachment[];
-  genre: {
-    id: string;
-    name: string;
-  };
-  user: {
-    username: string;
-    avatarUrl: string | null;
-    displayName: string;
-    id: string;
-  };
-}
-
-interface VinylCardProps {
-  vinyl: VinylProps;
-}
-
 
 interface PostProps {
   vinyl: VinylData;
@@ -75,7 +41,7 @@ export function VinylCard({ vinyl }: PostProps) {
           <p className="truncate text-xs text-gray-300">{vinyl.artist}</p>
         </div>
       </div>
-      <CardContent className="p-1 sm:p-2">
+      <CardContent className="p-2 sm:p-2">
         <div className="flex flex-col">
           <div className="mb-2 flex items-center space-x-1 sm:space-x-2">
             <UserAvatar
@@ -88,7 +54,7 @@ export function VinylCard({ vinyl }: PostProps) {
               </span>
             </Link>
           </div>
-          <p className="mt-0.5 flex text-xs text-muted-foreground sm:mt-1">
+          <p className="mt-0.75 flex text-xs text-muted-foreground sm:mt-1 pl-1">
             <CalendarCheck className="mr-1 h-3 w-3 sm:h-4 sm:w-4" suppressHydrationWarning />
             <Link href={`/vinyls/${vinyl.id}`}>
 
@@ -97,7 +63,7 @@ export function VinylCard({ vinyl }: PostProps) {
           </p>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between p-1 sm:p-2">
+      <CardFooter className="flex justify-between p-2 sm:p-2">
         <div className="flex justify-start">
           <Badge
             key={vinyl.genre.id}

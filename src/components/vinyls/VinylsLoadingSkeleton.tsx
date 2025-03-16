@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 export default function VinylsLoadingSkeleton() {
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
       <VinylLoadingSkeleton />
       <VinylLoadingSkeleton />
       <VinylLoadingSkeleton />
