@@ -80,7 +80,19 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
   return (
     <div className="relative w-full h-[600px] overflow-hidden bg-black">
       {/* Background image */}
-      <div
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={backgroundImage}
+          alt="Background"
+          fill
+          className="object-cover opacity-30"
+          quality={60}
+          priority={false}
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
+      </div>
+      {/* <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{
           backgroundImage: `url(${backgroundImage})`,
@@ -90,7 +102,7 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-      </div>
+      </div> */}
 
       <div className="relative z-10 container mx-auto h-full flex flex-col justify-center">
         {/* Carousel */}
