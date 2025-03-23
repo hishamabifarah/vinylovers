@@ -38,14 +38,20 @@ export const fileRouter = {
         `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`,
       );
 
+      
+      const transformedUrl =
+      process.env.NODE_ENV === "production"
+        ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/f/", `utfs.io/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+        : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+
       await prisma.user.update({
         where: { id: metadata.user.id },
         data: {
-          avatarUrl: newAvatarUrl,
+          avatarUrl: transformedUrl,
         },
       });
 
-      return { avatarUrl: newAvatarUrl }; // return new avatarurl to the frontend to upddate cache of feeds immediatly
+      return { avatarUrl: transformedUrl }; // return new avatarurl to the frontend to upddate cache of feeds immediatly
     }),
 
     // vinyl media upload
