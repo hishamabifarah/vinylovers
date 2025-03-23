@@ -46,7 +46,11 @@ model User {
   following Follow[]   @relation("Following")
   followers Follow[]   @relation("Followers")
   likes     Like[]
-  bookmarks  Bookmark[]
+  bookmarks Bookmark[]
+   comments    Comment[]
+
+  receivedNotifications Notification[] @relation("Recipient")
+  issuedNotifications   Notification[] @relation("Issuer")
 
   @@map("users") // rename table to users but model for each user is User
 }
@@ -87,7 +91,10 @@ model Vinyl {
   genre       Genre      @relation(fields: [genreId], references: [id])
   attachments Media[]
   likes       Like[]
-  bookmarks    Bookmark[]
+  bookmarks   Bookmark[]
+  comments    Comment[]
+
+  linkedNotifications Notification[]
 
   @@index([genreId])
   @@map("vinyls")
@@ -105,6 +112,20 @@ model Media {
   @@map("vinyls_media")
 }
 
+model Comment {
+  id      String @id @default(cuid())
+  content String
+  userId  String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vinylId  String
+  vinyl    Vinyl   @relation(fields: [vinylId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("comments")
+}
+
+
 model Like {
   userId  String
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -116,16 +137,38 @@ model Like {
 }
 
 model Bookmark {
-  id      String  @id @default(cuid()) // unlike Like model, we need id here because we need cursor for loading more
+  id      String @id @default(cuid()) // unlike Like model, we need id here because we need cursor for loading more
   userId  String
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   vinylId String
   vinyl   Vinyl  @relation(fields: [vinylId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime   @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([userId, vinylId])
   @@map("bookmarks")
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String
+  recipient   User             @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  issuerId    String
+  issuer      User             @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+  vinylId     String?
+  vinyl       Vinyl?           @relation(fields: [vinylId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  read        Boolean          @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  LIKE
+  FOLLOW
+  COMMENT
 }
 
 enum MediaType {

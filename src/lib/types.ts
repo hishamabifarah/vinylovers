@@ -101,6 +101,7 @@ export function getVinylDataInclude(loggedInUserId: string) {
     _count: {
       select: {
         likes: true,
+        comments: true
       },
     },
     genre: {
@@ -118,6 +119,49 @@ export function getVinylFeaturedDataInclude() {
       select: getUserDataVinylSelect(),
     },
   } satisfies Prisma.VinylInclude;
+}
+
+export const notificationsInclude = {
+  issuer: {
+    select: {
+      username: true,
+      displayName: true,
+      avatarUrl: true,
+    },
+  },
+  vinyl: {
+    select: {
+      artist: true,
+      album: true
+    },
+  },
+} satisfies Prisma.NotificationInclude;
+
+export type NotificationData = Prisma.NotificationGetPayload<{
+  include: typeof notificationsInclude;
+}>;
+
+export interface NotificationsPage {
+  notifications: NotificationData[];
+  nextCursor: string | null;
+}
+
+export function getCommentDataInclude(loggedInUserId: string) {
+  return {
+    user: {
+      select: getUserDataSelect(loggedInUserId),
+    },
+  } satisfies Prisma.CommentInclude;
+}
+
+export type CommentData = Prisma.CommentGetPayload<{
+  include: ReturnType<typeof getCommentDataInclude>;
+}>;
+
+export interface CommentsPage {
+  comments: CommentData[];
+  commentsCount: number;
+  previousCursor: string | null; // comments are navigated backwards
 }
 
 export type PostData = Prisma.PostGetPayload<{
@@ -152,7 +196,6 @@ export interface VinylsGenrePage {
   nextCursor: string | null;
 }
 
-
 export const userDataSelect = {
   id: true,
   username: true,
@@ -183,7 +226,15 @@ export interface LikeInfo {
   isLikedByUser: boolean;
 }
 
+export interface CommentsInfo {
+  comments: number;
+}
+
 export interface BookmarkInfo {
   isBookmarkedByUser: boolean;
+}
+
+export interface NotificationCountInfo {
+  unreadCount: number;
 }
 

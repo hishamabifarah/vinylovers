@@ -1,18 +1,21 @@
-"use client";
+'use client'
 
-import { formatRelativeDate } from "@/lib/utils";
-import Link from "next/link";
-import UserAvatar from "../UserAvatar";
-import VinylMoreButton from "./VinylMoreButton";
+import { useState } from "react";
 import { useSession } from "@/app/(main)/SessionProvider";
-import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
 import { VinylData } from "@/lib/types";
-import avatarPlaceholder from "@/assets/avatar-placeholder.png";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "../ui/badge";
 import { MediaGallery } from "./MediaGallery";
 import LikeButton from "./LikeButton";
 import BookmarkButton from "./BookmarkButton";
+import Comments from "../comments/Comments";
+import UserAvatar from "../UserAvatar";
+import VinylMoreButton from "./VinylMoreButton";
+import { formatRelativeDate } from "@/lib/utils";
+import Link from "next/link";
+import Image from "next/image";
+import avatarPlaceholder from "@/assets/avatar-placeholder.png";
+import { MessageSquare } from "lucide-react";
 
 interface PostProps {
   vinyl: VinylData;
@@ -20,6 +23,8 @@ interface PostProps {
 
 export default function Vinyl({ vinyl }: PostProps) {
   const { user } = useSession();
+  const [showComments, setShowComments] = useState(false);
+  const [commentsCount, setCommentsCount] = useState(vinyl._count.comments);
 
   const firstImageUrl = vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
   const hashtags = vinyl.hashtags?.split(",").map((tag) => tag.trim());
@@ -53,8 +58,27 @@ export default function Vinyl({ vinyl }: PostProps) {
                   suppressHydrationWarning
                 >
                   {formatRelativeDate(vinyl.createdAt)}
+
+                  {/* Right side - Bookmark and More buttons */}
+                  <div className="flex gap-3 mt-5">
+                    <BookmarkButton
+                      vinylId={vinyl.id}
+                      initialState={{
+                        isBookmarkedByUser: vinyl.bookmarks.some(
+                          (bookmark) => bookmark.userId === user?.id,
+                        ),
+                      }}
+                    />
+                    {vinyl.user.id === user?.id && (
+                      <VinylMoreButton
+                        vinyl={vinyl}
+                        className="h-4 w-4 text-muted-foreground hover:text-foreground"
+                      />
+                    )}
+                  </div>
                 </span>
               </div>
+
               <Badge variant="secondary" className="mb-4 self-start">
                 {vinyl.genre.name}
               </Badge>
@@ -79,36 +103,34 @@ export default function Vinyl({ vinyl }: PostProps) {
                     {vinyl.user.username}
                   </span>
                 </div>
-                <div className="flex space-x-2">
-                  <LikeButton
-                    vinylId={vinyl.id}
-                    initialState={{
-                      likes: vinyl._count.likes,
-                      isLikedByUser: vinyl.likes.some(
-                        (like) => like.userId === user?.id,
-                      ),
-                    }}
-                  />
-                  <BookmarkButton
-                    vinylId={vinyl.id}
-                    initialState={{
-                      isBookmarkedByUser: vinyl.bookmarks.some(
-                        (bookmark) => bookmark.userId === user?.id,
-                      ),
-                    }}
-                  />
-                  {vinyl.user.id === user?.id && (
-                    <VinylMoreButton
-                      vinyl={vinyl}
-                      className="h-4 w-4 text-muted-foreground hover:text-foreground"
+                <div className="flex justify-between items-center mt-5">
+                  {/* Left side - Like and Comment buttons */}
+                  <div className="flex items-center gap-5">
+                    <LikeButton
+                      vinylId={vinyl.id}
+                      initialState={{
+                        likes: vinyl._count.likes,
+                        isLikedByUser: vinyl.likes.some(
+                          (like) => like.userId === user?.id,
+                        ),
+                      }}
                     />
-                  )}
+                    <CommentButton
+                      commentsCount={commentsCount}
+                      onClick={() => setShowComments(!showComments)}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {showComments && (
+        <Comments vinyl={vinyl} setCommentsCount={setCommentsCount} />
+      )}
+
       <div className="mt-5">
         {(images.length > 1 || videos.length > 0) && (
           <div className="space-y-4">
@@ -128,5 +150,22 @@ export default function Vinyl({ vinyl }: PostProps) {
         )}
       </div>
     </>
+  );
+}
+
+interface CommentButtonProps {
+  commentsCount: number;
+  onClick: () => void;
+}
+
+function CommentButton({ commentsCount, onClick }: CommentButtonProps) {
+  return (
+    <button onClick={onClick} className="flex items-center gap-2">
+      <MessageSquare className="size-5" />
+      <span className="text-sm font-medium tabular-nums">
+        {commentsCount}{" "}
+        {/* <span className="hidden sm:inline">comments</span> */}
+      </span>
+    </button>
   );
 }

@@ -40,6 +40,7 @@ export async function GET(
       likes: vinyl._count.likes, // number of likes
       isLikedByUser: !!vinyl.likes.length, 
     };
+    
     return Response.json(data);
   } catch (error) {
     console.error(error);
@@ -57,20 +58,44 @@ export async function POST(
     if (!loggedInUser) {
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
+    const vinyl = await prisma.vinyl.findUnique({
+      where: { id: vinylId },
+      select: {
+        userId: true,
+      },
+    });
 
-    await prisma.like.upsert({
-      where: {
-        userId_vinylId: {
+    if (!vinyl) {
+      return Response.json({ error: "Vinyl not found" }, { status: 404 });
+    }
+
+    await prisma.$transaction([
+      prisma.like.upsert({
+        where: {
+          userId_vinylId: {
+            userId: loggedInUser.id,
+            vinylId,
+          },
+        },
+        create: {
           userId: loggedInUser.id,
           vinylId,
         },
-      },
-      create: {
-        userId: loggedInUser.id,
-        vinylId,
-      },
-      update: {},
-    });
+        update: {},
+      }),
+      ...(loggedInUser.id !== vinyl.userId
+        ? [
+            prisma.notification.create({
+              data: {
+                issuerId: loggedInUser.id,
+                recipientId: vinyl.userId,
+                vinylId,
+                type: "LIKE",
+              },
+            }),
+          ]
+        : []),
+    ]);
 
     return new Response();
   } catch (error) {
@@ -90,12 +115,32 @@ export async function DELETE(
       return Response.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await prisma.like.deleteMany({
-      where: {
-        userId: loggedInUser.id,
-        vinylId,
+    const vinyl = await prisma.vinyl.findUnique({
+      where: { id: vinylId },
+      select: {
+        userId: true,
       },
     });
+
+    if (!vinyl) {
+      return Response.json({ error: "Vinyl not found" }, { status: 404 });
+    }
+    await prisma.$transaction([
+      prisma.like.deleteMany({
+        where: {
+          userId: loggedInUser.id,
+          vinylId,
+        },
+      }),
+      prisma.notification.deleteMany({
+        where: {
+          issuerId: loggedInUser.id,
+          recipientId: vinyl.userId,
+          vinylId,
+          type: "LIKE",
+        },
+      }),
+    ]);
 
     return new Response();
   } catch (error) {

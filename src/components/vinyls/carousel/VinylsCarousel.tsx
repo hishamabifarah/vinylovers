@@ -131,7 +131,7 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
 
 
         {/* Slide indicators */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-4">
           {vinyls.map((_, index) => (
             <button
               key={index}

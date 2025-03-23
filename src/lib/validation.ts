@@ -44,6 +44,10 @@ export const updateUserProfileSchema = z.object({
   displayName: requiredString,
   bio: z.string().max(1000, "Must be at most 1000 characters").optional(),
 });
+
+export const createCommentSchema = z.object({
+  content: requiredString,
+});
   
 
 // generate schemas to work with it in our frontend
