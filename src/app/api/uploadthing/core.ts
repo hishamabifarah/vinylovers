@@ -41,7 +41,7 @@ export const fileRouter = {
       
       const transformedUrl =
       process.env.NODE_ENV === "production"
-        ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+        ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
         : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
 
 
