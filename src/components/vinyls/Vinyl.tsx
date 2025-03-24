@@ -23,7 +23,7 @@ interface PostProps {
 
 export default function Vinyl({ vinyl }: PostProps) {
   const { user } = useSession();
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(vinyl._count.comments);
 
   const firstImageUrl = vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
