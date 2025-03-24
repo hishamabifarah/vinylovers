@@ -33,7 +33,7 @@ export default function VinylMoreButton({
           <DropdownMenuItem onClick={() => setShowDeleteDialog(true)}>
             <span className="flex items-center gap-3 text-destructive">
               <Trash2 className="size-4" />
-              Delete
+              <span className="text-primary">Delete</span>
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>

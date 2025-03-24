@@ -124,7 +124,7 @@ export default function EditProfileDialog({
               )}
             />
             <DialogFooter>
-              <LoadingButton type="submit" loading={mutation.isPending}>
+              <LoadingButton type="submit" loading={mutation.isPending} className="text-white">
                 Save
               </LoadingButton>
             </DialogFooter>

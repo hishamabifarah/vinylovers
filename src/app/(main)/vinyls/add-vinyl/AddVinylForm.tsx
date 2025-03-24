@@ -193,7 +193,7 @@ const AddVinylForm: React.FC<AddVinylFormProps> = React.memo(({ genres }) => {
         )}
 
         <div>
-          <LoadingButton loading={mutation.isPending} type="submit" disabled={isUploading} className="w-full">
+          <LoadingButton loading={mutation.isPending} type="submit" disabled={isUploading} className="w-full text-white">
             Add Vinyl
           </LoadingButton>
         </div>

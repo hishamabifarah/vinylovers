@@ -1,7 +1,6 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
-import PostsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 import kyInstance from "@/lib/ky";
 import { NotificationsPage } from "@/lib/types";
 import {
@@ -12,7 +11,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import Notification from "./Notification";
-import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
+import  NotificationsLoadingSkeleton from "@/components/NotificationsLoadingSkeleton";
 
 export default function Notifications() {
   const {
@@ -56,7 +55,7 @@ export default function Notifications() {
   const notifications = data?.pages.flatMap((page) => page.notifications) || [];
 
   if (status === "pending") {
-    return <VinylsLoadingSkeleton />;
+    return <NotificationsLoadingSkeleton />;
   }
 
   if (status === "success" && !notifications.length && !hasNextPage) {

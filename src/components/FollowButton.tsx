@@ -56,9 +56,13 @@ export default function FollowButton({
   });
 
   return (
-    <Button className="text-white"
+    <Button
       variant={data.isFollowedByUser ? "secondary" : "default"}
       onClick={() => mutate()}
+      className={data.isFollowedByUser
+        ? ""
+        : "dark:text-white" // White text only in dark mode for the Follow button
+      }
     >
       {data.isFollowedByUser ? "Unfollow" : "Follow"}
     </Button>
