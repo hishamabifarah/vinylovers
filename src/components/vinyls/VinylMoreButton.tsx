@@ -1,5 +1,5 @@
 import { VinylData } from "@/lib/types";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { MoreHorizontal, Trash2 , Edit2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import DeleteVinylDialog from "./DeleteVinylDialog";
+import { useRouter } from "next/navigation";
 
 interface PostMoreButtonProps {
   vinyl: VinylData;
@@ -19,7 +20,9 @@ export default function VinylMoreButton({
   vinyl,
   className,
 }: PostMoreButtonProps) {
+  
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -34,6 +37,12 @@ export default function VinylMoreButton({
             <span className="flex items-center gap-3 text-destructive">
               <Trash2 className="size-4" />
               <span className="text-primary">Delete</span>
+            </span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`/vinyls/edit-vinyl/${vinyl.id}`)}>
+            <span className="flex items-center gap-3">
+              <Edit2 className="size-4" />
+              <span className="">Edit</span>
             </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
