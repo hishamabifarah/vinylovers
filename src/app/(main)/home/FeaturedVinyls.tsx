@@ -32,9 +32,11 @@ const getRandomVinyls = unstable_cache(
     })
   },
   ["vinyl-featured"],
-  { revalidate: 600 } // 10 minutes in seconds
+  { 
+    revalidate: 600, 
+    tags: ['vinyl-featured'] // Add tags
+  }
 )
-
 export default async function RandomVinylsPage() {
   const randomVinyls = await getRandomVinyls()
 

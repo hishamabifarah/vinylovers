@@ -75,9 +75,13 @@ export default async function EditVinylPage({ params }: PageProps) {
     const genres = await getGenres();
 
     return (
-        <div className="container py-8">
-            <h1 className="text-2xl font-bold mb-6">Edit Vinyl</h1>
-            <EditVinylForm vinylId={params.vinylId} vinyl={vinyl} genres={genres} />
-        </div>
+        <main className="flex h-screen p-1 w-full">
+            <div className="flex h-full max-h-[40rem]  w-full overflow-hidden rounded-2xl bg-card shadow-2xl">
+                <div className="w-full space-y-10 overflow-y-auto p-4">
+                    <h1 className="text-center text-3xl font-bold">Edit Vinyl</h1>
+                    <EditVinylForm vinylId={params.vinylId} vinyl={vinyl} genres={genres} />
+                </div>
+            </div>
+        </main>
     );
 }

@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { cn } from "@/lib/utils"
-import { ImageIcon, Loader2, X } from 'lucide-react'
+import { ImageIcon, Loader2, X } from "lucide-react"
 import Image from "next/image"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -16,9 +16,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { HashtagsInput } from "@/components/HashtagsInput"
 import useMediaUpload, { type Attachment } from "@/components/vinyls/useMediaUpload"
 import { useToast } from "@/components/ui/use-toast"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import kyInstance from "@/lib/ky"
-import { VinylData } from "@/lib/types"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { updateVinyl } from "@/components/vinyls/actions"
+import type { VinylData } from "@/lib/types"
+import { useUpdateVinyl } from "./mutations"
 
 const vinylSchema = z.object({
   id: z.string(),
@@ -38,73 +39,60 @@ interface Genre {
   vinylCount?: number
 }
 
-interface EditVinylFormProps {
-  vinylId: string
-  genres: Genre[]
-}
-
 interface AttachmentPreviewsProps {
   attachments: Attachment[]
   removeAttachment: (mediaId: string) => void
 }
 
-// Custom hook to fetch vinyl data
-// function useGetVinyl(vinylId: string) {
-//   const { user } = useSession()
-  
-//   return useQuery({
-//     queryKey: ["vinyl", vinylId],
-//     queryFn: async () => {
-//       if (!user) throw new Error("User not authenticated")
-//       return kyInstance.get(`/api/vinyls/${vinylId}`).json()
+// Custom hook for updating vinyl
+// function useUpdateVinyl() {
+//   const queryClient = useQueryClient()
+//   const { toast } = useToast()
+
+//   return useMutation({
+//     mutationFn: updateVinyl,
+//     onSuccess: (updatedVinyl, variables) => {
+//       queryClient.setQueryData(["vinyl", variables.id], updatedVinyl)
+
+//       queryClient.invalidateQueries({ queryKey: ["vinyl", variables.id] })
+//       queryClient.invalidateQueries({ queryKey: ["vinyls"] })
+//       queryClient.invalidateQueries({
+//         queryKey: ["vinyl-feed"],
+//         predicate(query) {
+//           return query.queryKey.includes("for-you") || query.queryKey.includes("user-vinyls")
+//         },
+//       })
+
+//       toast({
+//         title: "Vinyl updated",
+//         description: "Your vinyl has been updated successfully.",
+//       })
 //     },
-//     enabled: !!user && !!vinylId,
+//     onError: (error) => {
+//       console.error("Error updating vinyl:", error)
+//       toast({
+//         variant: "destructive",
+//         title: "Error",
+//         description: "Failed to update vinyl. Please try again.",
+//       })
+//     },
 //   })
 // }
 
-
-// Custom hook for updating vinyl
-function useUpdateVinyl() {
-  const queryClient = useQueryClient()
-  const { toast } = useToast()
-  
-  return useMutation({
-    mutationFn: async (values: EditVinylValues) => {
-      return kyInstance.put(`/api/vinyls/${values.id}/editvinyl`, { json: values }).json()
-    },
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["vinyl", variables.id] })
-      queryClient.invalidateQueries({ queryKey: ["vinyls"] })
-      toast({
-        title: "Vinyl updated",
-        description: "Your vinyl has been updated successfully.",
-      })
-    },
-    onError: (error) => {
-      console.error("Error updating vinyl:", error)
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update vinyl. Please try again.",
-      })
-    },
-  })
-}
-
 interface EditVinylFormProps {
-  vinyl: VinylData;  // Change from vinylId: string
-  genres: Genre[];
+  vinyl: VinylData
+  genres: Genre[]
 }
 
 const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres }) => {
   const router = useRouter()
   const updateMutation = useUpdateVinyl()
   const [existingAttachments, setExistingAttachments] = useState<any[]>(
-    vinyl.attachments.map(attachment => ({
+    vinyl.attachments.map((attachment) => ({
       id: attachment.id,
       url: attachment.url,
-      type: attachment.type
-    }))
+      type: attachment.type,
+    })),
   )
 
   const {
@@ -116,6 +104,8 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
     uploadProgress,
   } = useMediaUpload()
 
+  const { toast } = useToast()
+
   const form = useForm<EditVinylValues>({
     resolver: zodResolver(vinylSchema),
     defaultValues: {
@@ -124,32 +114,49 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
       album: vinyl.album,
       genreId: vinyl.genre.id,
       hashtags: vinyl.hashtags || "",
-      mediaIds: vinyl.attachments.map(a => a.id),
+      mediaIds: vinyl.attachments.map((a) => a.id),
     },
   })
 
   // Update mediaIds when attachments change
   useEffect(() => {
-    const newMediaIds = [
-      ...existingAttachments.map(a => a.id),
-      ...attachments.filter(a => a.mediaId).map(a => a.mediaId as string)
-    ]
-    form.setValue("mediaIds", newMediaIds)
+    // Ensure we don't exceed 5 total attachments
+    const existingIds = existingAttachments.map((a) => a.id)
+    const newIds = attachments.filter((a) => a.mediaId).map((a) => a.mediaId as string)
+
+    // Limit to 5 total attachments
+    const totalIds = [...existingIds, ...newIds].slice(0, 5)
+
+    form.setValue("mediaIds", totalIds)
   }, [attachments, existingAttachments, form])
 
   const onSubmit = useCallback(
     (values: EditVinylValues) => {
-      updateMutation.mutate(values, {
+      // Ensure mediaIds are up to date before submission and limited to 5
+      const existingIds = existingAttachments.map((a) => a.id)
+      const newIds = attachments.filter((a) => a.mediaId).map((a) => a.mediaId as string)
+
+      // Limit to 5 total attachments
+      const finalMediaIds = [...existingIds, ...newIds].slice(0, 5)
+
+      const finalValues = {
+        ...values,
+        mediaIds: finalMediaIds,
+      }
+
+      console.log("Submitting with mediaIds:", finalValues.mediaIds)
+
+      updateMutation.mutate(finalValues, {
         onSuccess: () => {
           router.push(`/vinyls/${vinyl.id}`)
         },
       })
     },
-    [updateMutation, vinyl.id, router],
+    [updateMutation, vinyl.id, router, existingAttachments, attachments],
   )
 
   const handleRemoveExistingAttachment = useCallback((id: string) => {
-    setExistingAttachments(prev => prev.filter(a => a.id !== id))
+    setExistingAttachments((prev) => prev.filter((a) => a.id !== id))
   }, [])
 
   const memoizedAttachments = useMemo(() => attachments, [attachments])
@@ -235,8 +242,21 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
                 <FormControl>
                   <div className="flex items-center space-x-2">
                     <AddAttachmentsButton
-                      onFilesSelected={startUpload}
-                      disabled={isUploading || (memoizedAttachments.length + memoizedExistingAttachments.length) >= 5}
+                      onFilesSelected={(files) => {
+                        const remainingSlots = 5 - memoizedExistingAttachments.length
+                        const filesToUpload = files.slice(0, remainingSlots)
+                        if (filesToUpload.length > 0) {
+                          startUpload(filesToUpload)
+                        }
+                        if (filesToUpload.length < files.length) {
+                          toast({
+                            title: "Too many files",
+                            description: `Only ${filesToUpload.length} out of ${files.length} files were added. Maximum total is 5 attachments.`,
+                            variant: "destructive",
+                          })
+                        }
+                      }}
+                      disabled={isUploading || memoizedExistingAttachments.length >= 5}
                     />
                     {isUploading && (
                       <div className="flex items-center space-x-2">
@@ -284,18 +304,13 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
         )}
 
         <div className="flex gap-4">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={() => router.back()}
-            className="flex-1"
-          >
+          <Button type="button" variant="outline" onClick={() => router.back()} className="flex-1">
             Cancel
           </Button>
-          <LoadingButton 
-            loading={updateMutation.isPending} 
-            type="submit" 
-            disabled={isUploading} 
+          <LoadingButton
+            loading={updateMutation.isPending}
+            type="submit"
+            disabled={isUploading}
             className="flex-1 text-white"
           >
             Update Vinyl
@@ -305,8 +320,6 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
     </Form>
   )
 })
-
-
 
 EditVinylForm.displayName = "EditVinylForm"
 
@@ -320,35 +333,33 @@ interface ExistingAttachmentPreviewProps {
   onRemoveClick: () => void
 }
 
-const ExistingAttachmentPreview = React.memo(
-  ({ attachment, onRemoveClick }: ExistingAttachmentPreviewProps) => {
-    const isImage = attachment.type === "IMAGE"
-    
-    return (
-      <div className="relative">
-        {isImage ? (
-          <Image
-            src={attachment.url || "/placeholder.svg"}
-            alt="Attachment preview"
-            width={500}
-            height={500}
-            className="w-full h-auto aspect-square object-cover rounded-lg"
-          />
-        ) : (
-          <video controls className="w-full h-auto aspect-square object-cover rounded-lg">
-            <source src={attachment.url} type="video/mp4" />
-          </video>
-        )}
-        <button
-          onClick={onRemoveClick}
-          className="absolute right-2 top-2 rounded-full bg-foreground p-1 text-background transition-colors hover:bg-foreground/60"
-        >
-          <X size={16} />
-        </button>
-      </div>
-    )
-  }
-)
+const ExistingAttachmentPreview = React.memo(({ attachment, onRemoveClick }: ExistingAttachmentPreviewProps) => {
+  const isImage = attachment.type === "IMAGE"
+
+  return (
+    <div className="relative">
+      {isImage ? (
+        <Image
+          src={attachment.url || "/placeholder.svg"}
+          alt="Attachment preview"
+          width={500}
+          height={500}
+          className="w-full h-auto aspect-square object-cover rounded-lg"
+        />
+      ) : (
+        <video controls className="w-full h-auto aspect-square object-cover rounded-lg">
+          <source src={attachment.url} type="video/mp4" />
+        </video>
+      )}
+      <button
+        onClick={onRemoveClick}
+        className="absolute right-2 top-2 rounded-full bg-foreground p-1 text-background transition-colors hover:bg-foreground/60"
+      >
+        <X size={16} />
+      </button>
+    </div>
+  )
+})
 
 ExistingAttachmentPreview.displayName = "ExistingAttachmentPreview"
 
@@ -455,3 +466,4 @@ const AttachmentPreview = React.memo(
 AttachmentPreview.displayName = "AttachmentPreview"
 
 export default EditVinylForm
+

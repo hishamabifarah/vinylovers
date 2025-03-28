@@ -1,6 +1,5 @@
 import { useToast } from "@/components/ui/use-toast";
 import { VinylsPage } from "@/lib/types";
-import { useSession } from "../../SessionProvider";
 
 import {
   InfiniteData,
