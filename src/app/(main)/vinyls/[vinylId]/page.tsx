@@ -82,7 +82,7 @@ async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
         <UserAvatar avatarUrl={user.avatarUrl} className="flex-none" />
         <h2 className="text-xl font-semibold">{user.displayName}</h2>
       </div>
-      <p className="text-sm text-gray-600">{user.bio}</p>
+      <p className="text-sm font-semibold">{user.bio}</p>
 
       {user.id !== loggedInUser.id && (
         <FollowButton

@@ -12,7 +12,6 @@ import { Badge } from "@/components/ui/badge"
 import { Music } from 'lucide-react'
 
 
-
 export default function TrendsSidebar() {
   return (
     <div className="sticky top-[5.25rem]  h-fit w-100 flex-none space-y-5 md:block lg:w-100">

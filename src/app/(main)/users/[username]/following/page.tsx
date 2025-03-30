@@ -57,8 +57,8 @@ export default async function Page({ params: { username } }: PageProps) {
   const user = await getUser(username, loggedInUser.id);
 
   return (
-    <UserFollowingList 
-      userId={user.id} 
+    <UserFollowingList
+      userId={user.id}
       currentUserId={loggedInUser.id} // Pass the logged-in user's ID
     />
   )
