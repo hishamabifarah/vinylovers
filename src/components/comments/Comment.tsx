@@ -14,36 +14,44 @@ export default function Comment({ comment }: CommentProps) {
   const { user } = useSession();
 
   return (
-    <div className="group/comment flex gap-3 py-3">
-      <span>
-        <UserTooltip user={comment.user}>
-          <Link href={`/users/${comment.user.username}`}>
-            <UserAvatar avatarUrl={comment.user.avatarUrl} size={40} />
-          </Link>
-        </UserTooltip>
+<div className="group/comment flex flex-wrap gap-3 py-3 relative">
+  {/* User avatar */}
+  <span className="flex-none">
+    <UserTooltip user={comment.user}>
+      <Link href={`/users/${comment.user.username}`}>
+        <UserAvatar avatarUrl={comment.user.avatarUrl} size={40} />
+      </Link>
+    </UserTooltip>
+  </span>
+  
+  {/* Comment content */}
+  <div className="flex-1 min-w-0">
+    {/* Username and date */}
+    <div className="flex flex-wrap items-center gap-1 text-sm">
+      <UserTooltip user={comment.user}>
+        <Link
+          href={`/users/${comment.user.username}`}
+          className="font-medium hover:underline"
+        >
+          {comment.user.displayName}
+        </Link>
+      </UserTooltip>
+      <span className="text-muted-foreground">
+        {formatRelativeDate(comment.createdAt)}
       </span>
-      <div>
-        <div className="flex items-center gap-1 text-sm">
-          <UserTooltip user={comment.user}>
-            <Link
-              href={`/users/${comment.user.username}`}
-              className="font-medium hover:underline"
-            >
-              {comment.user.displayName}
-            </Link>
-          </UserTooltip>
-          <span className="text-muted-foreground">
-            {formatRelativeDate(comment.createdAt)}
-          </span>
-        </div>
-        <div>{comment.content}</div>
-      </div>
-      {comment.user.id === user?.id && (
-        <CommentMoreButton
-          comment={comment}
-          className="ms-auto opacity-0 transition-opacity group-hover/comment:opacity-100"
-        />
-      )}
     </div>
+    
+    {/* Comment text */}
+    <div className="break-words">{comment.content}</div>
+  </div>
+  
+  {/* More button (only for user's own comments) */}
+  {comment.user.id === user?.id && (
+    <CommentMoreButton
+      comment={comment}
+      className="absolute top-3 right-1 sm:static sm:ms-auto opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover/comment:opacity-100"
+    />
+  )}
+</div>
   );
 }

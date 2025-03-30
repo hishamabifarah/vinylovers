@@ -1,52 +1,72 @@
-"use client"
+"use client";
 
-import InfiniteScrollContainer from "@/components/InfiniteScrollContainer"
-import FollowingLoadingSkeleton from "@/components/FollowingLoadingSkeleton"
-import kyInstance from "@/lib/ky"
-import type { FollowingPage } from "@/lib/types"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { Loader2 } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
-import FollowButton from "@/components/FollowButton"
-import { useSession } from "../../SessionProvider"
+import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
+import FollowingLoadingSkeleton from "@/components/FollowingLoadingSkeleton";
+import kyInstance from "@/lib/ky";
+import { FollowersPage } from "@/lib/types";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import FollowButton from "@/components/FollowButton";
+import { useSession } from "../../SessionProvider";
 
-
-interface UserFollowingListProps {
-  userId: string
+interface UserPostsProps {
+  userId: string;
   currentUserId?: string
 }
 
-export default function UserFollowingList({ userId, currentUserId }: UserFollowingListProps) {
-  // Get the current user from useSession
-  const { user } = useSession()
-  // const { user } = session || { user: null }
 
-  // Use the prop if available, otherwise fall back to the session user
-  const actualCurrentUserId = currentUserId || user?.id
+export default function UserFollowersList({ userId , currentUserId }: UserPostsProps) {
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
-    queryKey: ["following-feed", "user-following", userId],
+    // Get the current user from useSession
+    const { user } = useSession()
+    // const { user } = session || { user: null }
+  
+    // Use the prop if available, otherwise fall back to the session user
+    const actualCurrentUserId = currentUserId || user?.id
+
+    
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["followers-feed", "user-followers", userId],
     queryFn: ({ pageParam }) =>
       kyInstance
-        .get(`/api/users/${userId}/following-list`, pageParam ? { searchParams: { cursor: pageParam } } : {})
-        .json<FollowingPage>(),
+        .get(
+          `/api/users/${userId}/followers-user-list`,
+          pageParam ? { searchParams: { cursor: pageParam } } : {},
+        )
+        .json<FollowersPage>(),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
-  })
+  });
 
-  const following = data?.pages.flatMap((page) => page.following) || []
+  const followers = data?.pages.flatMap((page) => page.followers) || [];
 
   if (status === "pending") {
-    return <FollowingLoadingSkeleton />
+    return <FollowingLoadingSkeleton />;
   }
 
-  if (status === "success" && !following.length && !hasNextPage) {
-    return <p className="text-center text-muted-foreground">This user hasn&apos;t followed anyone yet</p>
+  if (status === "success" && !followers.length && !hasNextPage) {
+    return (
+      <p className="text-center text-muted-foreground">
+        This user doesn&apos;t have followers yet.
+      </p>
+    );
   }
 
   if (status === "error") {
-    return <p className="text-center text-destructive">An error occurred while loading following list.</p>
+    return (
+      <p className="text-center text-destructive">
+        An error occurred while loading followers list.
+      </p>
+    );
   }
 
   return (
@@ -56,7 +76,7 @@ export default function UserFollowingList({ userId, currentUserId }: UserFollowi
     >
       <div className="space-y-4">
         <h1 className="text-2xl font-bold">Following List</h1>
-        {following.map((user) => {
+        {followers.map((user) => {
           // This checks if the user in the list is the currently logged-in user
           const isCurrentLoggedInUser = actualCurrentUserId && String(user.id) === String(actualCurrentUserId)
 
@@ -103,4 +123,3 @@ export default function UserFollowingList({ userId, currentUserId }: UserFollowi
     </InfiniteScrollContainer>
   )
 }
-

@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { getVinylDataInclude, VinylsPage } from "@/lib/types";
+import { getVinylData, getVinylDataInclude, VinylsPage, VinylsSearchPage } from "@/lib/types";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -12,11 +12,11 @@ export async function GET(req: NextRequest) {
 
         const pageSize = 10;
 
-        const { user } = await validateRequest();
+        // const { user } = await validateRequest();
 
-        if (!user) {
-            return Response.json({ error: "Unauthorized" }, { status: 401 });
-        }
+        // if (!user) {
+        //     return Response.json({ error: "Unauthorized" }, { status: 401 });
+        // }
 
         // full text search postgresql
         const vinyls = await prisma.vinyl.findMany({
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
                     },
                 ],
             },
-            include: getVinylDataInclude(user.id),
+            include: getVinylData(),
             orderBy: { createdAt: "desc" },
             take: pageSize + 1,
             cursor: cursor ? { id: cursor } : undefined,
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
 
         const nextCursor = vinyls.length > pageSize ? vinyls[pageSize].id : null;
 
-        const data: VinylsPage = {
+        const data: VinylsSearchPage = {
             vinyls: vinyls.slice(0, pageSize),
             nextCursor,
         };

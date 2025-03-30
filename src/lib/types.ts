@@ -60,6 +60,8 @@ export function getPostDataInclude(loggedInUserId: string) {
   } satisfies Prisma.PostInclude;
 }
 
+
+
 export function getVinylGenreDataInclude() {
   return {
     user: true,
@@ -80,6 +82,29 @@ export function getVinylGenreDataInclude() {
         name: true
       }
     },
+  } satisfies Prisma.VinylInclude;
+}
+
+export function getVinylData() {
+  return {
+    user: {
+      select: getUserDataVinylSelect(),
+    },
+    attachments:true,
+    _count: {
+      select: {
+        likes: true,
+        comments: true
+      },
+    },
+    genre: {
+      select: {
+        id: true,
+        name: true
+      }
+    },
+    likes: true,
+    bookmarks: true,
   } satisfies Prisma.VinylInclude;
 }
 
@@ -179,6 +204,10 @@ export type VinylData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylDataInclude>;
 }>;
 
+export type VinySearchlData = Prisma.VinylGetPayload<{
+  include: ReturnType<typeof getVinylData>;
+}>;
+
 export type FollowingData = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserDataSelect>;
 }>;
@@ -192,7 +221,6 @@ export type VinylFeaturedData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylFeaturedDataInclude>;
 }>;
 
-
 export interface PostsPage {
   posts: PostData[];
   nextCursor: string | null;
@@ -200,6 +228,11 @@ export interface PostsPage {
 
 export interface VinylsPage {
   vinyls: VinylData[];
+  nextCursor: string | null;
+}
+
+export interface VinylsSearchPage {
+  vinyls: VinySearchlData[];
   nextCursor: string | null;
 }
 

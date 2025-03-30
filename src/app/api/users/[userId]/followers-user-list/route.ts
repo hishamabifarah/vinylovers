@@ -31,7 +31,6 @@ export async function GET(
 
     // If user not found or has no followers, return empty result
     if (!followerCount || followerCount._count.followers === 0) {
-      console.log("No followers found for user:", userId)
       return Response.json({
         followers: [],
         nextCursor: null,
@@ -62,7 +61,6 @@ export async function GET(
 
     // Double check that we actually have results
     if (followRelationships.length === 0) {
-      console.log("No follow relationships found despite count > 0")
       return Response.json({
         followers: [],
         nextCursor: null,
@@ -91,9 +89,6 @@ export async function GET(
         id: "asc", // Maintain the same order as the IDs
       },
     })
-
-    console.log("Fetched follower users:", followerUsers.length)
-    console.log("Next cursor:", nextCursor)
 
     const data: FollowersPage = {
       followers: followerUsers,

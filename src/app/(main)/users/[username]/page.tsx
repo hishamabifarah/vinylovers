@@ -14,6 +14,7 @@ import UserVinyls from "./UserVinyls";
 import EditProfileButton from "./EditProfileButton";
 import FollowingCount from "@/components/FollowingCount";
 import FollowersCount from "@/components/FollowersCount";
+import CountFollowers from "@/components/CountFollowers";
 
 
 interface PageProps {
@@ -102,7 +103,7 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
     // ),
   };
 
-  const followersInfo: FollowersInfo = {
+  const InfoFollowers: FollowersInfo = {
     followers: user._count.followers,
     username: user.username,
     // isFollowedByUser: user.followers.some(
@@ -132,10 +133,9 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
               </span>
             </span>
 
-            <FollowerCount userId={user.id} initialState={followerInfo} />
+            <CountFollowers userId={user.id} initialState={InfoFollowers} />
 
-
-            {/* <FollowersCount userId={user.id} initialState={followersInfo} /> */}
+            {/* <FollowerCount userId={user.id} initialState={followerInfo} /> */}
 
             <FollowingCount userId={user.id} initialState={followingInfo} />
           </div>

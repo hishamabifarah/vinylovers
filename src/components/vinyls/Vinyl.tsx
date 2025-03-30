@@ -15,13 +15,15 @@ import { formatRelativeDate } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
-import { MessageSquare } from "lucide-react";
+import { Heart, MessageSquare } from "lucide-react";
+import { Button } from "../ui/button";
 
 interface PostProps {
   vinyl: VinylData;
 }
 
 export default function Vinyl({ vinyl }: PostProps) {
+
   const { user } = useSession();
   const [showComments, setShowComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(vinyl._count.comments);
@@ -60,61 +62,81 @@ export default function Vinyl({ vinyl }: PostProps) {
                   {formatRelativeDate(vinyl.createdAt)}
 
                   {/* Right side - Bookmark and More buttons */}
-                  <div className="flex gap-3 mt-5">
-                    <BookmarkButton
-                      vinylId={vinyl.id}
-                      initialState={{
-                        isBookmarkedByUser: vinyl.bookmarks.some(
-                          (bookmark) => bookmark.userId === user?.id,
-                        ),
-                      }}
-                    />
-                    {vinyl.user.id === user?.id && (
-                      <VinylMoreButton
-                        vinyl={vinyl}
-                        className="h-4 w-4 text-muted-foreground hover:text-foreground"
+
+                  {user?.id && (
+                    <div className="flex gap-3 mt-5">
+                      <BookmarkButton
+                        vinylId={vinyl.id}
+                        initialState={{
+                          isBookmarkedByUser: vinyl.bookmarks.some(
+                            (bookmark) => bookmark.userId === user?.id,
+                          ),
+                        }}
                       />
-                    )}
-                  </div>
+                      {vinyl.user.id === user?.id && (
+                        <VinylMoreButton
+                          vinyl={vinyl}
+                          className="h-4 w-4 text-muted-foreground hover:text-foreground"
+                        />
+                      )}
+                    </div>
+                  )}
                 </span>
               </div>
-
-              <Badge variant="secondary" className="mb-4 self-start">
-                {vinyl.genre.name}
-              </Badge>
+              <Link href={`/vinyls/genres/${vinyl.genre.id}`} className="mb-4">
+                <Badge variant="secondary" className="mb-4 self-start">
+                  {vinyl.genre.name}
+                </Badge>
+              </Link>
               <div className="mb-4">
                 <div className="flex flex-wrap gap-2">
                   {hashtags?.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="rounded-full bg-secondary px-2 py-1 text-sm text-secondary-foreground"
-                    >
-                      {tag}
-                    </span>
+                    <Link key={index} href={`../hashtag/${tag.split("#")[1]}`} className="block">
+                      <span
+                        key={index}
+                        className="rounded-full bg-secondary px-2 py-1 text-sm text-secondary-foreground"
+                      >
+                        {tag}
+                      </span>
+                    </Link>
                   ))}
                 </div>
               </div>
               <div className="mt-auto flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Link href={`/users/${vinyl.user.username}`}>
+                  <Link href={`/users/${vinyl.user.username}`} className="flex items-center space-x-2">
                     <UserAvatar avatarUrl={vinyl.user.avatarUrl} />
+                    <span className="text-sm font-medium">
+                      {vinyl.user.username}
+                    </span>
                   </Link>
-                  <span className="text-sm font-medium">
-                    {vinyl.user.username}
-                  </span>
                 </div>
                 <div className="flex justify-between items-center mt-5">
+
                   {/* Left side - Like and Comment buttons */}
                   <div className="flex items-center gap-5">
-                    <LikeButton
-                      vinylId={vinyl.id}
-                      initialState={{
-                        likes: vinyl._count.likes,
-                        isLikedByUser: vinyl.likes.some(
-                          (like) => like.userId === user?.id,
-                        ),
-                      }}
-                    />
+
+                    {!user ? (
+                      <button  className="flex items-center gap-2">
+                        <Heart
+                          className="size-5 hover:text-foreground"
+                        />
+                        {/* <span className="text-sm font-medium tabular-nums">
+                          {data.likes}
+                        </span> */}
+                      </button>
+                    ) : (
+                      // Show follow button for logged in users viewing others' profiles
+                      <LikeButton
+                        vinylId={vinyl.id}
+                        initialState={{
+                          likes: vinyl._count.likes,
+                          isLikedByUser: vinyl.likes.some(
+                            (like) => like.userId === user?.id,
+                          ),
+                        }}
+                      />
+                    )}
                     <CommentButton
                       commentsCount={commentsCount}
                       onClick={() => setShowComments(!showComments)}
@@ -127,7 +149,11 @@ export default function Vinyl({ vinyl }: PostProps) {
         </CardContent>
       </Card>
 
-      {showComments && (
+      {/* { showComments && (
+        <Comments vinyl={vinyl} setCommentsCount={setCommentsCount} />
+      )} */}
+
+      {user && showComments && (
         <Comments vinyl={vinyl} setCommentsCount={setCommentsCount} />
       )}
 
@@ -159,6 +185,7 @@ interface CommentButtonProps {
 }
 
 function CommentButton({ commentsCount, onClick }: CommentButtonProps) {
+
   return (
     <button onClick={onClick} className="flex items-center gap-2">
       <MessageSquare className="size-5" />
