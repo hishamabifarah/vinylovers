@@ -279,7 +279,7 @@ export interface FollowerInfo {
 export interface FollowersInfo {
   followers: number;
   username: string;
-  // isFollowedByUser: boolean;
+  isFollowedByUser: boolean;
 }
 
 export interface FollowingInfo {

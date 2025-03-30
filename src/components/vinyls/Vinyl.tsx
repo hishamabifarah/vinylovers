@@ -117,7 +117,10 @@ export default function Vinyl({ vinyl }: PostProps) {
                   <div className="flex items-center gap-5">
 
                     {!user ? (
+                      <>                       
+                      <Link href={'/login'} className="flex items-center gap-2">
                       <button  className="flex items-center gap-2">
+                       
                         <Heart
                           className="size-5 hover:text-foreground"
                         />
@@ -125,6 +128,9 @@ export default function Vinyl({ vinyl }: PostProps) {
                           {data.likes}
                         </span> */}
                       </button>
+                      </Link>
+                      </>
+
                     ) : (
                       // Show follow button for logged in users viewing others' profiles
                       <LikeButton

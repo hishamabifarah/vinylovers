@@ -106,9 +106,9 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
   const InfoFollowers: FollowersInfo = {
     followers: user._count.followers,
     username: user.username,
-    // isFollowedByUser: user.followers.some(
-    //   ({ followerId }) => followerId === loggedInUserId,
-    // ),
+    isFollowedByUser: user.followers.some(
+      ({ followerId }) => followerId === loggedInUserId,
+    ),
   };
 
   return (
@@ -135,7 +135,7 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
 
             <CountFollowers userId={user.id} initialState={InfoFollowers} />
 
-            {/* <FollowerCount userId={user.id} initialState={followerInfo} /> */}
+            <FollowerCount userId={user.id} initialState={followerInfo} />
 
             <FollowingCount userId={user.id} initialState={followingInfo} />
           </div>

@@ -1,7 +1,8 @@
 "use server"
+
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { FollowingInfo } from "@/lib/types";
+import { FollowersInfo, FollowingInfo } from "@/lib/types";
 
 
 // return the following info for this user
@@ -23,17 +24,17 @@ export async function GET(
       where: { id: userId },
       select: {
         username: true,
-        following: { // retrieve the following of loggedinuser
+        followers: { // retrieve the following of loggedinuser
           where: {
-            followingId: loggedInUser.id,
+            followerId: loggedInUser.id,
           },
           select: { 
-            followingId: true, // only select the following id
+            followerId: true, // only select the following id
           },
         },
         _count: {
           select: {
-            following: true, // count followings
+            followers: true, // count followings
           },
         },
       },
@@ -43,11 +44,13 @@ export async function GET(
       return Response.json({ error: "User not found" }, { status: 404 });
     }
 
-    const data: FollowingInfo = {
-      following: user._count.following,
+    const data: FollowersInfo = {
+      followers: user._count.followers,
       username: user.username,
-      // isFollowedByUser: !!user.following.length, // true if userId (!! turns into boolean) , if length is not 0 true else false
+      isFollowedByUser: !!user.followers.length, // true if userId (!! turns into boolean) , if length is not 0 true else false
     };
+
+    console.log("data", data);
 
     return Response.json(data);
   } catch (error) {
