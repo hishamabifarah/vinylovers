@@ -3,7 +3,7 @@ import UserButton from "@/components/UserButton";
 import Link from "next/link";
 import logo from "@/assets/logo192.png";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
+import SearchField from "@/components/SearchField";
 
 export default function Navbar() {
   return (
@@ -15,13 +15,14 @@ export default function Navbar() {
             Vinylovers
           </Link>
         </div>
-        {/* <SearchField /> */}
+        <SearchField  />
         <div className="flex items-center space-x-4">
-          <Input
+          {/* <Input
             type="search"
             placeholder="Search albums, artists, users..."
             className="w-64"
-          />
+          /> */}
+         
         </div>
 
         <UserButton className="sm:ms-auto" />

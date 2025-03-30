@@ -26,6 +26,15 @@ const nextConfig = {
       },
     ],
   },
+  rewrites: () => {
+    return [
+      { // keep original url but redirects to another page
+        //
+        source: "/hashtag/:tag", 
+        destination: "/search?q=%23:tag",
+      },
+    ];
+  },
 }
 
 export default nextConfig
