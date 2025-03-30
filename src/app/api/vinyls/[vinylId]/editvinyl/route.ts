@@ -4,9 +4,6 @@ import { getVinylDataInclude } from "@/lib/types"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function PUT(request: NextRequest, { params }: { params: { vinylId: string } }) {
-  console.log("==== EDIT VINYL ENDPOINT CALLED ====")
-  console.log("Params:", JSON.stringify(params))
-  console.log("Vinyl ID from params:", params.vinylId) // Using vinylId, not id
 
   try {
     const { user } = await validateRequest()
@@ -16,7 +13,6 @@ export async function PUT(request: NextRequest, { params }: { params: { vinylId:
 
     // Extract the vinyl ID from params
     const vinylId = params.vinylId // Using vinylId, not id
-    console.log("Vinyl ID for database query:", vinylId)
 
     // Parse the request body
     const data = await request.json()

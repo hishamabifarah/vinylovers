@@ -144,8 +144,6 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
         mediaIds: finalMediaIds,
       }
 
-      console.log("Submitting with mediaIds:", finalValues.mediaIds)
-
       updateMutation.mutate(finalValues, {
         onSuccess: () => {
           router.push(`/vinyls/${vinyl.id}`)

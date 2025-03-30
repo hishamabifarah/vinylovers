@@ -34,10 +34,19 @@ export function getUserDataSelect(loggedInUserId: string) {
         followerId: true,
       },
     },
+    following: {
+      where: {
+        followerId: loggedInUserId,
+      },
+      select: {
+        followingId: true,
+      },
+    },
     _count: {
       select: {
         vinyls:true,
         followers: true,
+        following: true
       },
     },
   } satisfies Prisma.UserSelect;
@@ -50,8 +59,6 @@ export function getPostDataInclude(loggedInUserId: string) {
     },
   } satisfies Prisma.PostInclude;
 }
-
-
 
 export function getVinylGenreDataInclude() {
   return {
@@ -172,6 +179,11 @@ export type VinylData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylDataInclude>;
 }>;
 
+export type FollowingData = Prisma.UserGetPayload<{
+  select: ReturnType<typeof getUserDataSelect>;
+}>;
+
+
 export type VinylGenreData = Prisma.VinylGetPayload<{
   include: ReturnType<typeof getVinylGenreDataInclude>;
 }>;
@@ -188,6 +200,16 @@ export interface PostsPage {
 
 export interface VinylsPage {
   vinyls: VinylData[];
+  nextCursor: string | null;
+}
+
+export interface FollowingPage {
+  following: FollowingData[];
+  nextCursor: string | null;
+}
+
+export interface FollowersPage {
+  followers: FollowingData[];
   nextCursor: string | null;
 }
 
@@ -219,6 +241,18 @@ export const vinylDataInclude = {
 export interface FollowerInfo {
   followers: number;
   isFollowedByUser: boolean;
+}
+
+export interface FollowersInfo {
+  followers: number;
+  username: string;
+  // isFollowedByUser: boolean;
+}
+
+export interface FollowingInfo {
+  following: number;
+  username: string;
+  // isFollowedByUser: boolean;
 }
 
 export interface LikeInfo {

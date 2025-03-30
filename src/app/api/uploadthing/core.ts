@@ -44,9 +44,6 @@ export const fileRouter = {
         ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
         : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
 
-
-      console.log('transformedUrl', transformedUrl);
-
       await prisma.user.update({
         where: { id: metadata.user.id },
         data: {

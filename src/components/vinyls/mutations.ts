@@ -61,7 +61,6 @@ export function useUpdateVinyl() {
       return { previousVinyl }
     },
     onSuccess: (updatedVinyl, variables) => {
-      console.log("Vinyl updated successfully:", updatedVinyl)
 
       // Force update the cache with the server response
       queryClient.setQueryData(["vinyl", variables.id], updatedVinyl)

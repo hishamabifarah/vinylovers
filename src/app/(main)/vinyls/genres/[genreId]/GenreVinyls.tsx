@@ -50,7 +50,6 @@ export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
   }
 
   if (status === "error") {
-    console.log('status', status)
     return (
       <p className="text-center text-destructive">
         An error occurred while loading vinyls.

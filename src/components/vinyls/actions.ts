@@ -21,7 +21,6 @@ const vinylSchema = z.object({
 export type EditVinylValues = z.infer<typeof vinylSchema>
 
 export async function updateVinyl(values: EditVinylValues): Promise<VinylData> {
-  console.log("Vinyl ID:", values.id)
 
   try {
     // Since this is a server action, we can directly update the database
@@ -88,6 +87,8 @@ export async function updateVinyl(values: EditVinylValues): Promise<VinylData> {
       data: updateData,
       include: getVinylDataInclude(user.id),
     })
+
+    revalidateTag('vinyl-featured')
 
     return updatedVinyl
   } catch (error) {

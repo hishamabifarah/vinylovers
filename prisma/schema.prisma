@@ -47,7 +47,7 @@ model User {
   followers Follow[]   @relation("Followers")
   likes     Like[]
   bookmarks Bookmark[]
-   comments    Comment[]
+  comments    Comment[]
 
   receivedNotifications Notification[] @relation("Recipient")
   issuedNotifications   Notification[] @relation("Issuer")
@@ -68,6 +68,7 @@ model Session {
 }
 
 model Follow {
+   id         String @id @default(cuid())
   followerId  String
   follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
   followingId String

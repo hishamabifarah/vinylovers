@@ -20,7 +20,7 @@ export default function Notification({ notification }: NotificationProps) {
       href: `/users/${notification.issuer.username}`,
     },
     COMMENT: {
-      message: `${notification.issuer.displayName} commented on your post`,
+      message: `${notification.issuer.displayName} commented on your vinyl`,
       icon: <MessageCircle className="size-7 fill-primary text-primary" />,
       href: `/vinyls/${notification.vinylId}`,
     },
@@ -50,7 +50,7 @@ export default function Notification({ notification }: NotificationProps) {
           </div>
           {notification.vinyl && (
             <div className="line-clamp-3 whitespace-pre-line text-muted-foreground">
-              {notification.vinyl.artist} -   {notification.vinyl.album} 
+              {notification.vinyl.artist} - {notification.vinyl.album} 
             </div>
           )}
         </div>

@@ -112,3 +112,9 @@ ALTER TABLE "vinyls" ADD CONSTRAINT "vinyls_genreId_fkey" FOREIGN KEY ("genreId"
 
 -- AddForeignKey
 ALTER TABLE "posts" ADD CONSTRAINT "posts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Enable uuid-ossp extension if not already enabled
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- UPDATE "follows" SET id = (md5(random()::text) || '-' || md5(now()::text))::uuid
+-- WHERE id IS NULL;

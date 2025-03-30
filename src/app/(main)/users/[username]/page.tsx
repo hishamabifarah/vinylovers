@@ -4,7 +4,7 @@ import FollowButton from "@/components/FollowButton";
 import FollowerCount from "@/components/FollowersCount";
 import UserAvatar from "@/components/UserAvatar";
 import prisma from "@/lib/prisma";
-import { FollowerInfo, getUserDataSelect, UserData } from "@/lib/types";
+import { FollowerInfo, FollowersInfo, FollowingInfo, getUserDataSelect, UserData } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import { Metadata } from "next";
@@ -12,6 +12,8 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import UserVinyls from "./UserVinyls";
 import EditProfileButton from "./EditProfileButton";
+import FollowingCount from "@/components/FollowingCount";
+import FollowersCount from "@/components/FollowersCount";
 
 
 interface PageProps {
@@ -36,18 +38,6 @@ const getUser = cache(async (username: string, loggedInUserId: string) => {
   return user;
 });
 
-const getUserVinyls = cache(async (userId: string) => {
-  return  await prisma.vinyl.findMany({
-        where: { userId: userId },
-        select: {
-          id: true,
-          album: true,
-          artist: true,
-          thumbnail: true,
-        },
-        orderBy: { createdAt: 'desc' },
-      })
-    })
 
 export async function generateMetadata({
   params: { username },
@@ -104,6 +94,22 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
     ),
   };
 
+  const followingInfo: FollowingInfo = {
+    following: user._count.following,
+    username: user.username,
+    // isFollowedByUser: user.followers.some(
+    //   ({ followerId }) => followerId === loggedInUserId,
+    // ),
+  };
+
+  const followersInfo: FollowersInfo = {
+    followers: user._count.followers,
+    username: user.username,
+    // isFollowedByUser: user.followers.some(
+    //   ({ followerId }) => followerId === loggedInUserId,
+    // ),
+  };
+
   return (
     <div className="h-fit w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
       <UserAvatar
@@ -125,7 +131,13 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
                 {formatNumber(user._count.vinyls)}
               </span>
             </span>
+
             <FollowerCount userId={user.id} initialState={followerInfo} />
+
+
+            {/* <FollowersCount userId={user.id} initialState={followersInfo} /> */}
+
+            <FollowingCount userId={user.id} initialState={followingInfo} />
           </div>
         </div>
         {user.id === loggedInUserId ? (

@@ -29,7 +29,7 @@ export async function GET(
     const nextCursor = vinyls.length > pageSize ? vinyls[pageSize].id : null;
 
     const data: VinylsPage = {
-        vinyls: vinyls.slice(0, pageSize),
+      vinyls: vinyls.slice(0, pageSize),
       nextCursor,
     };
 
