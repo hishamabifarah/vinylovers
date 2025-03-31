@@ -27,7 +27,7 @@ export default function CustomChatHeader() {
 
   return (
     <div className="flex items-center justify-between border-b px-4 py-3">
-      {/* <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3">
         <Button variant="ghost" size="icon" className="md:hidden" onClick={() => router.push("/chat")}>
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -40,7 +40,7 @@ export default function CustomChatHeader() {
             {otherMembers.length > 1 ? `${otherMembers.length} members` : "Direct message"}
           </p>
         </div>
-      </div> */}
+      </div>
 
        <div className="flex items-center gap-2">
         <DeleteChatButton />

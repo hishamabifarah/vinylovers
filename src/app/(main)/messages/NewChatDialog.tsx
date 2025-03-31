@@ -109,7 +109,7 @@ export default function NewChatDialog({ onOpenChange, onChatCreated, initialSear
 
   return (
     <Dialog open onOpenChange={onOpenChange}>
-      <DialogContent className="bg-card p-0">
+      <DialogContent className="p-0">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>New chat</DialogTitle>
         </DialogHeader>
@@ -121,13 +121,13 @@ export default function NewChatDialog({ onOpenChange, onChatCreated, initialSear
               setActiveTab(value as "all" | "mutual")
               // Don't clear search when switching tabs to preserve the initial search term
             }}
-            className="w-full"
+            className="w-full border-b border-b-muted/50 p-6 pt-4 pb-2"
           >
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="all" className="flex items-center gap-1">
+            <TabsList className="grid w-full grid-cols-1">
+              {/* <TabsTrigger value="all" className="flex items-center gap-1">
                 <Users className="h-4 w-4" />
                 <span>All Users</span>
-              </TabsTrigger>
+              </TabsTrigger> */}
               <TabsTrigger value="mutual" className="flex items-center gap-1">
                 <UserCheck className="h-4 w-4" />
                 <span>Mutual Followers</span>
