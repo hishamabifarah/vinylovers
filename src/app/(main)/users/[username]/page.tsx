@@ -15,6 +15,7 @@ import EditProfileButton from "./EditProfileButton";
 import FollowingCount from "@/components/FollowingCount";
 import FollowersCount from "@/components/FollowersCount";
 import CountFollowers from "@/components/CountFollowers";
+import StartChatButton from "../../messages/components/StartChatButton";
 
 
 interface PageProps {
@@ -78,6 +79,8 @@ export default async function Page({ params: { username } }: PageProps) {
         </div>
         <UserVinyls userId={user.id} />
       </div>
+
+      
     </main>
   );
 }
@@ -164,6 +167,9 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
           </div>
         </>
       )}
+      {/* <StartChatButton username={user.username} /> */}
     </div>
+
+    
   );
 }

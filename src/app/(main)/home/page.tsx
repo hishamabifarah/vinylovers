@@ -14,13 +14,13 @@ export default async function Home() {
       <div className="w-full min-w-0 space-y-5">
         <Tabs defaultValue="discover">
           <TabsList>
-            <TabsTrigger className="Button" value="discover">Discover</TabsTrigger>
+            <TabsTrigger className="Button ml-3 mr-4" value="discover">Discover</TabsTrigger>
             
             {/* Only show Following and For You tabs if user is logged in */}
             {user && (
               <>
-                <TabsTrigger value="following">Following</TabsTrigger>
-                <TabsTrigger value="for-you">For you</TabsTrigger>
+                <TabsTrigger className="mr-4" value="following">Following</TabsTrigger>
+                <TabsTrigger className="mr-4" value="for-you">For you</TabsTrigger>
               </>
             )}
           </TabsList>

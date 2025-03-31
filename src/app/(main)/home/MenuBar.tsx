@@ -1,8 +1,10 @@
 import { validateRequest } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { Bookmark, Home , Bell , Mail } from "lucide-react";
-import Link from "next/link";
 import prisma from "@/lib/prisma";
+import streamServerClient from "@/lib/stream";
+import { Bookmark, Home } from "lucide-react";
+import Link from "next/link";
+import MessagesButton from "./MessagesButton";
 import NotificationsButton from "../NotificationsButton";
 
 
@@ -15,12 +17,22 @@ export default async function MenuBar({ className }: MenuBarProps) {
 
   if (!user) return null;
 
-  const unreadNotificationCount = await prisma.notification.count({
-    where: {
-      recipientId: user.id,
-      read: false,
-    },
-  });
+  // const unreadNotificationCount = await prisma.notification.count({
+  //   where: {
+  //     recipientId: user.id,
+  //     read: false,
+  //   },
+  // });
+
+  const [unreadNotificationsCount, unreadMessagesCount] = await Promise.all([
+    prisma.notification.count({
+      where: {
+        recipientId: user.id,
+        read: false,
+      },
+    }),
+    (await streamServerClient.getUnreadCount(user.id)).total_unread_count,
+  ]);
 
   return (
     <div className={className}>
@@ -48,7 +60,7 @@ export default async function MenuBar({ className }: MenuBarProps) {
         </Link>
       </Button>
       <NotificationsButton
-        initialState={{ unreadCount: unreadNotificationCount }}
+        initialState={{ unreadCount: unreadNotificationsCount }}
       />
       <Button
         variant="ghost"
@@ -63,10 +75,11 @@ export default async function MenuBar({ className }: MenuBarProps) {
         title="Messages"
         asChild
       >
-        <Link href="/messages">
+        {/* <Link href="/messages">
           <Mail />
-          {/* <span className="hidden lg:inline">Messages</span> */}
-        </Link>
+          <span className="hidden lg:inline">Messages</span>
+        </Link> */}
+        <MessagesButton initialState={{ unreadCount: unreadMessagesCount }} />
       </Button>
     </div>
   );

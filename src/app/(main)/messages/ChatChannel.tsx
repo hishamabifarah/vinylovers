@@ -7,6 +7,7 @@ import {
   ChannelHeaderProps,
   MessageInput,
   MessageList,
+  useChatContext,
   Window,
 } from "stream-chat-react";
 import CustomChatHeader from "./components/CustomChatHeader";
@@ -17,25 +18,42 @@ interface ChatChannelProps {
 }
 
 export default function ChatChannel({ open, openSidebar }: ChatChannelProps) {
+  const { channel } = useChatContext();
 
-  const channelSearchInput = document.getElementsByClassName('str-chat__channel-search-input--wrapper');
-
-//Remove the input element from the DOM
-if (channelSearchInput) {
-    if (channelSearchInput[0] && channelSearchInput[0].parentNode) {
-        channelSearchInput[0].parentNode.removeChild(channelSearchInput[0]);
-    }
-}
   return (
-    <div className={cn("w-full md:block", !open && "hidden")}>
-      <Channel>
-        <Window>
-          <CustomChatHeader/>
-          <CustomChannelHeader openSidebar={openSidebar} />
-          <MessageList />
-          <MessageInput />
-        </Window>
-      </Channel>
+    <div className={cn("w-full flex flex-col", !open && "md:hidden")}>
+      {channel ? (
+        <div className={cn("flex-1", !open && "hidden md:block")}>
+          {/* Active chat UI */}
+          <Channel>
+            <Window>
+              <CustomChatHeader/>
+              <CustomChannelHeader openSidebar={openSidebar} />
+              <MessageList />
+              <MessageInput />
+            </Window>
+          </Channel>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center p-4">
+          <p className="text-center text-muted-foreground">
+            No active chat. Select a chat or start a new conversation!
+          </p>
+          <Button
+            className="text-white mt-5"
+            variant="default"
+            onClick={() => {
+              // Trigger the new chat dialog
+              const newChatDialog = document.querySelector("#new-chat-dialog") as HTMLElement | null;
+              if (newChatDialog) {
+                newChatDialog.click();
+              }
+            }}
+          >
+            Start New Chat
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

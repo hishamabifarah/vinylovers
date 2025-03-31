@@ -28,11 +28,11 @@ export default function CustomChatHeader() {
   return (
     <div className="flex items-center justify-between border-b px-4 py-3">
       <div className="flex items-center gap-3">
-        <Button variant="ghost" size="icon" className="md:hidden" onClick={() => router.push("/chat")}>
+        {/* <Button variant="ghost" size="icon" className="md:hidden" onClick={() => router.push("/messages")}>
           <ArrowLeft className="h-5 w-5" />
         </Button>
 
-        <UserAvatar avatarUrl={avatarUrl} />
+        <UserAvatar avatarUrl={avatarUrl} /> */}
 
         <div>
           <h3 className="font-semibold">{channelName}</h3>

@@ -43,17 +43,20 @@ export default function DeleteChatButton({ className }: DeleteChatButtonProps) {
       console.log(`Attempting to delete channel: ${channel.type}:${channel.id}`)
 
       // Use server-side endpoint to perform hard delete
-      const response = await kyInstance
-        .post("/api/chat/channels/delete", {
-          json: {
-            channelId: channel.id,
-            channelType: channel.type,
-          },
-          timeout: 10000, // Increase timeout for potentially slow operations
-        })
-        .json()
+      // const response = await kyInstance
+      //   .post("/api/chat/channels/delete", {
+      //     json: {
+      //       channelId: channel.id,
+      //       channelType: channel.type,
+      //     },
+      //     timeout: 10000, // Increase timeout for potentially slow operations
+      //   })
+      //   .json()
 
-      console.log("Delete response:", response)
+      // console.log("Delete response:", response)
+
+      const destroy = await channel.delete();
+      console.log("Delete response:", destroy);
 
       // Clear the active channel
       if (setActiveChannel) {
@@ -86,16 +89,16 @@ export default function DeleteChatButton({ className }: DeleteChatButtonProps) {
       }
 
       // If server-side deletion fails, offer to leave the chat instead
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: errorMessage,
-        action: (
-          <Button variant="outline" onClick={() => handleLeaveChat()} className="ml-2">
-            Leave Chat Instead
-          </Button>
-        ),
-      })
+      // toast({
+      //   variant: "destructive",
+      //   title: "Error",
+      //   description: errorMessage,
+      //   action: (
+      //     <Button variant="outline" onClick={() => handleLeaveChat()} className="ml-2">
+      //       Leave Chat Instead
+      //     </Button>
+      //   ),
+      // })
     } finally {
       setIsDeleting(false)
     }
