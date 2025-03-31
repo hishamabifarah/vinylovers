@@ -21,9 +21,9 @@ const VinylAffiliate: React.FC<VinylAffiliateProps> = ({ vinylTitle, artist }) =
           <h2 className="text-xl font-semibold">Where to Buy</h2>
         </div>
         <div className="flex flex-col space-y-2">
-          <Link href={amazonSearchUrl} target="_blank" rel="noopener noreferrer" className="underline primary text-blue-600 hover:text-blue-800">
+          <a href={amazonSearchUrl} target="_blank" rel="noopener noreferrer" className="underline primary text-blue-600 hover:text-blue-800">
             Amazon
-          </Link>
+          </a>
           <Link href={discogsSearchUrl} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
             Discogs
           </Link>
