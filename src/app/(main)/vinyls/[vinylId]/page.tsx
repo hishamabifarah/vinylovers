@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { cache, Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import VinylAffiliate from "@/components/VinylAffiliate";
 
 interface PageProps {
   params: { vinylId: string };
@@ -50,6 +51,11 @@ export default async function Page({ params: { vinylId } }: PageProps) {
         <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
           <UserInfoSidebar user={vinyl.user} />
         </Suspense>
+        <VinylAffiliate
+        className="mt-5"
+          artist={vinyl.artist}
+          vinylTitle={vinyl.album}
+          />
       </div>
     </main>
   );
