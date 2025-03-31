@@ -7,6 +7,7 @@ import { generateIdFromEntropySize } from "lucia";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { sendVerificationEmail } from "../hooks/useSendVerificationEmail";
+import streamServerClient from "@/lib/stream";
 
 // return type of Promise can contain this error, if nothing wrong redirect the user .
 // in the code we have to return the specific error for signup, we can't catch it in the front
@@ -56,16 +57,33 @@ export async function signUp(
 
     const userId = generateIdFromEntropySize(10);
 
-    await prisma.user.create({
-      data: {
+    // await prisma.user.create({
+    //   data: {
+    //     id: userId,
+    //     username,
+    //     displayName: username,
+    //     email,
+    //     passwordHash,
+    //   },
+    // });
+
+    await prisma.$transaction(async (tx) => {
+      await tx.user.create({
+        data: {
+          id: userId,
+          username,
+          displayName: username,
+          email,
+          passwordHash,
+        },
+      });
+      await streamServerClient.upsertUser({
         id: userId,
         username,
-        displayName: username,
-        email,
-        passwordHash,
-      },
+        name: username,
+      });
     });
-    
+   
     try {
       await sendVerificationEmail(userId, email, username);
 

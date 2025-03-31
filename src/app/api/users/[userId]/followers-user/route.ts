@@ -2,8 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { FollowersInfo, FollowingInfo } from "@/lib/types";
-
+import { FollowersInfo } from "@/lib/types";
 
 // return the following info for this user
 // return total number of followings
@@ -49,8 +48,6 @@ export async function GET(
       username: user.username,
       isFollowedByUser: !!user.followers.length, // true if userId (!! turns into boolean) , if length is not 0 true else false
     };
-
-    console.log("data", data);
 
     return Response.json(data);
   } catch (error) {

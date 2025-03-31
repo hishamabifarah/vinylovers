@@ -75,7 +75,7 @@ export default function UserFollowersList({ userId , currentUserId }: UserPostsP
       onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold">Following List</h1>
+        <h1 className="text-2xl font-bold">Followers List</h1>
         {followers.map((user) => {
           // This checks if the user in the list is the currently logged-in user
           const isCurrentLoggedInUser = actualCurrentUserId && String(user.id) === String(actualCurrentUserId)

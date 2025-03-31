@@ -90,6 +90,7 @@ export async function GET(
       },
     })
 
+
     const data: FollowersPage = {
       followers: followerUsers,
       nextCursor,

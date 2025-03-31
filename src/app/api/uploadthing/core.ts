@@ -2,6 +2,7 @@ import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { createUploadthing, FileRouter } from "uploadthing/next";
 import { UploadThingError, UTApi } from "uploadthing/server";
+import streamServerClient from "@/lib/stream";
 
 const f = createUploadthing();
 
@@ -44,12 +45,27 @@ export const fileRouter = {
         ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
         : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
 
-      await prisma.user.update({
-        where: { id: metadata.user.id },
-        data: {
-          avatarUrl: transformedUrl,
-        },
-      });
+      // await prisma.user.update({
+      //   where: { id: metadata.user.id },
+      //   data: {
+      //     avatarUrl: transformedUrl,
+      //   },
+      // });
+
+      await Promise.all([
+        prisma.user.update({
+          where: { id: metadata.user.id },
+          data: {
+            avatarUrl: newAvatarUrl,
+          },
+        }),
+        streamServerClient.partialUpdateUser({
+          id: metadata.user.id,
+          set: {
+            image: newAvatarUrl,
+          },
+        }),
+      ]);
 
       return { avatarUrl: transformedUrl }; // return new avatarurl to the frontend to upddate cache of feeds immediatly
     }),

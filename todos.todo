@@ -19,6 +19,7 @@ but what if url pasted in another browser or incognito (if user profile page a m
 18. check site when connection offline
 19. Image with src "https://utfs.io/a/f90wrdja4t/d1fa77fe-1d11-4e9c-aace-98deafe1d05f-99o3ej.webp" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
 20. after delete comment click page freezes
+21. Implement custom 404 page
 
 RESOURCES
 --------

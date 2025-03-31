@@ -8,14 +8,18 @@ export default function useInfoFollower(
   initialState: FollowersInfo,
 ) {
 
-  const query = useQuery({
-    queryKey: ["followers-info", userId], 
-    queryFn: () =>
-      kyInstance.get(`/api/users/${userId}/followers-user`).json<FollowersInfo>(),
+  return useQuery({
+    queryKey: ["follower-info", userId],
+    queryFn: async () => {
+      const response = await kyInstance
+        .get(`/api/users/${userId}/followers-user`)
+        .json<FollowersInfo>();
+      return response;
+    },
     initialData: initialState,
-    staleTime: Infinity, 
+    select: (data) => ({
+      ...data,
+      username: data.username || initialState.username, // Fallback to initialState.username
+    }),
   });
-  
-
-  return query;
 }

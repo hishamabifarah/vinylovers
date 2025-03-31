@@ -133,9 +133,18 @@ async function UserProfile({ user, loggedInUserId }: UserProfileProps) {
               </span>
             </span>
 
-            <CountFollowers userId={user.id} initialState={InfoFollowers} />
+            {/* <CountFollowers userId={user.id} initialState={InfoFollowers} /> */}
 
-            <FollowerCount userId={user.id} initialState={followerInfo} />
+            <CountFollowers
+              userId={user.id}
+              initialState={{
+                followers: user._count.followers,
+                username: user.username, // Ensure this is passed
+                isFollowedByUser: followerInfo.isFollowedByUser,
+              }}
+            />
+
+            {/* <FollowerCount userId={user.id} initialState={followerInfo} /> */}
 
             <FollowingCount userId={user.id} initialState={followingInfo} />
           </div>

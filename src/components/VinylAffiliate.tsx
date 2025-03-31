@@ -10,8 +10,6 @@ interface VinylAffiliateProps {
 const VinylAffiliate: React.FC<VinylAffiliateProps> = ({ vinylTitle, artist }) => {
 
     const amazonSearchUrl = `https://www.amazon.com/s?k=${encodeURIComponent(vinylTitle + " " + artist)}&tag=vinylovers06-20`;
-    
-    
     const discogsSearchUrl = `https://www.discogs.com/search/?q=${encodeURIComponent(vinylTitle + " " + artist)}`;
     const ebaySearchUrl = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(vinylTitle + " " + artist)}`;
   
