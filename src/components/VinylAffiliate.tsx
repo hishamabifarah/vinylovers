@@ -10,6 +10,8 @@ interface VinylAffiliateProps {
 const VinylAffiliate: React.FC<VinylAffiliateProps> = ({ vinylTitle, artist }) => {
 
     const amazonSearchUrl = `https://www.amazon.com/s?k=${encodeURIComponent(vinylTitle + " " + artist)}&tag=vinylovers06-20`;
+    
+    
     const discogsSearchUrl = `https://www.discogs.com/search/?q=${encodeURIComponent(vinylTitle + " " + artist)}`;
     const ebaySearchUrl = `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(vinylTitle + " " + artist)}`;
   
@@ -19,7 +21,7 @@ const VinylAffiliate: React.FC<VinylAffiliateProps> = ({ vinylTitle, artist }) =
           <h2 className="text-xl font-semibold">Where to Buy</h2>
         </div>
         <div className="flex flex-col space-y-2">
-          <Link href={amazonSearchUrl} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
+          <Link href={amazonSearchUrl} target="_blank" rel="noopener noreferrer" className="underline primary text-blue-600 hover:text-blue-800">
             Amazon
           </Link>
           <Link href={discogsSearchUrl} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
