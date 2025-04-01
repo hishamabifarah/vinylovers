@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: 'Vinylovers',
     images: [
       {
-        url: 'https://vinylovers.vercel.app/viny.png', // Custom OG Image
+        url: 'https://vinylovers.vercel.app/logo.png', // Custom OG Image
         width: 1200,
         height: 630,
         alt: 'Vinylovers - Your Vinyl Collection Community',
