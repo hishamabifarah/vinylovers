@@ -9,7 +9,7 @@ import ChatSidebar from "./ChatSidebar";
 import useInitializeChatClient from "./useInitializeChatClient";
 
 export default function Chat() {
-  const chatClient = useInitializeChatClient();
+  const chatClient = useInitializeChatClient(); // initialize stream chat client ONCE
 
   const { resolvedTheme } = useTheme();
 

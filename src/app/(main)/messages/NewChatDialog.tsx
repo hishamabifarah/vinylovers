@@ -109,7 +109,7 @@ export default function NewChatDialog({ onOpenChange, onChatCreated, initialSear
 
   return (
     <Dialog open onOpenChange={onOpenChange}>
-      <DialogContent className="p-0">
+      <DialogContent className="bg-card p-0">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle>New chat</DialogTitle>
         </DialogHeader>
@@ -187,7 +187,7 @@ export default function NewChatDialog({ onOpenChange, onChatCreated, initialSear
 
             {isFetching && <Loader2 className="mx-auto my-3 animate-spin" />}
 
-            {isError && <p className="my-3 text-center text-destructive">An error occurred while loading users.</p>}
+            {isError && <p className="my-3 text-center d">An error occurred while loading users.</p>}
           </div>
         </div>
 

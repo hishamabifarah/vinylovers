@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import { useSession } from "@/app/(main)/SessionProvider";
@@ -15,23 +15,48 @@ import { formatRelativeDate } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
-import { Heart, MessageSquare } from "lucide-react";
-import { Button } from "../ui/button";
+import { Heart, MessageSquare, Share2 } from "lucide-react";
+import { TwitterShare, WhatsappShare } from "react-share-kit";
 
 interface PostProps {
   vinyl: VinylData;
 }
 
 export default function Vinyl({ vinyl }: PostProps) {
-
   const { user } = useSession();
   const [showComments, setShowComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(vinyl._count.comments);
+  const [showShareOptions, setShowShareOptions] = useState(false);
 
-  const firstImageUrl = vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
+  const firstImageUrl =
+    vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
   const hashtags = vinyl.hashtags?.split(",").map((tag) => tag.trim());
+
+  const hashtagsshare = vinyl.hashtags
+  ?.split(",")
+  .map((tag) => tag.trim().replace(/^#/, "")); // Remove any existing #
+
   const images = vinyl.attachments.filter((a) => a.type === "IMAGE");
   const videos = vinyl.attachments.filter((a) => a.type === "VIDEO");
+
+//   const genreHashtagsMap = {
+//     "Rock": ["ClassicRock", "RockVinyl"],
+//     "Metal": ["HeavyMetal", "MetalVinyl"],
+//     "Jazz": ["JazzVinyl", "NowPlayingJazz"],
+//     "Hip-Hop": ["HipHopVinyl", "RapRecords"], // Fixed from "hiphop" to "Hip-Hop"
+//     "Indie": ["IndieVinyl", "AlternativeMusic"],
+//     "Dance-Electronic": ["ElectronicVinyl", "Synthwave"], // Keeps hyphen
+//     "Blues": ["BluesVinyl", "SoulRecords"],
+//     "Reggae": ["ReggaeVinyl", "DubMusic"]
+//   };
+
+// const baseHashtags = ["VinylCommunity", "NowSpinning", "VinylRecords", "RecordCollection"];
+
+// // Match the vinyl genre while preserving exact key formatting
+// const genreHashtags = genreHashtagsMap[vinyl.genre.name] || []; 
+
+// const hashtagsfinal = [...baseHashtags, ...genreHashtags]
+//   .map((tag) => tag.replace(/^#/, "")); // Remove any existing #
 
   return (
     <>
@@ -61,15 +86,13 @@ export default function Vinyl({ vinyl }: PostProps) {
                 >
                   {formatRelativeDate(vinyl.createdAt)}
 
-                  {/* Right side - Bookmark and More buttons */}
-
                   {user?.id && (
                     <div className="flex gap-3 mt-5">
                       <BookmarkButton
                         vinylId={vinyl.id}
                         initialState={{
                           isBookmarkedByUser: vinyl.bookmarks.some(
-                            (bookmark) => bookmark.userId === user?.id,
+                            (bookmark) => bookmark.userId === user?.id
                           ),
                         }}
                       />
@@ -91,7 +114,11 @@ export default function Vinyl({ vinyl }: PostProps) {
               <div className="mb-4">
                 <div className="flex flex-wrap gap-2">
                   {hashtags?.map((tag, index) => (
-                    <Link key={index} href={`../hashtag/${tag.split("#")[1]}`} className="block">
+                    <Link
+                      key={index}
+                      href={`../hashtag/${tag.split("#")[1]}`}
+                      className="block"
+                    >
                       <span
                         key={index}
                         className="rounded-full bg-secondary px-2 py-1 text-sm text-secondary-foreground"
@@ -104,7 +131,10 @@ export default function Vinyl({ vinyl }: PostProps) {
               </div>
               <div className="mt-auto flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <Link href={`/users/${vinyl.user.username}`} className="flex items-center space-x-2">
+                  <Link
+                    href={`/users/${vinyl.user.username}`}
+                    className="flex items-center space-x-2"
+                  >
                     <UserAvatar avatarUrl={vinyl.user.avatarUrl} />
                     <span className="text-sm font-medium">
                       {vinyl.user.username}
@@ -112,41 +142,59 @@ export default function Vinyl({ vinyl }: PostProps) {
                   </Link>
                 </div>
                 <div className="flex justify-between items-center mt-5">
-
-                  {/* Left side - Like and Comment buttons */}
                   <div className="flex items-center gap-5">
-
                     {!user ? (
-                      <>                       
-                      <Link href={'/login'} className="flex items-center gap-2">
-                      <button  className="flex items-center gap-2">
-                       
-                        <Heart
-                          className="size-5 hover:text-foreground"
-                        />
-                        {/* <span className="text-sm font-medium tabular-nums">
-                          {data.likes}
-                        </span> */}
-                      </button>
+                      <Link href={"/login"} className="flex items-center gap-2">
+                        <button className="flex items-center gap-2">
+                          <Heart className="size-5 hover:text-foreground" />
+                        </button>
                       </Link>
-                      </>
-
                     ) : (
-                      // Show follow button for logged in users viewing others' profiles
                       <LikeButton
                         vinylId={vinyl.id}
                         initialState={{
                           likes: vinyl._count.likes,
                           isLikedByUser: vinyl.likes.some(
-                            (like) => like.userId === user?.id,
+                            (like) => like.userId === user?.id
                           ),
                         }}
                       />
                     )}
+
                     <CommentButton
                       commentsCount={commentsCount}
                       onClick={() => setShowComments(!showComments)}
                     />
+
+                    {/* Share Button */}
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowShareOptions((prev) => !prev)}
+                        className="flex items-center gap-2"
+                      >
+                        <Share2 className="size-5 hover:text-foreground" />
+                      </button>
+                      {showShareOptions && (
+                        <div className="absolute bottom-full right-0 mb-2 w-12 bg-white shadow-lg rounded-md z-20">
+                          <div className="flex flex-col p-2">
+                            <TwitterShare
+                              size={32}
+                              className="flex items-center gap-2 p-2 hover:bg-gray-100 mb-4"
+                              url={`https://vinylovers.net/vinyls/${vinyl.id}`}
+                              hashtags={hashtagsshare} 
+                              title={`🔥 Spinning now: ${vinyl.artist}– ${vinyl.album}\n\n📀🎶Check it out on Vinylovers: https://vinylovers.net/vinyls/${vinyl.id}\n\n🎧 Join the vinyl community! @VinyloversApp`}
+                            />
+                            <WhatsappShare
+                              size={32}
+                              className="flex items-center gap-2 p-2 hover:bg-gray-100 mb-1"
+                              url={`https://vinylovers.net/vinyls/${vinyl.id}`}
+                              title={`🔥 Spinning now: ${vinyl.artist}– ${vinyl.album}\n\n📀🎶Check it out on Vinylovers: https://vinylovers.net/vinyls/${vinyl.id}\n\n🎧 Join the vinyl community! @VinyloversApp`}
+                            >
+                            </WhatsappShare>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -154,10 +202,6 @@ export default function Vinyl({ vinyl }: PostProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* { showComments && (
-        <Comments vinyl={vinyl} setCommentsCount={setCommentsCount} />
-      )} */}
 
       {user && showComments && (
         <Comments vinyl={vinyl} setCommentsCount={setCommentsCount} />
@@ -191,13 +235,11 @@ interface CommentButtonProps {
 }
 
 function CommentButton({ commentsCount, onClick }: CommentButtonProps) {
-
   return (
     <button onClick={onClick} className="flex items-center gap-2">
       <MessageSquare className="size-5" />
       <span className="text-sm font-medium tabular-nums">
         {commentsCount}{" "}
-        {/* <span className="hidden sm:inline">comments</span> */}
       </span>
     </button>
   );

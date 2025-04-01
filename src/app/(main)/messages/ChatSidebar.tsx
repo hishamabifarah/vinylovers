@@ -22,14 +22,14 @@ export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
 
   const queryClient = useQueryClient();
 
-  const { channel, client } = useChatContext();
+  const { channel } = useChatContext();
 
   useEffect(() => {
+    
     if (channel?.id) {
       queryClient.invalidateQueries({ queryKey: ["unread-messages-count"] });
     }
   }, [channel?.id, queryClient]);
-  
 
   const ChannelPreviewCustom = useCallback(
     (props: ChannelPreviewUIComponentProps) => (

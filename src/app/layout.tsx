@@ -76,7 +76,6 @@ export default function RootLayout({
         <Toaster />
         {/* </SessionProvider> */}
       </body>
-      
     </html>
   );
 }

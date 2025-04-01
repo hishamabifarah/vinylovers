@@ -30,7 +30,10 @@ export default function DeleteChatDialog({ isOpen, onClose }: DeleteChatDialogPr
     setIsDeleting(true);
     try {
       // Use our server-side API to delete the channel
-      await kyInstance.delete(`/api/chat/channels/${channel.id}`);
+      // await kyInstance.delete(`/api/chat/channels/${channel.id}`);
+
+      const destroy = await channel.delete();
+      console.log("Delete response:", destroy);
       
       // Clear the active channel
       if (setActiveChannel) {

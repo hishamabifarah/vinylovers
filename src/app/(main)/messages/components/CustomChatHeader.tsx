@@ -1,50 +1,51 @@
-"use client"
-
-import { useChannelStateContext, useChatContext } from "stream-chat-react"
-import DeleteChatButton from "./DeleteChatButton"
-import { ArrowLeft } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
+import { useChatContext } from "stream-chat-react"
+import ChatOptions from "./ChatOptions"
 import UserAvatar from "@/components/UserAvatar"
 
 export default function CustomChatHeader() {
-  const { channel } = useChannelStateContext()
-  const { client } = useChatContext()
-  const router = useRouter()
 
-  if (!channel || !client) return null
+    // Remove channel search input
+    setTimeout(() => {
+      const channelSearchInput = document.getElementsByClassName('str-chat__channel-search');
+      if (channelSearchInput) {
+        if (channelSearchInput[0] && channelSearchInput[0].parentNode) {
+          channelSearchInput[0].parentNode.removeChild(channelSearchInput[0]);
+        }
+      }
+    }, 1000);
+  const { channel } = useChatContext()
 
-  // Get channel data
-  const otherMembers = Object.values(channel.state.members || {}).filter((member) => member.user_id !== client.userID)
+  if (!channel) return null
 
-  // For direct messages, show the other user's name
-  // For group chats, show the channel name
-  const channelName =
-    channel.data?.name || otherMembers.map((member) => member.user?.name || member.user?.id).join(", ")
+  // Get other members (not the current user)
+  const otherMembers = Object.values(channel.state.members || {})
+    .filter((member) => !member.user?.me)
+    .map((member) => member.user)
 
-  // Get avatar for 1:1 chats
-  const avatarUrl = otherMembers.length === 1 ? otherMembers[0].user?.image : undefined
+  // For group chats, use the channel name
+  // For 1:1 chats, use the other user's name
+  const chatName = channel.data?.name || otherMembers[0]?.name || otherMembers[0]?.id || "Chat"
+
+  console.log('otherMembers', otherMembers) 
 
   return (
-    <div className="flex items-center justify-between border-b px-4 py-3">
-      <div className="flex items-center gap-3">
-        {/* <Button variant="ghost" size="icon" className="md:hidden" onClick={() => router.push("/messages")}>
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-
-        <UserAvatar avatarUrl={avatarUrl} /> */}
-
+    <div className="flex items-center justify-between px-4 py-2 border-b">
+      <div className="flex items-center gap-2">
+        {otherMembers.length === 1 ? (
+          <UserAvatar avatarUrl={otherMembers[0]?.image} />
+        ) : (
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground">
+            {otherMembers.length}
+          </div>
+        )}
         <div>
-          <h3 className="font-semibold">{channelName}</h3>
-          <p className="text-xs text-muted-foreground">
-            {otherMembers.length > 1 ? `${otherMembers.length} members` : "Direct message"}
-          </p>
+          <h3 className="font-medium">{chatName}</h3>
+          {otherMembers.length > 1 && (
+            <p className="text-xs text-muted-foreground">{otherMembers.length} participants</p>
+          )}
         </div>
       </div>
-
-       <div className="flex items-center gap-2">
-        <DeleteChatButton />
-      </div> 
+      <ChatOptions />
     </div>
   )
 }

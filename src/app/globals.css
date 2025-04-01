@@ -97,7 +97,7 @@
   --str-chat__channel-preview-active-background-color: theme(colors.accent.DEFAULT);
   --str-chat__channel-preview-hover-background-color: var(--str-chat__channel-preview-active-background-color);
   --str-chat__secondary-surface-color: theme(colors.muted.DEFAULT);
-  --str-chat__own-message-bubble-color: theme(colors.primary.foreground);
+  --str-chat__own-message-bubble-color: white;
   --str-chat__primary-surface-color: theme(colors.primary.DEFAULT);
   --str-chat__primary-surface-color-low-emphasis: var(--str-chat__primary-color-low-emphasis);
   --str-chat__disabled-color: theme(colors.muted.DEFAULT);
