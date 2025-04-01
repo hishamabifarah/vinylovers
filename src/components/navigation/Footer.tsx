@@ -31,10 +31,10 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
             <div className="space-x-4 flex justify-center">
-              <Link aria-label="Follow Vinylovers on Instagram" target="_blank" href="https://www.instagram.com">
+              <Link aria-label="Follow Vinylovers on Instagram" target="_blank" href="https://www.instagram.com/vinyloversapp/">
                 <Instagram />
               </Link>
-              <Link aria-label="Follow Vinylovers on X" target="_blank" href="https://www.x.com">
+              <Link aria-label="Follow Vinylovers on X" target="_blank" href="https://x.com/VinyloversApp">
                 <Twitter />
               </Link>
             </div>

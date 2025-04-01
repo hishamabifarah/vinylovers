@@ -6,6 +6,7 @@ import ReactQueryProvider from "./ReactQueryProvider";
 import SessionProvider from "./(main)/SessionProvider";
 import { validateRequest } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -69,6 +70,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
         {children}
+        <Analytics/>
         </ThemeProvider>
         </ReactQueryProvider>
         <Toaster />

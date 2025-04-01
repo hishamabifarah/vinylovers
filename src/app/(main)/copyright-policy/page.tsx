@@ -33,7 +33,7 @@ export default function CopyrightPolicyPage() {
           <p>We may update this Copyright Policy from time to time. We will notify you of any changes by posting the new Copyright Policy on this page.</p>
           <br />
           <b><h2>8. Contact Us</h2></b>
-          <p>If you have any questions about this Copyright Policy or to report copyright infringement, please contact our designated copyright agent at: copyright@vinylovers.com</p>
+          <p>If you have any questions about this Copyright Policy or to report copyright infringement, please contact our designated copyright agent at: <a aria-label='contact@vinylovers.net - contact email' href="mailto:contact@vinylovers.net">contact@vinylovers.net</a></p>
 
         </div>
       </div>

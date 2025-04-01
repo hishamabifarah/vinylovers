@@ -33,7 +33,7 @@ export default function TermsOfUsePage() {
         <p>Vinylovers reserves the right to modify or replace these Terms at any time. It is your responsibility to check the Terms periodically for changes.</p>
         <br/>
         <b><h2>8. Contact</h2></b>
-        <p>If you have any questions about these Terms, please contact us at: support@vinylovers.com</p>
+        <p>If you have any questions about these Terms, please contact us at: <a aria-label='contact@vinylovers.net - contact email' href="mailto:contact@vinylovers.net">contact@vinylovers.net</a></p>
       </div>
     </div>
     </>

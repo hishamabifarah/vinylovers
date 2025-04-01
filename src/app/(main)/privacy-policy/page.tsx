@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
         <p>We may change this Privacy Policy from time to time. If we make changes, we will notify you by revising the date at the top of the policy.</p>
         <br/>
         <b><h2>8. Contact Us</h2></b>
-        <p>If you have any questions about this Privacy Policy, please contact us at: privacy@vinylovers.com</p>
+        <p>If you have any questions about this Privacy Policy, please contact us at: <a aria-label='contact@vinylovers.net - contact email' href="mailto:contact@vinylovers.net">contact@vinylovers.net</a></p>
       </div>
     </div>
     </>
