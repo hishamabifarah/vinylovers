@@ -11,6 +11,8 @@ import Image from "next/image"
 import FollowButton from "@/components/FollowButton"
 import { useSession } from "../../SessionProvider"
 
+import avatarPlaceholder from "@/assets/avatar-placeholder.png";
+
 
 interface UserFollowingListProps {
   userId: string
@@ -68,7 +70,7 @@ export default function UserFollowingList({ userId, currentUserId }: UserFollowi
               <Link href={`/users/${user.username}`} className="flex items-center gap-3 flex-1">
                 <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 overflow-hidden rounded-full">
                   <Image
-                    src={user.avatarUrl || "/placeholder.svg?height=48&width=48"}
+                    src={user.avatarUrl || avatarPlaceholder}
                     alt={user.username}
                     fill
                     className="object-cover"

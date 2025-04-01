@@ -212,7 +212,7 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
         </div>
 
         {/* White button at the bottom center */}
-        <div className="text-center">
+        <div className="text-center mt-4">
           <button
             onClick={() => scrollToSection("cta-section")}
             className="mx-auto flex items-center space-x-2 rounded-full bg-white px-6 py-3 text-black transition-colors duration-300 hover:bg-gray-200"

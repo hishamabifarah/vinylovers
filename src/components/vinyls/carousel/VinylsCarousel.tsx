@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge"
 // import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { EmblaOptionsType } from "embla-carousel"
 import useEmblaCarousel from "embla-carousel-react"
-import Link from "next/link"
 
 interface Attachment {
   url: string
@@ -45,7 +44,7 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
   })
 
   // Get current background image
-  // const backgroundImage = vinyls[currentIndex]?.attachments[1]?.url || "/placeholder.svg?height=1080&width=1920"
+  const backgroundImage = vinyls[currentIndex]?.attachments[1]?.url || "/placeholder.svg?height=1080&width=1920"
 
   // Simple index update on slide change
   const onSelect = useCallback(() => {
@@ -81,8 +80,8 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
   return (
     <div className="relative w-full h-[600px] overflow-hidden bg-black">
       {/* Background image */}
-      <div className="absolute inset-0 z-0">
-        {/* <Image
+      {/* <div className="absolute inset-0 z-0">
+        <Image
           src={backgroundImage}
           alt="Background"
           fill
@@ -90,9 +89,9 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
           quality={60}
           priority={false}
           sizes="100vw"
-        /> */}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-      </div>
+      </div> */}
       {/* <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{
@@ -112,17 +111,15 @@ export function VinylCarousel({ vinyls }: VinylCarouselProps) {
             {vinyls.map((vinyl) => (
               <div key={vinyl.id} className="flex-[0_0_100%] min-w-0">
                 <div className="flex flex-col items-center p-6">
-                  <div className="relative w-128 h-128 mb-6 overflow-hidden rounded-lg shadow-lg">
-                  <Link href={`/vinyls/${vinyl.id}`}>
+                <div className="relative w-64 h-64 mb-6 overflow-hidden rounded-lg shadow-lg md:w-96 md:h-96">
                     <Image
                       src={vinyl.thumbnail || vinyl.attachments[0]?.url || "/placeholder.svg?height=256&width=256"}
                       alt={`${vinyl.artist} - ${vinyl.album}`}
                       fill
                       className="object-cover"
                       priority
-                      sizes="512px"
+                      sizes="(max-width: 768px) 16rem, 24rem"
                     />
-                  </Link>
                   </div>
                   <h2 className="text-2xl font-bold text-white mb-2">{vinyl.album}</h2>
                   <h3 className="text-xl text-gray-300 mb-2">{vinyl.artist}</h3>
