@@ -55,7 +55,7 @@ export async function getRandomVinyls(): Promise<VinylWithDetails[]> {
   })
 
   // Filter vinyls with at least 2 attachments
-  const vinylsWithTwoOrMoreAttachments = vinyls.filter((vinyl) => vinyl.attachments.length >= 2)
+  const vinylsWithTwoOrMoreAttachments = vinyls.filter((vinyl) => vinyl.attachments.length >= 1)
 
   // Shuffle the filtered vinyls and take 6
   const shuffled = vinylsWithTwoOrMoreAttachments.sort(() => 0.5 - Math.random())

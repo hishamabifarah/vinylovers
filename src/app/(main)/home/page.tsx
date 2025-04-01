@@ -7,7 +7,7 @@ import { validateRequest } from "@/auth";
 
 export default async function Home() {
 
-  const {user} = await validateRequest();
+  const { user } = await validateRequest();
 
   return (
     <main className="flex w-full min-w-0 gap-5">
