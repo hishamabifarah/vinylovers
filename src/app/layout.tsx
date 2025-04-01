@@ -45,6 +45,15 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Vinylovers - Your Vinyl Collection Community',
     description: 'Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.',
+    images: [
+      {
+        url: 'https://vinylovers.vercel.app/logo192.png', // Custom OG Image
+        width: 1200,
+        height: 630,
+        alt: 'Vinylovers - Your Vinyl Collection Community',
+      },
+    ],
+
   },
   robots: {
     index: true,
