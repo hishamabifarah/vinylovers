@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import Link from "next/link";
+import slugify from "slugify";
 
 export interface Attachment {
   id: string;
@@ -29,11 +30,14 @@ interface VinylCardProps {
 
 export function FeaturedVinylsCard({ vinyl }: VinylCardProps) {
 
+  const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
+  const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
+
   const firstImageUrl = vinyl.attachments[0]?.type === 'IMAGE' ? vinyl.attachments[0].url : null;
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-square">
-        <Link href={`/vinyls/${vinyl.id}`}>
+      <Link href={`/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`}>
         <Image
         className="transition-transform duration-300 hover:scale-105"
           src={firstImageUrl || avatarPlaceholder}

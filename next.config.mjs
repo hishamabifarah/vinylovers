@@ -33,6 +33,10 @@ const nextConfig = {
         source: "/hashtag/:tag", 
         destination: "/search?q=%23:tag",
       },
+      {
+        source: "/sitemap.xml",
+        destination: "/api/sitemap",
+      },
     ];
   },
 }
