@@ -35,7 +35,6 @@ export async function generateMetadata({ params }: PageProps) {
   const { user } = await validateRequest();
   const vinyl = await getVinyl(vinylId, user?.id);
 
-
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`;
   const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers. See vinyl details, connect with collectors, and share your collection.`;
   const pageUrl = `https://vinylovers.net/vinyls/${vinylArtist}/${vinylAlbum}/${vinylId}`;

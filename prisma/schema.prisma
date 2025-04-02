@@ -88,6 +88,7 @@ model Vinyl {
   hashtags  String?
 
   createdAt   DateTime   @default(now())
+  modifiedAt  DateTime   @updatedAt
   user        User       @relation(fields: [userId], references: [id])
   genre       Genre      @relation(fields: [genreId], references: [id])
   attachments Media[]

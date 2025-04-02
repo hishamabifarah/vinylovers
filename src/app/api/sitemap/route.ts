@@ -12,6 +12,7 @@ const getVinyls = unstable_cache(
         thumbnail: true,
         album: true,
         createdAt: true,
+        modifiedAt: true,
         attachments: true,
         genre: {
           select: {
@@ -40,7 +41,7 @@ export async function GET() {
     .map((vinyl) => `
       <url>
         <loc>${baseUrl}/vinyls/${vinyl.artist}/${vinyl.album}/${vinyl.id}</loc>
-        <lastmod>${vinyl.createdAt}</lastmod>
+        <lastmod>${vinyl.modifiedAt}</lastmod>
         <priority>0.8</priority>
       </url>
     `)
