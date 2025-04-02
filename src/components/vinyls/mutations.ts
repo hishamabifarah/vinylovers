@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { deleteVinyl, updateVinyl } from "./actions";
 
+import slugify from "slugify";
 
 export function useUpdateVinyl() {
   const queryClient = useQueryClient()
@@ -78,9 +79,13 @@ export function useUpdateVinyl() {
         description: "Your vinyl has been updated successfully.",
       })
 
+        const vinylArtist = slugify(variables.artist, { lower: true, strict: true });
+        const vinylAlbum = slugify(variables.album, { lower: true, strict: true });
+      
+
       // Navigate after a short delay to ensure cache is updated
       setTimeout(() => {
-        router.push(`/vinyls/${variables.id}`)
+        router.push(`/vinyls/${vinylArtist}/${vinylAlbum}/${variables.id}`)
         // Force a refresh of the page
         router.refresh()
       }, 100)

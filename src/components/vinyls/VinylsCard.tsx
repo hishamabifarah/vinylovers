@@ -12,7 +12,7 @@ import { Badge } from "../ui/badge";
 import { useSession } from "@/app/(main)/SessionProvider";
 import BookmarkButton from "./BookmarkButton";
 import LikeButton from "./LikeButton";
-
+import slugify from "slugify";
 
 interface PostProps {
   vinyl: VinylData;
@@ -25,10 +25,14 @@ export function VinylCard({ vinyl }: PostProps) {
   const firstImageUrl =
     vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
 
+    const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
+    const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
+
   return (
     <Card className="overflow-hidden">
       <div className="relative aspect-square">
-      <Link href={`/vinyls/${vinyl.id}`}>
+      {/* <Link href={`/vinyls/${vinyl.id}`}> */}
+      <Link href={`/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`}>
         <Image
           src={firstImageUrl || avatarPlaceholder}
           alt={`${vinyl.album} by ${vinyl.artist}`}
@@ -58,8 +62,7 @@ export function VinylCard({ vinyl }: PostProps) {
           </div>
           <p className="mt-0.75 flex text-xs text-muted-foreground sm:mt-1 pl-1">
             <CalendarCheck className="mr-1 h-3 w-3 sm:h-4 sm:w-4" suppressHydrationWarning />
-            <Link href={`/vinyls/${vinyl.id}`}>
-
+            <Link href={`/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`}>
               {formatRelativeDate(vinyl.createdAt)}
             </Link>
           </p>

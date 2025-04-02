@@ -20,6 +20,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateVinyl } from "@/components/vinyls/actions"
 import type { VinylData } from "@/lib/types"
 import { useUpdateVinyl } from "./mutations"
+import slugify from "slugify";
 
 const vinylSchema = z.object({
   id: z.string(),
@@ -138,7 +139,8 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
 
       // Limit to 5 total attachments
       const finalMediaIds = [...existingIds, ...newIds].slice(0, 5)
-
+      const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
+      const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
       const finalValues = {
         ...values,
         mediaIds: finalMediaIds,
@@ -146,7 +148,7 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
 
       updateMutation.mutate(finalValues, {
         onSuccess: () => {
-          router.push(`/vinyls/${vinyl.id}`)
+          router.push(`/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`)
         },
       })
     },

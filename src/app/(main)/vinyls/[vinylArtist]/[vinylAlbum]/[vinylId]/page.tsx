@@ -38,9 +38,8 @@ export async function generateMetadata({ params }: PageProps) {
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`;
   const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers. See vinyl details, connect with collectors, and share your collection.`;
   const pageUrl = `https://vinylovers.net/vinyls/${vinylArtist}/${vinylAlbum}/${vinylId}`;
-//   const imageUrl = vinyl.attachments[0].url || "https://vinylovers.net/default-vinyl.jpg";
+  const imageUrl = vinyl.attachments[0].url || "https://vinylovers.vercel.app/logo192.png";
 
-  const imageUrl = "https://vinylovers.vercel.app/logo192.png";
 
   return {
     title: pageTitle,

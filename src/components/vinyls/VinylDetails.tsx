@@ -6,6 +6,7 @@ import { Bookmark, Share2, Heart, CalendarCheck, Music } from "lucide-react";
 import Link from "next/link";
 import UserAvatar from "../UserAvatar";
 import { formatRelativeDate } from "@/lib/utils";
+import slugify from "slugify";
 
 export interface Attachment {
   id: string;
@@ -44,6 +45,8 @@ export function VinylDetails({ vinyl }: VinylCardProps) {
   const hashtags = vinyl.hashtags?.split(",").map((tag) => tag.trim())
   // const firstImageUrl =  vinyl.attachments[0]?.type === "IMAGE" ? vinyl.attachments[0].url : null;
 
+    const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
+    const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
   return (
     <>
       <Card className="overflow-hidden">
@@ -86,7 +89,7 @@ export function VinylDetails({ vinyl }: VinylCardProps) {
               <p className="font-semibold">{vinyl.user.displayName}</p>
               <p className="text-sm text-muted-foreground">
                 <CalendarCheck className="mr-1 h-3 w-3 sm:h-4 sm:w-4" suppressHydrationWarning />
-                <Link href={`/vinyls/${vinyl.id}`}>
+                <Link href={`/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`}>
 
                   {formatRelativeDate(vinyl.createdAt)}
                 </Link>
