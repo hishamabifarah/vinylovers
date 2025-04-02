@@ -55,13 +55,13 @@ export async function generateMetadata({ params }: PageProps) {
       title: pageTitle,
       description: pageDescription,
       url: pageUrl,
-      images: [{ url: thumbnailUrl, width: 900, height: 630 }],
+      images: [{ url: thumbnailUrl, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [thumbnailUrl],
+      image: [thumbnailUrl],
     },
     robots: {
       index: true,
