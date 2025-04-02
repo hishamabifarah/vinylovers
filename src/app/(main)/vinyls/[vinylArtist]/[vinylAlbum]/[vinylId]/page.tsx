@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps) {
     const originalImageUrl = vinyl.attachments[0].url || "https://vinylovers.vercel.app/logo192.png";
 
     // Generate a resized thumbnail URL (using a Next.js API route or external service)
-    const thumbnailUrl = `https://vinylovers.net/api/thumbnail?image=${encodeURIComponent(originalImageUrl)}`;
+    const thumbnailUrl = `https://vinylovers.vercel.app/api/thumbnail?image=${encodeURIComponent(originalImageUrl)}`;
 
 
   return {
