@@ -10,7 +10,6 @@ import { cache, Suspense, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import VinylAffiliate from "@/components/VinylAffiliate";
-import { resolveHref } from 'next/dist/client/resolve-href';
 
 interface PageProps {
   params: { vinylArtist: string; vinylAlbum: string; vinylId: string };
@@ -41,6 +40,8 @@ export async function generateMetadata({ params }: PageProps) {
   const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers. See vinyl details, connect with collectors, and share your collection.`;
   const pageUrl = `https://vinylovers.net/vinyls/${vinylArtist}/${vinylAlbum}/${vinylId}`;
   const imageUrl = vinyl.attachments[0].url || "https://vinylovers.net/default-vinyl.jpg";
+
+  console.log('imageUrl', imageUrl);
 
   return {
     title: pageTitle,
