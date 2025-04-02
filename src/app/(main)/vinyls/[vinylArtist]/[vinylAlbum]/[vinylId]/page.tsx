@@ -38,7 +38,13 @@ export async function generateMetadata({ params }: PageProps) {
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`;
   const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers. See vinyl details, connect with collectors, and share your collection.`;
   const pageUrl = `https://vinylovers.net/vinyls/${vinylArtist}/${vinylAlbum}/${vinylId}`;
-  const imageUrl = vinyl.attachments[0].url || "https://vinylovers.vercel.app/logo192.png";
+  // const imageUrl = vinyl.attachments[0].url || "https://vinylovers.vercel.app/logo192.png";
+
+    // Select first image or fallback to default
+    const originalImageUrl = vinyl.attachments[0].url || "https://vinylovers.vercel.app/logo192.png";
+
+    // Generate a resized thumbnail URL (using a Next.js API route or external service)
+    const thumbnailUrl = `https://vinylovers.net/api/thumbnail?image=${encodeURIComponent(originalImageUrl)}`;
 
 
   return {
@@ -49,13 +55,13 @@ export async function generateMetadata({ params }: PageProps) {
       title: pageTitle,
       description: pageDescription,
       url: pageUrl,
-      images: [{ url: imageUrl, width: 1200, height: 630 }],
+      images: [{ url: thumbnailUrl, width: 900, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [imageUrl],
+      images: [thumbnailUrl],
     },
     robots: {
       index: true,

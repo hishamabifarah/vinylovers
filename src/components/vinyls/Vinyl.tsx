@@ -116,7 +116,7 @@ export default function Vinyl({ vinyl }: PostProps) {
                   {hashtags?.map((tag, index) => (
                     <Link
                       key={index}
-                      href={`../hashtag/${tag.split("#")[1]}`}
+                      href={`/hashtag/${tag.split("#")[1]}`}
                       className="block"
                     >
                       <span
