@@ -30,7 +30,6 @@ const getVinyl = cache(async (vinylId: string, loggedInUserId?: string) => {
 
 // 🚀 Generate Full SEO Metadata
 export async function generateMetadata({ params }: PageProps) {
-  console.log('parans', params);
   const { vinylArtist, vinylAlbum, vinylId } = params;
   const { user } = await validateRequest();
   const vinyl = await getVinyl(vinylId, user?.id);

@@ -40,8 +40,6 @@ export default function DeleteChatButton({ className }: DeleteChatButtonProps) {
 
     setIsDeleting(true)
     try {
-      console.log(`Attempting to delete channel: ${channel.type}:${channel.id}`)
-
       // Use server-side endpoint to perform hard delete
       // const response = await kyInstance
       //   .post("/api/chat/channels/delete", {
@@ -53,10 +51,8 @@ export default function DeleteChatButton({ className }: DeleteChatButtonProps) {
       //   })
       //   .json()
 
-      // console.log("Delete response:", response)
 
-      const destroy = await channel.delete();
-      console.log("Delete response:", destroy);
+      await channel.delete();
 
       // Clear the active channel
       if (setActiveChannel) {

@@ -37,7 +37,7 @@ export function MediaGallery({ items, type }: MediaGalleryProps) {
             {type === "IMAGE" ? (
               <Image
                 src={item.url || "/placeholder.svg"}
-                alt=""
+                alt={item.type === "IMAGE" ? "Image" : "Video"}
                 fill
                 className="object-cover transition-all hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

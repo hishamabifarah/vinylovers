@@ -26,8 +26,6 @@ export default function CustomChatHeader() {
   // For 1:1 chats, use the other user's name
   const chatName = channel.data?.name || otherMembers[0]?.name || otherMembers[0]?.id || "Chat"
 
-  console.log('otherMembers', otherMembers) 
-
   return (
     <div className="flex items-center justify-between px-4 py-2 border-b">
       <div className="flex items-center gap-2">

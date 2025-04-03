@@ -60,7 +60,7 @@ export default function Page() {
         </div>
         <Image
           src={verifyImage}
-          alt=""
+          alt="Smiling robot with a vinyl record" 
           className="hidden w-1/2 object-cover md:block"
         />
       </div>

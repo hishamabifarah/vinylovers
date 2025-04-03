@@ -29,7 +29,7 @@ export default function Page() {
         </div>
         <Image
           src={loginImage}
-          alt=""
+          alt="Smiling robot with a vinyl record that says Sing in"
           className="hidden w-1/2 object-cover md:block"
         />
       </div>

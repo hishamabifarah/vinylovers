@@ -68,7 +68,7 @@ export function ClientHeader({ vinyls }: ClientHeaderProps) {
             <div className="flex items-center">
               <Image
                 src={Logo}
-                alt=""
+                alt="Vinylovers Logo"
                 role="presentation"
                 className="mt-2 h-12 w-12 p-2"
               />

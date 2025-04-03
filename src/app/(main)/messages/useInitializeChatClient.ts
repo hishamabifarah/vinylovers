@@ -1,7 +1,9 @@
-import kyInstance from "@/lib/ky";
-import { useEffect, useState } from "react";
-import { StreamChat } from "stream-chat";
-import { useSession } from "../SessionProvider";
+"use client"
+
+import kyInstance from "@/lib/ky"
+import { useEffect, useState } from "react"
+import { StreamChat } from "stream-chat"
+import { useSession } from "../SessionProvider"
 
 // init streamchat client
 // create connect to stream and connect our user
@@ -9,11 +11,26 @@ import { useSession } from "../SessionProvider";
 // disconnect the user when the component unmounts
 
 export default function useInitializeChatClient() {
-  const { user } = useSession();
-  const [chatClient, setChatClient] = useState<StreamChat | null>(null);
+  const { user } = useSession()
+  const [chatClient, setChatClient] = useState<StreamChat | null>(null)
 
   useEffect(() => {
-    const client = StreamChat.getInstance(process.env.NEXT_PUBLIC_STREAM_KEY!);
+    const client = StreamChat.getInstance(process.env.NEXT_PUBLIC_STREAM_KEY!)
+
+    // Set up global event handlers before connecting user
+    const handleConnectionRecovered = () => {
+      // Force refresh channels when connection is recovered
+      client.queryChannels(
+        {
+          type: "messaging",
+          members: { $in: [user!.id] },
+        },
+        {},
+        { watch: true },
+      )
+    }
+
+    client.on("connection.recovered", handleConnectionRecovered)
 
     client
       .connectUser(
@@ -30,17 +47,19 @@ export default function useInitializeChatClient() {
             .then((data) => data.token),
       )
       .catch((error) => console.error("Failed to connect user", error))
-      .then(() => setChatClient(client));
+      .then(() => setChatClient(client))
 
-      // clean up useeffect
+    // clean up useeffect
     return () => {
-      setChatClient(null);
+      client.off("connection.recovered", handleConnectionRecovered)
+      setChatClient(null)
       client
         .disconnectUser()
         .catch((error) => console.error("Failed to disconnect user", error))
-        .then(() => console.log("Connection closed"));
-    };
-  }, [user!.id, user!.username, user!.displayName, user!.avatarUrl]);
+        .then(() => {})
+    }
+  }, [user!.id, user!.username, user!.displayName, user!.avatarUrl])
 
-  return chatClient;
+  return chatClient
 }
+

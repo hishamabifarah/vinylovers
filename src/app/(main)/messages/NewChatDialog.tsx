@@ -6,9 +6,9 @@ import { useToast } from "@/components/ui/use-toast"
 import UserAvatar from "@/components/UserAvatar"
 import useDebounce from "@/hooks/useDebounce"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { Check, Loader2, SearchIcon, UserCheck, Users, X } from "lucide-react"
+import { Check, Loader2, SearchIcon, UserCheck, X } from "lucide-react"
 import { useState } from "react"
-import type { UserResponse } from "stream-chat"
+import type { ChannelResponse, UserResponse } from "stream-chat"
 import { type DefaultStreamChatGenerics, useChatContext } from "stream-chat-react"
 import { useSession } from "../SessionProvider"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -84,28 +84,49 @@ export default function NewChatDialog({ onOpenChange, onChatCreated, initialSear
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const channel = client.channel("messaging", {
-        members: [loggedInUser!.id, ...selectedUsers.map((u) => u.id)],
-        name:
-          selectedUsers.length > 1
-            ? loggedInUser!.displayName + ", " + selectedUsers.map((u) => u.name).join(", ")
-            : undefined,
-      })
-      await channel.create()
-      return channel
+      const members = [loggedInUser!.id, ...selectedUsers.map((user) => user.id)];
+
+      // Explicitly set roles for all members
+      const roles = {
+        [loggedInUser!.id]: "admin", // Set the creator's role to admin
+        ...Object.fromEntries(selectedUsers.map((user) => [user.id, "member"])), // Set other users as members
+      };
+
+      const channel = client.channel(
+        "messaging",
+        undefined, // Pass undefined for the channel ID
+        {
+          members,
+          name:
+            selectedUsers.length > 1
+              ? `${loggedInUser!.displayName}, ${selectedUsers.map((u) => u.name).join(", ")}`
+              : undefined,
+          roles, // Pass the roles explicitly
+        }
+      );
+
+      await channel.create();
+      return channel;
     },
     onSuccess: (channel) => {
-      setActiveChannel(channel)
-      onChatCreated()
+      setActiveChannel(channel);
+
+      // Emit a custom event to notify other clients
+      client.dispatchEvent({
+        type: "channel.created",
+        channel: channel.data as ChannelResponse<DefaultStreamChatGenerics>,
+      });
+
+      onChatCreated();
     },
     onError(error) {
-      console.error("Error starting chat", error)
+      console.error("Error starting chat", error);
       toast({
         variant: "destructive",
         description: "Error starting chat. Please try again.",
-      })
+      });
     },
-  })
+  });
 
   return (
     <Dialog open onOpenChange={onOpenChange}>
@@ -223,7 +244,7 @@ function UserResult({ user, selected, onClick, isMutual }: UserResultProps) {
         <div className="flex flex-col text-start">
           <div className="flex items-center gap-1">
             <p className="font-bold">{user.name}</p>
-            {isMutual && <UserCheck className="h-4 w-4 text-primary"  />}
+            {isMutual && <UserCheck className="h-4 w-4 text-primary" />}
           </div>
           <p className="text-muted-foreground">@{user.username}</p>
         </div>

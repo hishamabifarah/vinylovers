@@ -7,7 +7,7 @@ export default function NavbarDefault() {
     <header className="dark:bg-customNavbar sticky top-0 z-10 bg-card shadow-sm  lg:hidden">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-5 px-5 py-3">
         <div className="flex items-center justify-center">
-          <Image src={logo} alt="" className="mt-2 h-10 w-10" />
+          <Image src={logo} alt="Vinylovers logo" className="mt-2 h-10 w-10" />
           <Link href="/home" className="ml-2 text-2xl font-bold text-primary">
             Vinylovers
           </Link>

@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Menu } from "lucide-react"
-import { useEffect } from "react"
+import { Menu, Trash2 } from "lucide-react"
+import { useEffect, useState } from "react"
 import {
   Channel,
   ChannelHeader,
@@ -14,6 +14,8 @@ import {
   Window,
 } from "stream-chat-react"
 import CustomChatHeader from "./components/CustomChatHeader"
+import { useSession } from "../SessionProvider"
+import { useToast } from "@/components/ui/use-toast"
 
 interface ChatChannelProps {
   open: boolean
@@ -23,6 +25,9 @@ interface ChatChannelProps {
 
 export default function ChatChannel({ open, openSidebar, activeChannelId }: ChatChannelProps) {
   const { channel, client, setActiveChannel } = useChatContext()
+  const { user } = useSession()
+  const { toast } = useToast()
+  const [isDeleting, setIsDeleting] = useState(false)
 
   // When activeChannelId changes, set the active channel
   useEffect(() => {
@@ -69,6 +74,49 @@ export default function ChatChannel({ open, openSidebar, activeChannelId }: Chat
     }
   }, [channel, open])
 
+  // Add a useEffect to listen for channel events and update the active channel
+  useEffect(() => {
+    if (!client) return
+
+    const handleAddedToChannel = (event: any) => {
+      // If we don't have an active channel, set this one as active
+      if (!channel && event.channel) {
+        setActiveChannel(event.channel)
+      }
+    }
+
+    client.on("notification.added_to_channel", handleAddedToChannel)
+
+    return () => {
+      client.off("notification.added_to_channel", handleAddedToChannel)
+    }
+  }, [client, channel, setActiveChannel])
+
+  // Function to delete the current channel
+  const deleteChannel = async () => {
+    if (!channel) return
+
+    try {
+      setIsDeleting(true)
+      await channel.delete()
+      setActiveChannel(undefined)
+      toast({
+        description: "Chat deleted successfully",
+      })
+    } catch (error) {
+      console.error("Error deleting channel:", error)
+      toast({
+        variant: "destructive",
+        description: "You don't have permission to delete this chat",
+      })
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
+  // Check if current user is admin of the channel
+  const isAdmin = channel?.state?.members?.[user!.id]?.role === "admin" || channel?.data?.created_by_id === user!.id
+
   return (
     <div className={cn("w-full flex flex-col h-full", !open && "md:block")}>
       {channel ? (
@@ -77,9 +125,14 @@ export default function ChatChannel({ open, openSidebar, activeChannelId }: Chat
           <Channel>
             <Window>
               <CustomChatHeader />
-              <CustomChannelHeader openSidebar={openSidebar} />
+              <CustomChannelHeader
+                openSidebar={openSidebar}
+                isAdmin={isAdmin}
+                onDelete={deleteChannel}
+                isDeleting={isDeleting}
+              />
               <MessageList />
-              <MessageInput focus  />
+              <MessageInput focus />
             </Window>
           </Channel>
         </div>
@@ -109,9 +162,12 @@ export default function ChatChannel({ open, openSidebar, activeChannelId }: Chat
 
 interface CustomChannelHeaderProps extends ChannelHeaderProps {
   openSidebar: () => void
+  isAdmin?: boolean
+  onDelete?: () => void
+  isDeleting?: boolean
 }
 
-function CustomChannelHeader({ openSidebar, ...props }: CustomChannelHeaderProps) {
+function CustomChannelHeader({ openSidebar, isAdmin, onDelete, isDeleting, ...props }: CustomChannelHeaderProps) {
   return (
     <div className="flex items-center gap-3">
       <div className="h-full p-2 md:hidden">
@@ -120,6 +176,22 @@ function CustomChannelHeader({ openSidebar, ...props }: CustomChannelHeaderProps
         </Button>
       </div>
       <ChannelHeader {...props} />
+
+      {/* Delete button for admin */}
+      {isAdmin && onDelete && (
+        <div className="ml-auto mr-2">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={onDelete}
+            disabled={isDeleting}
+            className="text-red-500 hover:text-red-700 hover:bg-red-100"
+            title="Delete chat"
+          >
+            <Trash2 className="size-5" />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

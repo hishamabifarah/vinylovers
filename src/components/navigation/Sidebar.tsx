@@ -11,7 +11,7 @@ const Sidebar: React.FC = () => {
     return (
         <div className={`flex flex-col h-screen bg-[#18181d] text-white ${isOpen ? 'w-64' : 'w-16'} transition-width duration-300`}>
             <div className="flex items-center justify-between h-16 p-4 mt-5">
-            <Image className=" w-[100%] h-10 hidden md:block " src={Logo} alt="" />
+            <Image className=" w-[100%] h-10 hidden md:block " src={Logo} alt="Vinylovers Logo" />
 
                <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
                     <Menu className="w-6 h-6" />

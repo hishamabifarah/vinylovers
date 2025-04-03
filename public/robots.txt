@@ -1,3 +1,27 @@
+# Allow all crawlers to access the site
 User-agent: *
 Allow: /
+
+# Allow Googlebot full access
+User-agent: Googlebot
+Allow: /
+
+# Block Bingbot from accessing private pages
+User-agent: Bingbot
+Disallow: /private/
+
+# Block sensitive pages
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+
+# Block specific file types
+Disallow: /*.pdf$
+Disallow: /*.zip$
+
+# Set crawl delay for Bing to reduce server load
+User-agent: Bingbot
+Crawl-delay: 10
+
+# Provide the sitemap location
 Sitemap: https://vinylovers.net/sitemap.xml

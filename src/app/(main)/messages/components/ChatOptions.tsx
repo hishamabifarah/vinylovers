@@ -28,7 +28,7 @@ export default function ChatOptions() {
   const handleDeleteClick = async () => {
     // Check if the current user is a channel admin
     const currentMember = channel.state.members[user!.id]
-    const isChannelAdmin = currentMember?.role === "channel_admin" || channel.data?.created_by_id === user!.id
+    const isChannelAdmin = currentMember?.role === "owner" || channel.data?.created_by_id === user!.id
 
     if (isChannelAdmin) {
       setShowDeleteDialog(true)
@@ -55,7 +55,7 @@ export default function ChatOptions() {
       })
 
       // Refresh the channel list
-      window.location.href = "/chat"
+      window.location.href = "/messages"
     } catch (error) {
       console.error("Error deleting channel:", error)
       toast({

@@ -1,56 +1,73 @@
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { MailPlus, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+import { MailPlus, X } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
 import {
   ChannelList,
   ChannelPreviewMessenger,
-  ChannelPreviewUIComponentProps,
+  type ChannelPreviewUIComponentProps,
   useChatContext,
-} from "stream-chat-react";
-import { useSession } from "../SessionProvider";
-import NewChatDialog from "./NewChatDialog";
-import { useQueryClient } from "@tanstack/react-query";
+} from "stream-chat-react"
+import { useSession } from "../SessionProvider"
+import NewChatDialog from "./NewChatDialog"
+import { useQueryClient } from "@tanstack/react-query"
 
 interface ChatSidebarProps {
-  open: boolean;
-  onClose: () => void;
+  open: boolean
+  onClose: () => void
 }
 
 export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
-  const { user } = useSession();
+  const { user } = useSession()
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
-  const { channel } = useChatContext();
+  const { channel, client } = useChatContext()
 
   useEffect(() => {
-    
     if (channel?.id) {
-      queryClient.invalidateQueries({ queryKey: ["unread-messages-count"] });
+      queryClient.invalidateQueries({ queryKey: ["unread-messages-count"] })
     }
-  }, [channel?.id, queryClient]);
+  }, [channel?.id, queryClient])
+
+  useEffect(() => {
+    if (!client) return
+
+    // Listen for new channel events
+    const handleNewChannel = (event: any) => {
+      // Force refresh of the channel list
+      queryClient.invalidateQueries({ queryKey: ["channelList"] })
+    }
+
+    // Listen for channel.created events
+    client.on("channel.created", handleNewChannel)
+
+    // Listen for notification.added_to_channel events
+    client.on("notification.added_to_channel", handleNewChannel)
+
+    return () => {
+      client.off("channel.created", handleNewChannel)
+      client.off("notification.added_to_channel", handleNewChannel)
+    }
+  }, [queryClient, client])
 
   const ChannelPreviewCustom = useCallback(
     (props: ChannelPreviewUIComponentProps) => (
       <ChannelPreviewMessenger
         {...props}
         onSelect={() => {
-          props.setActiveChannel?.(props.channel, props.watchers);
-          onClose();
+          props.setActiveChannel?.(props.channel, props.watchers)
+          onClose()
         }}
       />
     ),
     [onClose],
-  );
+  )
 
   return (
-    <div
-      className={cn(
-        "size-full flex-col border-e md:flex md:w-72",
-        open ? "flex" : "hidden",
-      )}
-    >
+    <div className={cn("size-full flex-col border-e md:flex md:w-72", open ? "flex" : "hidden")}>
       <MenuHeader onClose={onClose} />
       <ChannelList
         filters={{
@@ -89,17 +106,16 @@ export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
           </div>
         )}
       />
-      
     </div>
-  );
+  )
 }
 
 interface MenuHeaderProps {
-  onClose: () => void;
+  onClose: () => void
 }
 
 function MenuHeader({ onClose }: MenuHeaderProps) {
-  const [showNewChatDialog, setShowNewChatDialog] = useState(false);
+  const [showNewChatDialog, setShowNewChatDialog] = useState(false)
 
   return (
     <>
@@ -124,11 +140,12 @@ function MenuHeader({ onClose }: MenuHeaderProps) {
         <NewChatDialog
           onOpenChange={setShowNewChatDialog}
           onChatCreated={() => {
-            setShowNewChatDialog(false);
-            onClose();
+            setShowNewChatDialog(false)
+            onClose()
           }}
         />
       )}
     </>
-  );
+  )
 }
+

@@ -17,8 +17,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Channel ID is required" }, { status: 400 })
     }
 
-    console.log(`Attempting to delete channel: ${channelType}:${channelId}`)
-
     // Check if environment variables are set
     if (!process.env.NEXT_PUBLIC_STREAM_KEY || !process.env.STREAM_SECRET) {
       console.error("Stream API key or secret is missing")
@@ -44,7 +42,6 @@ export async function POST(request: Request) {
         },
         serverClient.createToken("server-admin"),
       )
-      console.log("Connected to Stream as server admin")
     } catch (connectError) {
       console.error("Error connecting admin user:", connectError)
       return NextResponse.json(
@@ -69,8 +66,7 @@ export async function POST(request: Request) {
       }
 
       // Delete the channel
-      const response = await channel.delete()
-      console.log("Channel delete response:", response)
+      await channel.delete()
     } catch (channelError) {
       console.error("Error with channel operations:", channelError)
       return NextResponse.json(
@@ -85,7 +81,6 @@ export async function POST(request: Request) {
       try {
         await serverClient.disconnectUser()
       } catch (disconnectError) {
-        console.error("Error disconnecting admin user:", disconnectError)
       }
     }
 

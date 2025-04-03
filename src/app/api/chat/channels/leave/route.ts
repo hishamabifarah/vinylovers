@@ -18,7 +18,6 @@ export async function POST(request: Request) {
 
     // This endpoint just logs that the user left the channel
     // The actual removal is handled client-side
-    console.log(`User ${user.id} left channel: ${channelId}`)
 
     return NextResponse.json({ success: true })
   } catch (error) {

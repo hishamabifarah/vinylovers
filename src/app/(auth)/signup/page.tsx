@@ -31,8 +31,7 @@ export default function Page() {
         </div>
         <Image
           src={signupImage}
-          alt=""
-          role="presentation"
+            alt="Smiling robot with a vinyl record that says Register"
           className="hidden w-1/2 object-cover md:block"
         />
       </div>
