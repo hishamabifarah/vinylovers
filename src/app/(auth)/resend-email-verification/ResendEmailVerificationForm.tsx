@@ -10,13 +10,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {  resendVerificationEmailSchema, ResendVerifcationEmailValues } from "@/lib/validation";
+import { resendVerificationEmailSchema, ResendVerifcationEmailValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { verify } from "./actions";
+import { resend } from './actions'
 
-export default function ResetPasswordEmailForm() {
+export default function ResendEmailVerificationForm() {
   const [error, setError] = useState<string>();
 
   const [isPending, startTransition] = useTransition();
@@ -31,8 +31,10 @@ export default function ResetPasswordEmailForm() {
   async function onSubmit(values: ResendVerifcationEmailValues) {
     setError(undefined);
     startTransition(async () => {
-      const { error } = await verify(values.email);
-      if (error) setError(error);
+      const result = await resend(values);
+      if ("error" in result) {
+        setError(result.error);
+      }
     });
   }
 

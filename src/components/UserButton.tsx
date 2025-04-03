@@ -99,7 +99,7 @@ export default function UserButton({ className }: UserButtonProps) {
           {/* <UnverifiedUserButton /> */}
           <div className="">
           <p className="text-sm text-red-500">Please verify your account </p>
-          <Link className="text-sm" aria-label="Resend Email Verification" href="/auth/resend-email-verification">Resend email?</Link>
+          <Link className="text-sm" aria-label="Resend Email Verification" href="/resend-email-verification">Resend email?</Link>
           </div>
         </div>
       );

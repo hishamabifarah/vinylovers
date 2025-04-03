@@ -7,6 +7,8 @@ import { lucia } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 
+import useSendVerificationEmail from '../hooks/useSendVerificationEmail'
+
 export async function verify(
   token: string,
 ): Promise<{ error: string }> {
