@@ -76,21 +76,20 @@ export async function GET() {
         <lastmod>${vinyl.modifiedAt}</lastmod>
         <priority>0.8</priority>
       </url>
-    `,
+    `
     )
     .join("")
-
-  const urlsTopics = trendingTopics
-    .map(
-      (topic) => `
-      <url>
-        <loc>${encodeXML(`${baseUrl}/hashtags/${topic.hashtag}`)}</loc>
-        <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-        <priority>0.8</priority>
-      </url>
-    `,
-    )
-    .join("")
+    const urlsTopics = trendingTopics
+      .map(
+        (topic) => `
+        <url>
+          <loc>${encodeXML(`${baseUrl}/hashtag/${topic.hashtag.replace('#', '')}`)}</loc>
+          <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+          <priority>0.8</priority>
+        </url>
+      `,
+      )
+      .join("")
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -104,7 +103,7 @@ export async function GET() {
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
-
+    ${urls}
     <url>
       <loc>${baseUrl}/vinyls/genres</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
@@ -180,7 +179,6 @@ export async function GET() {
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
-    ${urls}
     ${urlsTopics}
   </urlset>`
 
