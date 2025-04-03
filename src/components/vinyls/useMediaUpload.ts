@@ -78,10 +78,10 @@ export default function useMediaUpload() {
       return;
     }
 
-    if (attachments.length + files.length > 5) {
+    if (attachments.length + files.length > 6) {
       toast({
         variant: "destructive",
-        description: "You can only upload up to 5 attachments per post.",
+        description: "You can only upload up to 6 attachments per vinyl.",
       });
       return;
     }

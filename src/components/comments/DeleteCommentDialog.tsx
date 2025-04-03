@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { useDeleteCommentMutation } from "./mutations";
+import { useEffect } from "react";
 
 interface DeleteCommentDialogProps {
   comment: CommentData;
@@ -24,15 +25,54 @@ export default function DeleteCommentDialog({
 }: DeleteCommentDialogProps) {
   const mutation = useDeleteCommentMutation();
 
+  // Function to reset body styles safely
+  const resetBodyStyles = () => {
+    document.body.style.pointerEvents = "";
+    document.body.style.overflow = "";
+  };
+
+  // Reset body styles when component unmounts or dialog closes
+  useEffect(() => {
+    // Reset body styles when dialog closes
+    if (!open) {
+      // Small timeout to let animation complete
+      const timer = setTimeout(resetBodyStyles, 200);
+      return () => clearTimeout(timer);
+    }
+    
+    // Cleanup on unmount
+    return resetBodyStyles;
+  }, [open]);
+
   function handleOpenChange(open: boolean) {
-    if (!open || !mutation.isPending) {
+    if (!open && !mutation.isPending) {
+      // Only close if not in the middle of a deletion
       onClose();
     }
   }
 
+  // Handle cancel
+  const handleCancel = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
+    if (!mutation.isPending) {
+      onClose();
+    }
+  };
+
+  // Handle delete with proper style reset
+  const handleDelete = () => {
+    mutation.mutate(comment.id, { 
+      onSuccess: () => {
+        onClose();
+        // Ensure styles are reset when deletion succeeds
+        setTimeout(resetBodyStyles, 200);
+      }
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent>
+      <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <DialogTitle>Delete comment?</DialogTitle>
           <DialogDescription>
@@ -43,14 +83,14 @@ export default function DeleteCommentDialog({
         <DialogFooter>
           <LoadingButton
             variant="destructive"
-            onClick={() => mutation.mutate(comment.id, { onSuccess: onClose })}
+            onClick={handleDelete}
             loading={mutation.isPending}
           >
             Delete
           </LoadingButton>
           <Button
             variant="outline"
-            onClick={onClose}
+            onClick={handleCancel}
             disabled={mutation.isPending}
           >
             Cancel

@@ -17,15 +17,17 @@ but what if url pasted in another browser or incognito (if user profile page a m
 16. DONE after delete vinyl click page freezes
 17. DONE revalidate featured vinyls when delete one 
 18. DONE check site when connection offline
-19. Image with src "https://utfs.io/a/f90wrdja4t/d1fa77fe-1d11-4e9c-aace-98deafe1d05f-99o3ej.webp" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
-20. after delete comment click page freezes
+19. DONE Image with src "https://utfs.io/a/f90wrdja4t/d1fa77fe-1d11-4e9c-aace-98deafe1d05f-99o3ej.webp" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+20. DONE after delete comment click page freezes
 21. DONE Implement custom 404 page
-22. Add genres to sitemap
+22. DONE Add genres to sitemap
 23. add website from copilot open tab
 24. implement full use case for auth with verified?
 25. http://localhost:3000/email-verification check button
 26. src={user.avatarUrl || "/placeholder.svg?height=48&width=48"} CHECK ALL
 27. Dialogs aria labels
+28. NEXT RELEASE Revalidate Genres when new vinyl added or updated or deleted
+29. When vinyl deleted Media count model stays the same
 
 RESOURCES
 --------

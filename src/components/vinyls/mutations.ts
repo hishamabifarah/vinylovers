@@ -143,9 +143,9 @@ export function useDeleteVinylMutation() {
         description: "Vinyl deleted",
       });
 
-      if (pathname === `/vinyls/${deletedVinyl.id}`) {
+      // if (pathname === `/vinyls/${deletedVinyl.id}`) {
         router.push(`/users/${deletedVinyl.user.username}`);
-      }
+      // }
     },
     onError(error) {
       console.error(error);

@@ -5,7 +5,13 @@ import { UploadThingError, UTApi } from "uploadthing/server";
 import streamServerClient from "@/lib/stream";
 import { Readable } from "stream"
 import sharp from "sharp";
+import crypto from "crypto";
 
+function generateUniqueFileName(originalName: string): string {
+  const hash = crypto.randomBytes(16).toString("hex"); // Generate a random 16-byte hash
+  const extension = originalName.split(".").pop(); // Extract the file extension
+  return `${hash}.${extension}`; // Combine hash and extension
+}
 
 // Helper function to generate a resized thumbnail
 async function generateThumbnail(imageUrl: string): Promise<string> {
@@ -14,22 +20,21 @@ async function generateThumbnail(imageUrl: string): Promise<string> {
 
   // Resize the image using sharp
   const resizedBuffer = await sharp(Buffer.from(buffer))
-    .resize(300, 300) // Resize to 300x300 pixels
+    .resize(1200, 630) // Resize to 300x300 pixels
     .jpeg({ quality: 80 })
     .toBuffer();
 
-  // Convert buffer to a readable stream (since UploadThing expects FileEsque objects)
-  const stream = Readable.from(resizedBuffer);
 
-  // Create a File object (Node.js doesn't support File, so use Blob instead)
+  // Generate a unique file name for the thumbnail
+  const uniqueFileName = generateUniqueFileName("thumbnail.jpg");
+
+  // Create a File-like object for UploadThing
   const thumbnailBlob = new Blob([resizedBuffer], { type: "image/jpeg" });
-
-  // Convert Blob to File-like object
-  const thumbnailFile = new File([thumbnailBlob], "thumbnail.jpg", {
+  const thumbnailFile = new File([thumbnailBlob], uniqueFileName, {
     type: "image/jpeg",
   });
 
-  // Upload using UploadThing
+  // Upload the thumbnail using UploadThing
   const uploadResponse = await new UTApi().uploadFiles([thumbnailFile]);
 
   if (!uploadResponse[0]?.data?.url) {
@@ -106,7 +111,7 @@ export const fileRouter = {
 
   // vinyl media upload
   attachment: f({
-    image: { maxFileSize: "4MB", maxFileCount: 5 },
+    image: { maxFileSize: "4MB", maxFileCount: 6 },
     video: { maxFileSize: "64MB", maxFileCount: 5 },
   })
     .middleware(async () => {

@@ -15,13 +15,16 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { HashtagsInput } from "@/components/HashtagsInput"
 import useMediaUpload, { type Attachment } from "@/components/vinyls/useMediaUpload"
+import { useToast } from "@/components/ui/use-toast";
 
 const vinylSchema = z.object({
   artist: z.string().min(1, "Required"),
   album: z.string().min(1, "Required"),
   genreId: z.string().min(1, "Required"),
   hashtags: z.string().optional(),
-  mediaIds: z.array(z.string()).max(5, "cannot have more than 5 attachments"),
+  mediaIds: z.array(z.string())
+
+  .max(6, "Cannot have more than 6 attachments"),
 })
 
 type NewVinylValues = z.infer<typeof vinylSchema>
@@ -41,7 +44,8 @@ interface AttachmentPreviewsProps {
 }
 
 const AddVinylForm: React.FC<AddVinylFormProps> = React.memo(({ genres }) => {
-  const mutation = useSubmitVinylMutation()
+  const mutation = useSubmitVinylMutation();
+   const { toast } = useToast();
 
   const {
     attachments,
@@ -70,6 +74,15 @@ const AddVinylForm: React.FC<AddVinylFormProps> = React.memo(({ genres }) => {
 
   const onSubmit = useCallback(
     (values: NewVinylValues) => {
+      console.log('values', values);
+      if (values.mediaIds.length === 0) {
+        toast({
+          variant: "destructive",
+          description: "Add at least one Image.",
+        });
+        return; // Prevent form submission
+      }
+
       mutation.mutate(values, {
         onSuccess: () => {
           resetMediaUpload()
@@ -163,7 +176,7 @@ const AddVinylForm: React.FC<AddVinylFormProps> = React.memo(({ genres }) => {
                   <div className="flex items-center space-x-2">
                     <AddAttachmentsButton
                       onFilesSelected={startUpload}
-                      disabled={isUploading || memoizedAttachments.length >= 5}
+                      disabled={isUploading || memoizedAttachments.length >= 6}
                     />
                     {isUploading && (
                       <div className="flex items-center space-x-2">

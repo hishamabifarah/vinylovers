@@ -27,7 +27,9 @@ export const sendVerificationEmail = async (userId: string, email: string, usern
     try {
       // Step 2: Create the verification link
       const verificationToken = await createEmailVerificationToken(userId, email);
+      // const BASE_URL = process.env.BASE_URL || "http://localhost:3000"; // Use environment variable for base URL
       const BASE_URL = process.env.BASE_URL || "http://localhost:3000"; // Use environment variable for base URL
+
       const verificationLink = `${BASE_URL}/email-verification/?token=${verificationToken}`;
   
       // Step 3: Create the email template

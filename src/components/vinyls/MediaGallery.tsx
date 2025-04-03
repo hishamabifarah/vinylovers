@@ -27,10 +27,10 @@ export function MediaGallery({ items, type }: MediaGalleryProps) {
             key={item.id}
             className={cn(
               "relative rounded-lg overflow-hidden cursor-pointer",
-              // Span 2 rows for every 3rd item
-              i % 3 === 0 ? "row-span-2" : "",
-              // Span 2 columns for every 5th item
-              i % 5 === 0 ? "md:col-span-2" : "",
+              // // Span 2 rows for every 3rd item
+              // i % 3 === 0 ? "row-span-2" : "",
+              // // Span 2 columns for every 5th item
+              // i % 5 === 0 ? "md:col-span-2" : "",
             )}
             onClick={() => setSelectedItem(item)}
           >

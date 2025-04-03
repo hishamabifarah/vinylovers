@@ -4,6 +4,7 @@ import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
 import { getVinylDataInclude } from "@/lib/types";
 import { newVinylSchema } from "@/lib/validation";
+import { revalidateTag } from 'next/cache'
 
 // ReactQuery's useMutation hook allows one function arguments so we use input as an array
 export async function submitVinyl(input: {
@@ -35,5 +36,8 @@ export async function submitVinyl(input: {
   });
 
   // return the new vinyl to add to the mutation onsucess function
+
+  revalidateTag('vinyl-featured')
+
   return newVinyl;
 }

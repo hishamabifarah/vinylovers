@@ -28,7 +28,7 @@ const vinylSchema = z.object({
   album: z.string().min(1, "Required"),
   genreId: z.string().min(1, "Required"),
   hashtags: z.string().optional(),
-  mediaIds: z.array(z.string()).max(5, "Cannot have more than 5 attachments"),
+  mediaIds: z.array(z.string()).max(6, "Cannot have more than 6 attachments"),
 })
 
 type EditVinylValues = z.infer<typeof vinylSchema>
@@ -44,41 +44,6 @@ interface AttachmentPreviewsProps {
   attachments: Attachment[]
   removeAttachment: (mediaId: string) => void
 }
-
-// Custom hook for updating vinyl
-// function useUpdateVinyl() {
-//   const queryClient = useQueryClient()
-//   const { toast } = useToast()
-
-//   return useMutation({
-//     mutationFn: updateVinyl,
-//     onSuccess: (updatedVinyl, variables) => {
-//       queryClient.setQueryData(["vinyl", variables.id], updatedVinyl)
-
-//       queryClient.invalidateQueries({ queryKey: ["vinyl", variables.id] })
-//       queryClient.invalidateQueries({ queryKey: ["vinyls"] })
-//       queryClient.invalidateQueries({
-//         queryKey: ["vinyl-feed"],
-//         predicate(query) {
-//           return query.queryKey.includes("for-you") || query.queryKey.includes("user-vinyls")
-//         },
-//       })
-
-//       toast({
-//         title: "Vinyl updated",
-//         description: "Your vinyl has been updated successfully.",
-//       })
-//     },
-//     onError: (error) => {
-//       console.error("Error updating vinyl:", error)
-//       toast({
-//         variant: "destructive",
-//         title: "Error",
-//         description: "Failed to update vinyl. Please try again.",
-//       })
-//     },
-//   })
-// }
 
 interface EditVinylFormProps {
   vinyl: VinylData
@@ -121,15 +86,20 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
 
   // Update mediaIds when attachments change
   useEffect(() => {
-    // Ensure we don't exceed 5 total attachments
+    // Ensure we don't exceed 6 total attachments
     const existingIds = existingAttachments.map((a) => a.id)
     const newIds = attachments.filter((a) => a.mediaId).map((a) => a.mediaId as string)
 
-    // Limit to 5 total attachments
-    const totalIds = [...existingIds, ...newIds].slice(0, 5)
+    // Limit to 6 total attachments
+    const totalIds = [...existingIds, ...newIds].slice(0, 6)
 
     form.setValue("mediaIds", totalIds)
   }, [attachments, existingAttachments, form])
+
+  // Calculate remaining attachment slots
+  const remainingSlots = useMemo(() => {
+    return 6 - existingAttachments.length - attachments.length;
+  }, [existingAttachments.length, attachments.length]);
 
   const onSubmit = useCallback(
     (values: EditVinylValues) => {
@@ -137,8 +107,8 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
       const existingIds = existingAttachments.map((a) => a.id)
       const newIds = attachments.filter((a) => a.mediaId).map((a) => a.mediaId as string)
 
-      // Limit to 5 total attachments
-      const finalMediaIds = [...existingIds, ...newIds].slice(0, 5)
+      // Limit to 6 total attachments
+      const finalMediaIds = [...existingIds, ...newIds].slice(0, 6)
       const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
       const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
       const finalValues = {
@@ -152,7 +122,7 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
         },
       })
     },
-    [updateMutation, vinyl.id, router, existingAttachments, attachments],
+    [updateMutation, vinyl.id, router, existingAttachments, attachments, vinyl.artist, vinyl.album],
   )
 
   const handleRemoveExistingAttachment = useCallback((id: string) => {
@@ -161,6 +131,9 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
 
   const memoizedAttachments = useMemo(() => attachments, [attachments])
   const memoizedExistingAttachments = useMemo(() => existingAttachments, [existingAttachments])
+
+  // Total count of all attachments (existing + new)
+  const totalAttachmentCount = memoizedExistingAttachments.length + memoizedAttachments.length;
 
   return (
     <Form {...form}>
@@ -243,20 +216,33 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
                   <div className="flex items-center space-x-2">
                     <AddAttachmentsButton
                       onFilesSelected={(files) => {
-                        const remainingSlots = 5 - memoizedExistingAttachments.length
-                        const filesToUpload = files.slice(0, remainingSlots)
-                        if (filesToUpload.length > 0) {
-                          startUpload(filesToUpload)
+                        // Calculate how many more files we can add
+                        const currentRemainingSlots = 6 - memoizedExistingAttachments.length - memoizedAttachments.length;
+                        
+                        if (currentRemainingSlots <= 0) {
+                          toast({
+                            title: "Maximum attachments reached",
+                            description: "You've reached the maximum of 5 attachments. Please remove some existing attachments first.",
+                            variant: "destructive",
+                          });
+                          return;
                         }
+
+                        const filesToUpload = files.slice(0, currentRemainingSlots);
+                        
+                        if (filesToUpload.length > 0) {
+                          startUpload(filesToUpload);
+                        }
+                        
                         if (filesToUpload.length < files.length) {
                           toast({
-                            title: "Too many files",
+                            title: "Some files not added",
                             description: `Only ${filesToUpload.length} out of ${files.length} files were added. Maximum total is 5 attachments.`,
                             variant: "destructive",
-                          })
+                          });
                         }
                       }}
-                      disabled={isUploading || memoizedExistingAttachments.length >= 5}
+                      disabled={isUploading || totalAttachmentCount >= 6}
                     />
                     {isUploading && (
                       <div className="flex items-center space-x-2">
@@ -267,6 +253,13 @@ const EditVinylForm: React.FC<EditVinylFormProps> = React.memo(({ vinyl, genres 
                   </div>
                 </FormControl>
               </div>
+              
+              {/* Attachment count indicator */}
+              <div className="text-sm text-muted-foreground mt-1">
+                {totalAttachmentCount} of 6 attachments used 
+                {remainingSlots > 0 ? ` (${remainingSlots} more allowed)` : " (maximum reached)"}
+              </div>
+              
               <FormMessage />
             </FormItem>
           )}
@@ -466,4 +459,3 @@ const AttachmentPreview = React.memo(
 AttachmentPreview.displayName = "AttachmentPreview"
 
 export default EditVinylForm
-

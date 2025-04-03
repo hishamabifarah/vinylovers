@@ -17,6 +17,7 @@ import Image from "next/image";
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import { Heart, MessageSquare, Share2 } from "lucide-react";
 import { TwitterShare, WhatsappShare } from "react-share-kit";
+import slugify from "slugify";
 
 interface PostProps {
   vinyl: VinylData;
@@ -33,30 +34,33 @@ export default function Vinyl({ vinyl }: PostProps) {
   const hashtags = vinyl.hashtags?.split(",").map((tag) => tag.trim());
 
   const hashtagsshare = vinyl.hashtags
-  ?.split(",")
-  .map((tag) => tag.trim().replace(/^#/, "")); // Remove any existing #
+    ?.split(",")
+    .map((tag) => tag.trim().replace(/^#/, "")); // Remove any existing #
 
   const images = vinyl.attachments.filter((a) => a.type === "IMAGE");
   const videos = vinyl.attachments.filter((a) => a.type === "VIDEO");
 
-//   const genreHashtagsMap = {
-//     "Rock": ["ClassicRock", "RockVinyl"],
-//     "Metal": ["HeavyMetal", "MetalVinyl"],
-//     "Jazz": ["JazzVinyl", "NowPlayingJazz"],
-//     "Hip-Hop": ["HipHopVinyl", "RapRecords"], // Fixed from "hiphop" to "Hip-Hop"
-//     "Indie": ["IndieVinyl", "AlternativeMusic"],
-//     "Dance-Electronic": ["ElectronicVinyl", "Synthwave"], // Keeps hyphen
-//     "Blues": ["BluesVinyl", "SoulRecords"],
-//     "Reggae": ["ReggaeVinyl", "DubMusic"]
-//   };
+    const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
+    const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
 
-// const baseHashtags = ["VinylCommunity", "NowSpinning", "VinylRecords", "RecordCollection"];
+  //   const genreHashtagsMap = {
+  //     "Rock": ["ClassicRock", "RockVinyl"],
+  //     "Metal": ["HeavyMetal", "MetalVinyl"],
+  //     "Jazz": ["JazzVinyl", "NowPlayingJazz"],
+  //     "Hip-Hop": ["HipHopVinyl", "RapRecords"], // Fixed from "hiphop" to "Hip-Hop"
+  //     "Indie": ["IndieVinyl", "AlternativeMusic"],
+  //     "Dance-Electronic": ["ElectronicVinyl", "Synthwave"], // Keeps hyphen
+  //     "Blues": ["BluesVinyl", "SoulRecords"],
+  //     "Reggae": ["ReggaeVinyl", "DubMusic"]
+  //   };
 
-// // Match the vinyl genre while preserving exact key formatting
-// const genreHashtags = genreHashtagsMap[vinyl.genre.name] || []; 
+  // const baseHashtags = ["VinylCommunity", "NowSpinning", "VinylRecords", "RecordCollection"];
 
-// const hashtagsfinal = [...baseHashtags, ...genreHashtags]
-//   .map((tag) => tag.replace(/^#/, "")); // Remove any existing #
+  // // Match the vinyl genre while preserving exact key formatting
+  // const genreHashtags = genreHashtagsMap[vinyl.genre.name] || []; 
+
+  // const hashtagsfinal = [...baseHashtags, ...genreHashtags]
+  //   .map((tag) => tag.replace(/^#/, "")); // Remove any existing #
 
   return (
     <>
@@ -69,6 +73,7 @@ export default function Vinyl({ vinyl }: PostProps) {
                 alt={`${vinyl.artist} by ${vinyl.artist}`}
                 style={{ objectFit: "cover" }}
                 fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" // Responsive sizes
                 className="transition-transform duration-300 hover:scale-105"
               />
             </div>
@@ -180,15 +185,15 @@ export default function Vinyl({ vinyl }: PostProps) {
                             <TwitterShare
                               size={32}
                               className="flex items-center gap-2 p-2 hover:bg-gray-100 mb-4"
-                              url={`https://vinylovers.net/vinyls/${vinyl.id}`}
-                              hashtags={hashtagsshare} 
-                              title={`🔥 Spinning now: ${vinyl.artist}– ${vinyl.album}\n\n📀🎶Check it out on Vinylovers: https://vinylovers.net/vinyls/${vinyl.id}\n\n🎧 Join the vinyl community! @VinyloversApp`}
+                              url={`https://vinylovers.net/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`}
+                              hashtags={hashtagsshare}
+                              title={`🔥 Spinning now: ${vinyl.artist} – ${vinyl.album}\n\n📀🎶 Check it out on Vinylovers! 🎧 Join the vinyl community! @VinyloversApp`}
                             />
                             <WhatsappShare
                               size={32}
-                              className="flex items-center gap-2 p-2 hover:bg-gray-100 mb-1"
-                              url={`https://vinylovers.net/vinyls/${vinyl.id}`}
-                              title={`🔥 Spinning now: ${vinyl.artist}– ${vinyl.album}\n\n📀🎶Check it out on Vinylovers: https://vinylovers.net/vinyls/${vinyl.id}\n\n🎧 Join the vinyl community! @VinyloversApp`}
+                              className="flex items-center gap-2 p-2 hover:bg-gray-100 mb-4"
+                              url={`https://vinylovers.net/vinyls/${vinylArtist}/${vinylAlbum}/${vinyl.id}`}
+                              title={`🔥 Spinning now: ${vinyl.artist} – ${vinyl.album}\n\n📀🎶 Check it out on Vinylovers! 🎧 Join the vinyl community! @VinyloversApp`}
                             >
                             </WhatsappShare>
                           </div>

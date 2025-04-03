@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma";
+import { lucia } from "@/auth";
 import { signUpSchema, SignUpValues } from "@/lib/validation";
 import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
@@ -8,6 +9,7 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { redirect } from "next/navigation";
 import { sendVerificationEmail } from "../hooks/useSendVerificationEmail";
 import streamServerClient from "@/lib/stream";
+import { cookies } from "next/headers";
 
 // return type of Promise can contain this error, if nothing wrong redirect the user .
 // in the code we have to return the specific error for signup, we can't catch it in the front
@@ -83,6 +85,14 @@ export async function signUp(
         name: username,
       });
     });
+
+    const session = await lucia.createSession(userId, {});
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
    
     try {
       await sendVerificationEmail(userId, email, username);
