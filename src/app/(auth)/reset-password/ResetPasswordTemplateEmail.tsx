@@ -54,7 +54,7 @@ export const ResetPasswordTemplateEmail = ({
         </Text>
         <Text style={link}>{verificationLink}</Text>
         <Text style={text}>
-          If you didn&apos;t request a password reset, please ignore this email or contact our support team <a aria-label='contact@vinylovers.net - contact email' href="mailto:contact@vinylovers.net">contact@vinylovers.net</a> if you have concerns about your account&apos;s security.
+          If you didn&apos;t request a password reset, please ignore this email or contact our support team <Link aria-label='contact@vinylovers.net - contact email' href="mailto:contact@vinylovers.net">contact@vinylovers.net</Link> if you have concerns about your account&apos;s security.
         </Text>
         <Hr style={hr} />
         <Text style={footer}>
