@@ -11,6 +11,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import VinylAffiliate from "@/components/VinylAffiliate"
 import { MusicAlbumJsonLd } from "@/components/JsonLd"
+import sharp from "sharp";
+import fetch from "node-fetch";
 
 interface PageProps {
   params: { vinylArtist: string; vinylAlbum: string; vinylId: string }
@@ -42,9 +44,35 @@ export async function generateMetadata({ params }: PageProps) {
   // Use the first attachment as the image or fallback to a default
   const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
 
-  const resizedImageUrl = `/api/resize?imageUrl=${encodeURIComponent(originalImageUrl)}`;
+  // Fetch the original image
+  const response = await fetch(originalImageUrl);
+  if (!response.ok) {
+    return {
+      title: pageTitle,
+      description: pageDescription,
+      openGraph: {
+        type: "music.album",
+        title: pageTitle,
+        description: pageDescription,
+        url: pageUrl
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: pageTitle,
+        description: pageDescription,
+      },
+      robots: {
+        index: true,
+        follow: true,
+      },
+    }
+  }
+  const buffer = await response.buffer();
 
-  console.log('resizedImageUrl' , resizedImageUrl);
+  // Resize the image to 1200x630
+  const resizedImage = await sharp(buffer)
+    .resize(1200, 630, { fit: "cover" })
+    .toBuffer();
 
   // Make sure the image URL is absolute
   // const imageUrl = originalImageUrl.startsWith("http")
@@ -64,7 +92,7 @@ export async function generateMetadata({ params }: PageProps) {
       url: pageUrl,
       images: [
         {
-          url: resizedImageUrl,
+          url: resizedImage,
           width: 1200,
           height: 630,
           alt: `${vinyl.artist} - ${vinyl.album} vinyl cover`,
@@ -75,7 +103,7 @@ export async function generateMetadata({ params }: PageProps) {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [resizedImageUrl],
+      images: [resizedImage],
     },
     robots: {
       index: true,
