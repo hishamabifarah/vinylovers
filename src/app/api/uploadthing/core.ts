@@ -79,10 +79,13 @@ export const fileRouter = {
       );
 
 
-      const transformedUrl =
-        process.env.NODE_ENV === "production"
-          ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
-          : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+      // const transformedUrl =
+      //   process.env.NODE_ENV === "production"
+      //     ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
+      //     : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+
+      const transformedUrl =  newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
+ 
 
       // await prisma.user.update({
       //   where: { id: metadata.user.id },
@@ -95,13 +98,13 @@ export const fileRouter = {
         prisma.user.update({
           where: { id: metadata.user.id },
           data: {
-            avatarUrl: newAvatarUrl,
+            avatarUrl: transformedUrl,
           },
         }),
         streamServerClient.partialUpdateUser({
           id: metadata.user.id,
           set: {
-            image: newAvatarUrl,
+            image: transformedUrl,
           },
         }),
       ]);
