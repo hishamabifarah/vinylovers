@@ -1,21 +1,3 @@
-// interface EmailTemplateProps {
-//   username: string;
-//   verificationLink: string;
-// }
-
-// export default function EmailTemplate({
-//     username,
-//     verificationLink,
-//   }: EmailTemplateProps) {
-//   return `
-//       <div>
-//         <h1>Welcome, ${username}!</h1>
-//         <p>Thank you for registering. Please verify your email by clicking the link below:</p>
-//         <a href="${verificationLink}">Verify Email</a>
-//       </div>
-//     `;
-// }
-
 import React from "react";
 import {
   Body,
@@ -72,7 +54,7 @@ export const EmailTemplate = ({
         </Text>
         <Text style={link}>{verificationLink}</Text>
         <Text style={text}>
-          If you didn&apos;t request account verification, please ignore this email or contact our support team if you have concerns about your account&apos;s security.
+          If you didn&apos;t request account verification, please ignore this email or contact our support team <a aria-label='contact@vinylovers.net - contact email' href="mailto:contact@vinylovers.net">contact@vinylovers.net</a> if you have concerns about your account&apos;s security.
         </Text>
         <Hr style={hr} />
         <Text style={footer}>

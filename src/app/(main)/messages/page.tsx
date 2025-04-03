@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   const { user } = await validateRequest();
 
-  if (!user) {
+  if (!user || !user.verified) {
     return (
       <p className="text-destructive">
         You&apos;re not authorized to view this page.

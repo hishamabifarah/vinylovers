@@ -125,15 +125,23 @@ async function UserInfoSidebar({ user }: UserInfoSidebarProps) {
 
       {!loggedInUser ? (
         <Link href="/login">
-          <Button className="w-full mt-5 text-white bg-primary hover:bg-primary/80">Sign in to follow</Button>
+          <Button className="w-full mt-5 text-white bg-primary hover:bg-primary/80">
+            Sign in to follow
+          </Button>
         </Link>
+      ) : !loggedInUser.verified ? (
+        (
+          <p className="text-sm text-red-500">verify your account to follow </p>
+        )
       ) : (
         user.id !== loggedInUser.id && (
           <FollowButton
             userId={user.id}
             initialState={{
               followers: user._count.followers,
-              isFollowedByUser: user.followers.some(({ followerId }) => followerId === loggedInUser.id),
+              isFollowedByUser: user.followers.some(
+                ({ followerId }) => followerId === loggedInUser.id
+              ),
             }}
           />
         )

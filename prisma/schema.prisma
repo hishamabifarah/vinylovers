@@ -20,6 +20,7 @@ model EmailVerificationToken {
   userId     String
   email      String
   expires_at DateTime
+  createdAt    DateTime @default(now())
 }
 
 model PasswordResetToken {

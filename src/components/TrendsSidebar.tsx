@@ -106,6 +106,8 @@ async function WhoToFollow() {
 
   if (!user) return null;
 
+  if(!user.verified) return null;
+
   const usersToFollow = await prisma.user.findMany({
     where: {
       NOT: {

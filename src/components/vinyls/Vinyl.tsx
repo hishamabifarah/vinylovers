@@ -75,7 +75,7 @@ export default function Vinyl({ vinyl }: PostProps) {
                 alt={`${vinyl.artist} by ${vinyl.artist}`}
                 style={{ objectFit: "cover" }}
                 fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" // Responsive sizes
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="transition-transform duration-300 hover:scale-105"
               />
             </div>
@@ -93,7 +93,7 @@ export default function Vinyl({ vinyl }: PostProps) {
                 >
                   {formatRelativeDate(vinyl.createdAt)}
 
-                  {user?.id && (
+                  {user?.id && user.verified && (
                     <div className="flex gap-3 mt-5">
                       <BookmarkButton
                         vinylId={vinyl.id}
@@ -168,10 +168,23 @@ export default function Vinyl({ vinyl }: PostProps) {
                         }}
                       />
                     )}
-                    <CommentButton
-                      commentsCount={commentsCount}
-                      onClick={() => setShowComments(!showComments)}
-                    />
+
+                    {!user ? (
+                      <Link href="/login" className="flex items-center gap-2">
+                        <button className="flex items-center gap-2">
+                          <MessageSquare className="size-5 hover:text-foreground" />
+                        </button>
+                      </Link>
+                    ) : !user.verified ? (
+                      null
+                    ) : (
+                      // If the user is logged in and verified, show the LikeButton
+                      <CommentButton
+                        commentsCount={commentsCount}
+                        onClick={() => setShowComments(!showComments)}
+                      />
+
+                    )}
 
                     {/* Share Button */}
                     <div className="relative">
@@ -210,7 +223,7 @@ export default function Vinyl({ vinyl }: PostProps) {
         </CardContent>
       </Card>
 
-      {user && showComments && (
+      {user && user.verified && showComments && (
         <Comments vinyl={vinyl} setCommentsCount={setCommentsCount} />
       )}
 

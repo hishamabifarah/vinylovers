@@ -103,7 +103,7 @@ export async function signUp(
       };
     }
 
-    return redirect("/home");
+    return redirect("/verification-sent");
 
   } catch (error) {
 

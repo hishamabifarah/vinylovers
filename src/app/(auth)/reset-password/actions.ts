@@ -71,7 +71,7 @@ export async function verifyEmail(
   
       // Step 4: Send the email using Resend
       const { data, error } = await resend.emails.send({
-        from: 'Vinyl Lovers <no-reply@vinylovers.net>',
+        from: 'VinyLovers <no-reply@vinylovers.net>',
         to: [email],
         subject: 'Password Reset',
         react: emailContent,

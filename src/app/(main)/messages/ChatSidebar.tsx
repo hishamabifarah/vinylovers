@@ -26,6 +26,13 @@ export default function ChatSidebar({ open, onClose }: ChatSidebarProps) {
 
   const { channel, client } = useChatContext()
 
+  setTimeout(() => {
+    const elements = document.querySelectorAll('.str-chat__channel-search.str-chat__channel-search--inline');
+    if (elements.length > 0) {
+      elements[0].remove(); // Remove the first matching element
+    }
+  }, 300); // Delay in milliseconds (1 second)
+
   useEffect(() => {
     if (channel?.id) {
       queryClient.invalidateQueries({ queryKey: ["unread-messages-count"] })

@@ -53,7 +53,7 @@ export async function sendVerificationEmail(userId: string, email: string, usern
 
     // Send the email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Vinyl Lovers <no-reply@vinylovers.net>',
+      from: 'VinyLovers <no-reply@vinylovers.net>',
       to: [email],
       subject: 'Email Verification',
       react: emailContent,

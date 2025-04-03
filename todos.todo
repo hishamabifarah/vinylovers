@@ -1,10 +1,10 @@
 1. what if user didn't verify or token expired? implement it
 2. add toast when verified.
 3. all destructive message for user to verify in home page
-4 Check: Make sure to implement rate limiting based on IP addresses.
-5. only show verified users in who to follow 
-6. share button each vinyl
-7. add support email including in reset and verify passwords email
+4  Check: Make sure to implement rate limiting based on IP addresses.
+5. DONE only show verified users in who to follow (removed unless verified)
+6. DONE share button each vinyl
+7. DONE add support email including in reset and verify passwords email
 8. change logo url in sending email when you go live
 9. DONE add page for followers and following 
 10. check all page url if user can access them if not signed in , like add vinyl which is accessible from menu only if logged in
@@ -21,7 +21,7 @@ but what if url pasted in another browser or incognito (if user profile page a m
 20. DONE after delete comment click page freezes
 21. DONE Implement custom 404 page
 22. DONE Add genres to sitemap
-23. add website from copilot open tab
+23. DONE add website from copilot open tab
 24. implement full use case for auth with verified?
 25. http://localhost:3000/email-verification check button
 26. src={user.avatarUrl || "/placeholder.svg?height=48&width=48"} CHECK ALL
