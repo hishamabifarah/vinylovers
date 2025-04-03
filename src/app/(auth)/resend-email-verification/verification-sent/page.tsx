@@ -19,7 +19,7 @@ export default function Page() {
           <h1 className="text-center text-3xl font-bold">Check Your Email</h1>
           <div className="space-y-5">
                 <p className="mt-2 text-center">
-                    We've sent you a new verification email. Please check your inbox and spam folder.
+                    We&apos;ve sent you a new verification email. Please check your inbox and spam folder.
                 </p>          
             <Link  href="/login" className="block text-center hover:underline mt-3">
             Once verified, you can  log in here.</Link>
