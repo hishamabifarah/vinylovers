@@ -7,7 +7,6 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { sendVerificationEmail } from "../hooks/useSendVerificationEmail";
 import { cookies } from "next/headers";
 import { isWithinExpirationDate } from "oslo";
-import { useSession } from "@/app/(main)/SessionProvider";
 
 
 export async function resend(
