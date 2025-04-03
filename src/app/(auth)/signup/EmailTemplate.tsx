@@ -68,11 +68,11 @@ export const EmailTemplate = ({
           This verify account link will expire in 24 hours.
         </Text>
         <Text style={text}>
-          If you&apos;re having trouble clicking the password reset button, copy and paste the following URL into your web browser:
+          If you&apos;re having trouble clicking the verify account button, copy and paste the following URL into your web browser:
         </Text>
         <Text style={link}>{verificationLink}</Text>
         <Text style={text}>
-          If you didn&apos;t request a password reset, please ignore this email or contact our support team if you have concerns about your account&apos;s security.
+          If you didn&apos;t request account verification, please ignore this email or contact our support team if you have concerns about your account&apos;s security.
         </Text>
         <Hr style={hr} />
         <Text style={footer}>

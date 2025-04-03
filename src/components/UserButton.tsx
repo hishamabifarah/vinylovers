@@ -26,11 +26,11 @@ interface UserButtonProps {
   className?: string;
 }
 
+
 export default function UserButton({ className }: UserButtonProps) {
   const { user } = useSession();
   const { theme, setTheme } = useTheme();
   const queryClient = useQueryClient();
-console.log('user', user);
   if (user) {
     if (user.verified) {
       return (
@@ -96,8 +96,11 @@ console.log('user', user);
     } else {
       return (
         <div className={cn("flex items-center gap-2", className)}>
-          <UnverifiedUserButton />
-          <p className="text-sm text-red-500">Please verify your account.</p>
+          {/* <UnverifiedUserButton /> */}
+          <div className="">
+          <p className="text-sm text-red-500">Please verify your account </p>
+          <Link className="text-sm" aria-label="Resend Email Verification" href="/auth/resend-email-verification">Resend email?</Link>
+          </div>
         </div>
       );
     }

@@ -66,6 +66,18 @@ export default async function Page({ params: { username } }: PageProps) {
     );
   }
 
+   // If the user is logged in but not verified
+   if (!loggedInUser.verified) {
+    return (
+      <div>
+        <p className="text-destructive">
+          Your account is not verified. Please check your email for the verification link.
+        </p>
+        {/* <button onClick={resendVerificationEmail}>Resend Verification Email</button> */}
+      </div>
+    );
+  }
+
   const user = await getUser(username, loggedInUser.id);
 
   return (
@@ -79,8 +91,6 @@ export default async function Page({ params: { username } }: PageProps) {
         </div>
         <UserVinyls userId={user.id} />
       </div>
-
-      
     </main>
   );
 }

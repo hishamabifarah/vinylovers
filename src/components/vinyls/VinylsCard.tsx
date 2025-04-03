@@ -82,7 +82,7 @@ export function VinylCard({ vinyl }: PostProps) {
           </Badge>
         </div>
 
-        {user && (
+        {user && user.verified &&  (
           <div className="flex justify-end">
             <div className="flex space-x-2">
               <LikeButton

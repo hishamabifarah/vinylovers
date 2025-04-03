@@ -25,6 +25,8 @@ interface PostProps {
 
 export default function Vinyl({ vinyl }: PostProps) {
   const { user } = useSession();
+
+  console.log('user', user);
   const [showComments, setShowComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(vinyl._count.comments);
   const [showShareOptions, setShowShareOptions] = useState(false);
@@ -40,8 +42,8 @@ export default function Vinyl({ vinyl }: PostProps) {
   const images = vinyl.attachments.filter((a) => a.type === "IMAGE");
   const videos = vinyl.attachments.filter((a) => a.type === "VIDEO");
 
-    const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
-    const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
+  const vinylArtist = slugify(vinyl.artist, { lower: true, strict: true });
+  const vinylAlbum = slugify(vinyl.album, { lower: true, strict: true });
 
   //   const genreHashtagsMap = {
   //     "Rock": ["ClassicRock", "RockVinyl"],
@@ -149,23 +151,23 @@ export default function Vinyl({ vinyl }: PostProps) {
                 <div className="flex justify-between items-center mt-5">
                   <div className="flex items-center gap-5">
                     {!user ? (
-                      <Link href={"/login"} className="flex items-center gap-2">
+                      <Link href="/login" className="flex items-center gap-2">
                         <button className="flex items-center gap-2">
                           <Heart className="size-5 hover:text-foreground" />
                         </button>
                       </Link>
+                    ) : !user.verified ? (
+                      null
                     ) : (
+                      // If the user is logged in and verified, show the LikeButton
                       <LikeButton
                         vinylId={vinyl.id}
                         initialState={{
                           likes: vinyl._count.likes,
-                          isLikedByUser: vinyl.likes.some(
-                            (like) => like.userId === user?.id
-                          ),
+                          isLikedByUser: vinyl.likes.some((like) => like.userId === user?.id),
                         }}
                       />
                     )}
-
                     <CommentButton
                       commentsCount={commentsCount}
                       onClick={() => setShowComments(!showComments)}

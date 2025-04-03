@@ -34,7 +34,7 @@ export default function Page() {
       <div className="flex justify-center items-center h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl bg-card shadow-2xl">
         <div className="w-full space-y-10 overflow-y-auto p-10 md:w-1/2">
           <h1 className="text-center text-3xl font-bold">
-            Welcome to Vinly Lovers! 
+            Welcome to Vinylovers! 
          
           </h1>
           <h4 className="text-center">Please Verify Account</h4>
