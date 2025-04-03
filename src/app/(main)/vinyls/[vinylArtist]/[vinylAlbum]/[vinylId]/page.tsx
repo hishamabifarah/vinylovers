@@ -31,18 +31,25 @@ const getVinyl = cache(async (vinylId: string, loggedInUserId?: string) => {
 
 // 🚀 Generate Full SEO Metadata
 export async function generateMetadata({ params }: PageProps) {
-  const { vinylArtist, vinylAlbum, vinylId } = params
+  const { vinylId } = params
   const { user } = await validateRequest()
   const vinyl = await getVinyl(vinylId, user?.id)
 
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`
   const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers. See vinyl details, connect with collectors, and share your collection.`
-  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}`
+  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(params.vinylArtist)}/${encodeURIComponent(params.vinylAlbum)}/${vinylId}`
 
-  // For OpenGraph, we'll use the built-in Next.js OG image generation
-  // This URL is automatically handled by Next.js based on the opengraph-image.tsx file
-  const ogImageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}/opengraph-image`
+  // Use the first attachment as the image or fallback to a default
+  const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
 
+  // Make sure the image URL is absolute
+  const imageUrl = originalImageUrl.startsWith("http")
+    ? originalImageUrl
+    : `https://vinylovers.vercel.app${originalImageUrl}`
+
+  // Create a URL for the OG image API with all necessary parameters
+  const ogImageUrl = `https://vinylovers.vercel.app/api/og?artist=${encodeURIComponent(vinyl.artist)}&album=${encodeURIComponent(vinyl.album)}&image=${encodeURIComponent(imageUrl)}${vinyl.genre ? `&genre=${encodeURIComponent(vinyl.genre.name)}` : ""}`
+  console.log('ogImageUrl',ogImageUrl);
   return {
     title: pageTitle,
     description: pageDescription,
@@ -51,8 +58,6 @@ export async function generateMetadata({ params }: PageProps) {
       title: pageTitle,
       description: pageDescription,
       url: pageUrl,
-      // Next.js will automatically use the opengraph-image.tsx file
-      // But we can also explicitly set it here
       images: [
         {
           url: ogImageUrl,
