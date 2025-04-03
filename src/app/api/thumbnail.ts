@@ -5,6 +5,8 @@ export const runtime = "nodejs"
 
 export async function GET(req: NextRequest) {
   const imageUrl = req.nextUrl.searchParams.get("image")
+  const width = Number.parseInt(req.nextUrl.searchParams.get("width") || "600")
+  const height = Number.parseInt(req.nextUrl.searchParams.get("height") || "600")
 
   if (!imageUrl) {
     return new NextResponse("Image URL missing", { status: 400 })
@@ -12,7 +14,11 @@ export async function GET(req: NextRequest) {
 
   try {
     // Fetch the original image
-    const response = await fetch(imageUrl)
+    const response = await fetch(imageUrl, {
+      headers: {
+        "User-Agent": "Vinylovers Thumbnail Generator",
+      },
+    })
 
     if (!response.ok) {
       console.error(`Failed to fetch image: ${response.status} ${response.statusText}`)
@@ -23,8 +29,11 @@ export async function GET(req: NextRequest) {
 
     // Resize the image
     const resizedImage = await sharp(Buffer.from(buffer))
-      .resize(1200, 630, { fit: "cover" }) // Standard OG image dimensions
-      .jpeg({ quality: 80 }) // Compress to save bandwidth
+      .resize(width, height, {
+        fit: "cover",
+        position: "center",
+      })
+      .jpeg({ quality: 80 })
       .toBuffer()
 
     // Set proper caching headers

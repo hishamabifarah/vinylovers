@@ -10,6 +10,7 @@ import { cache, Suspense } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import VinylAffiliate from "@/components/VinylAffiliate"
+import { MusicAlbumJsonLd } from "@/components/JsonLd"
 
 interface PageProps {
   params: { vinylArtist: string; vinylAlbum: string; vinylId: string }
@@ -30,21 +31,17 @@ const getVinyl = cache(async (vinylId: string, loggedInUserId?: string) => {
 
 // 🚀 Generate Full SEO Metadata
 export async function generateMetadata({ params }: PageProps) {
-  const { vinylId } = params
+  const { vinylArtist, vinylAlbum, vinylId } = params
   const { user } = await validateRequest()
   const vinyl = await getVinyl(vinylId, user?.id)
 
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`
-  const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}"`
-  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinyl.artist)}/${encodeURIComponent(vinyl.album)}/${vinylId}`
+  const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers. See vinyl details, connect with collectors, and share your collection.`
+  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}`
 
-  // Select first image or fallback to default
-  const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
-
-  // Use absolute URL for the image - this is critical for social sharing
-  const absoluteImageUrl = originalImageUrl.startsWith("http")
-    ? originalImageUrl
-    : `https://vinylovers.vercel.app${originalImageUrl}`
+  // For OpenGraph, we'll use the built-in Next.js OG image generation
+  // This URL is automatically handled by Next.js based on the opengraph-image.tsx file
+  const ogImageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}/opengraph-image`
 
   return {
     title: pageTitle,
@@ -54,9 +51,11 @@ export async function generateMetadata({ params }: PageProps) {
       title: pageTitle,
       description: pageDescription,
       url: pageUrl,
+      // Next.js will automatically use the opengraph-image.tsx file
+      // But we can also explicitly set it here
       images: [
         {
-          url: absoluteImageUrl,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: `${vinyl.artist} - ${vinyl.album} vinyl cover`,
@@ -67,7 +66,7 @@ export async function generateMetadata({ params }: PageProps) {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [absoluteImageUrl],
+      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -78,12 +77,25 @@ export async function generateMetadata({ params }: PageProps) {
 
 // 🚀 Page Component
 export default async function Page({ params }: PageProps) {
-  const { vinylId } = params
+  const { vinylArtist, vinylAlbum, vinylId } = params
   const { user } = await validateRequest()
   const vinyl = await getVinyl(vinylId, user?.id)
 
+  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}`
+  const imageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
+
   return (
     <main className="flex w-full min-w-0 gap-5">
+      {/* Add JSON-LD structured data */}
+      <MusicAlbumJsonLd
+        album={vinyl.album}
+        artist={vinyl.artist}
+        // releaseDate={vinyl.releaseDate}
+        genre={vinyl.genre?.name}
+        imageUrl={imageUrl}
+        url={pageUrl}
+      />
+
       <div className="w-full min-w-0 space-y-5">
         <Vinyl vinyl={vinyl} />
       </div>
