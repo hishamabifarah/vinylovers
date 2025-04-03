@@ -70,9 +70,15 @@ export async function generateMetadata({ params }: PageProps) {
   const buffer = await response.buffer();
 
   // Resize the image to 1200x630
-  const resizedImage = await sharp(buffer)
+  const fs = require("fs");
+  const path = require("path");
+  const tempFilePath = path.join(process.cwd(), "temp-og-image.jpg");
+
+  await sharp(buffer)
     .resize(1200, 630, { fit: "cover" })
-    .toBuffer();
+    .toFile(tempFilePath);
+
+  const resizedImage = tempFilePath;
 
   // Make sure the image URL is absolute
   // const imageUrl = originalImageUrl.startsWith("http")
