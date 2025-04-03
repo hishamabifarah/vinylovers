@@ -42,14 +42,18 @@ export async function generateMetadata({ params }: PageProps) {
   // Use the first attachment as the image or fallback to a default
   const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
 
-  // Make sure the image URL is absolute
-  const imageUrl = originalImageUrl.startsWith("http")
-    ? originalImageUrl
-    : `https://vinylovers.vercel.app${originalImageUrl}`
+  const resizedImageUrl = `/api/resize?imageUrl=${encodeURIComponent(originalImageUrl)}`;
 
-  // Create a URL for the OG image API with all necessary parameters
-  const ogImageUrl = `https://vinylovers.vercel.app/api/og?artist=${encodeURIComponent(vinyl.artist)}&album=${encodeURIComponent(vinyl.album)}&image=${encodeURIComponent(imageUrl)}${vinyl.genre ? `&genre=${encodeURIComponent(vinyl.genre.name)}` : ""}`
-  console.log('ogImageUrl',ogImageUrl);
+  console.log('resizedImageUrl' , resizedImageUrl);
+
+  // Make sure the image URL is absolute
+  // const imageUrl = originalImageUrl.startsWith("http")
+  //   ? originalImageUrl
+  //   : `https://vinylovers.vercel.app${originalImageUrl}`
+
+  // // Create a URL for the OG image API with all necessary parameters
+  // const ogImageUrl = `https://vinylovers.vercel.app/api/og?artist=${encodeURIComponent(vinyl.artist)}&album=${encodeURIComponent(vinyl.album)}&image=${encodeURIComponent(imageUrl)}${vinyl.genre ? `&genre=${encodeURIComponent(vinyl.genre.name)}` : ""}`
+  // console.log('ogImageUrl',ogImageUrl);
   return {
     title: pageTitle,
     description: pageDescription,
@@ -60,7 +64,7 @@ export async function generateMetadata({ params }: PageProps) {
       url: pageUrl,
       images: [
         {
-          url: ogImageUrl,
+          url: resizedImageUrl,
           width: 1200,
           height: 630,
           alt: `${vinyl.artist} - ${vinyl.album} vinyl cover`,
@@ -71,7 +75,7 @@ export async function generateMetadata({ params }: PageProps) {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [ogImageUrl],
+      images: [resizedImageUrl],
     },
     robots: {
       index: true,
