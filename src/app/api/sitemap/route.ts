@@ -1,6 +1,6 @@
-import prisma from '@/lib/prisma';
-import { unstable_cache } from 'next/cache';
-import { NextResponse } from 'next/server';
+import prisma from "@/lib/prisma"
+import { unstable_cache } from "next/cache"
+import { NextResponse } from "next/server"
 
 const getTrendingTopics = unstable_cache(
   async () => {
@@ -10,22 +10,21 @@ const getTrendingTopics = unstable_cache(
             GROUP BY (hashtag)
             ORDER BY count DESC, hashtag ASC
             LIMIT 5
-        `;
+        `
 
     return result.map((row) => ({
       hashtag: row.hashtag,
       count: Number(row.count), // cant send bigint between client and server
-    }));
+    }))
   },
   ["trending_topics"], // key for unstable_cache
   {
     revalidate: 3 * 60 * 60, // cached for 3 hours in production
   },
-);
+)
 
 const getVinyls = unstable_cache(
   async () => {
-
     return await prisma.vinyl.findMany({
       select: {
         id: true,
@@ -38,46 +37,60 @@ const getVinyls = unstable_cache(
         genre: {
           select: {
             id: true,
-            name: true
-          }
+            name: true,
+          },
         },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     })
   },
   ["vinyl-sitemap"],
   {
     revalidate: 3 * 60 * 60,
-    tags: ['vinyl-sitemap']
-  }
+    tags: ["vinyl-sitemap"],
+  },
 )
 
 export async function GET() {
-  const baseUrl = "https://vinylovers.vercel.app";
-  const vinyls = await getVinyls();
-  const trendingTopics = await getTrendingTopics();
+  const baseUrl = "https://vinylovers.vercel.app"
+  const vinyls = await getVinyls()
+  const trendingTopics = await getTrendingTopics()
+
+  // Ensure XML-safe encoding for all dynamic values
+  const encodeXML = (str: string) => {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;")
+  }
 
   const urls = vinyls
-    .map((vinyl) => `
+    .map(
+      (vinyl) => `
       <url>
-        <loc>${baseUrl}/vinyls/${vinyl.artist}/${vinyl.album}/${vinyl.id}</loc>
+        <loc>${encodeXML(`${baseUrl}/vinyls/${vinyl.artist}/${vinyl.album}/${vinyl.id}`)}</loc>
         <lastmod>${vinyl.modifiedAt}</lastmod>
         <priority>0.8</priority>
       </url>
-    `)
-    .join("");
+    `,
+    )
+    .join("")
 
-    const urlsTopics = trendingTopics
-    .map((topic) => `
+  const urlsTopics = trendingTopics
+    .map(
+      (topic) => `
       <url>
-        <loc>${baseUrl}/hashtags/${topic.hashtag}</loc>
+        <loc>${encodeXML(`${baseUrl}/hashtags/${topic.hashtag}`)}</loc>
         <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
         <priority>0.8</priority>
       </url>
-    `)
-    .join("");
+    `,
+    )
+    .join("")
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -97,7 +110,7 @@ export async function GET() {
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
-        <url>
+    <url>
       <loc>${baseUrl}/vinyls/genres/Country/8</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
@@ -153,7 +166,7 @@ export async function GET() {
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/R&B/7</loc>
+      <loc>${baseUrl}/vinyls/genres/R&amp;B/7</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
@@ -163,18 +176,19 @@ export async function GET() {
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/R&B/7</loc>
+      <loc>${baseUrl}/vinyls/genres/R&amp;B/7</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
-        ${urls}
+    ${urls}
     ${urlsTopics}
-  </urlset>`;
+  </urlset>`
 
   return new NextResponse(sitemap, {
     headers: {
       "Content-Type": "application/xml",
       "Cache-Control": "public, s-maxage=86400, stale-while-revalidate",
     },
-  });
+  })
 }
+
