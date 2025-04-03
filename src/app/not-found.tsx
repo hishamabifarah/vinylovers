@@ -31,7 +31,7 @@ export default function Custom404() {
                                 </div>
 
                                 <p className="text-center  mb-8">
-                                    The page you're looking for doesn't exist or has been moved.
+                                    The page you&apos;re looking for doesn&apos;t exist or has been moved.
                                 </p>
 
                                 <div className="flex gap-4">
