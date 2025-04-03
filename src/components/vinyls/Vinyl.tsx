@@ -106,7 +106,7 @@ export default function Vinyl({ vinyl }: PostProps) {
                   )}
                 </span>
               </div>
-              <Link href={`/vinyls/genres/${vinyl.genre.id}`} className="mb-4">
+              <Link href={`/vinyls/genres/${vinyl.genre.name}/${vinyl.genre.id}`} className="mb-4">
                 <Badge variant="secondary" className="mb-4 self-start">
                   {vinyl.genre.name}
                 </Badge>

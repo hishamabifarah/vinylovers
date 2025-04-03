@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import GenreVinyls from "./GenreVinyls";
 
 interface PageProps {
-  params: { genreId: string };
+  params: { genreId: string , genreName: string };
 }
 
 export async function generateMetadata({
@@ -33,13 +33,13 @@ const getGenre = cache(async (genreId: string) => {
   return genre;
 });
 
-export default async function Page({ params: { genreId } }: PageProps) {
+export default async function Page({ params: { genreId , genreName } }: PageProps) {
   const genre = await getGenre(genreId);
     return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Vinyls labelled {genre.name}</h1>
         <div className="">
-          <GenreVinyls genreId={genreId} />
+          <GenreVinyls genreId={genreId} genreName={genreName} />
         </div>
     </div>
   );

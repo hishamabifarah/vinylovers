@@ -76,7 +76,7 @@ export function VinylCard({ vinyl }: PostProps) {
             className="flex items-center space-x-1"
           >
             <Music className="h-3 w-3" />
-            <Link href={`/vinyls/genres/${vinyl.genre.id}`}>
+            <Link href={`/vinyls/genres/${vinyl.genre.name}/${vinyl.genre.id}`}>
               <span>{vinyl.genre.name}</span>
             </Link>
           </Badge>

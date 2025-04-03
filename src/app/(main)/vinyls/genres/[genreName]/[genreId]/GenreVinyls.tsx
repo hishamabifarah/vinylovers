@@ -11,9 +11,10 @@ import { Loader2 } from "lucide-react";
 
 interface GenreVinylsProps {
   genreId: string;
+  genreName: string;
 }
 
-export default function GenreVinyls ({ genreId }: GenreVinylsProps) {
+export default function GenreVinyls ({ genreId , genreName }: GenreVinylsProps) {
   const {
     data,
     fetchNextPage,

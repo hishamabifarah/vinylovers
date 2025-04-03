@@ -38,7 +38,7 @@ export default async function GenresPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {genres.map(genre => (
           <Suspense key={genre.id} fallback={<div className="h-24 bg-gray-200 rounded-lg animate-pulse"></div>}>
-              <Link href={`/vinyls/genres/${genre.id}`}>
+              <Link href={`/vinyls/genres/${genre.name}/${genre.id}`}>
             <GenreCard genre={genre}  />
             </Link>
           </Suspense>

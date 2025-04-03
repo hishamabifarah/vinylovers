@@ -52,7 +52,7 @@ async function GetGenres() {
             className="flex items-center space-x-1"
           >
             <Music className="h-3 w-3" />
-            <Link href={`/vinyls/genres/${id}`}>
+            <Link href={`/vinyls/genres/${name}/${id}`}>
               <span>{name}</span>
               
             </Link>

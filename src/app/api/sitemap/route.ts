@@ -2,9 +2,30 @@ import prisma from '@/lib/prisma';
 import { unstable_cache } from 'next/cache';
 import { NextResponse } from 'next/server';
 
+const getTrendingTopics = unstable_cache(
+  async () => {
+    const result = await prisma.$queryRaw<{ hashtag: string; count: bigint }[]>`
+            SELECT LOWER(unnest(regexp_matches(hashtags, '#[[:alnum:]_]+', 'g'))) AS hashtag, COUNT(*) AS count
+            FROM vinyls
+            GROUP BY (hashtag)
+            ORDER BY count DESC, hashtag ASC
+            LIMIT 5
+        `;
+
+    return result.map((row) => ({
+      hashtag: row.hashtag,
+      count: Number(row.count), // cant send bigint between client and server
+    }));
+  },
+  ["trending_topics"], // key for unstable_cache
+  {
+    revalidate: 3 * 60 * 60, // cached for 3 hours in production
+  },
+);
+
 const getVinyls = unstable_cache(
-    async () => {
-    
+  async () => {
+
     return await prisma.vinyl.findMany({
       select: {
         id: true,
@@ -27,21 +48,32 @@ const getVinyls = unstable_cache(
     })
   },
   ["vinyl-sitemap"],
-  { 
-    revalidate: 600, 
-    tags: ['vinyl-sitemap'] // Add tags
+  {
+    revalidate: 3 * 60 * 60,
+    tags: ['vinyl-sitemap']
   }
 )
 
 export async function GET() {
   const baseUrl = "https://vinylovers.vercel.app";
   const vinyls = await getVinyls();
+  const trendingTopics = await getTrendingTopics();
 
   const urls = vinyls
     .map((vinyl) => `
       <url>
         <loc>${baseUrl}/vinyls/${vinyl.artist}/${vinyl.album}/${vinyl.id}</loc>
         <lastmod>${vinyl.modifiedAt}</lastmod>
+        <priority>0.8</priority>
+      </url>
+    `)
+    .join("");
+
+    const urlsTopics = trendingTopics
+    .map((topic) => `
+      <url>
+        <loc>${baseUrl}/hashtags/${topic.hashtag}</loc>
+        <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
         <priority>0.8</priority>
       </url>
     `)
@@ -59,7 +91,84 @@ export async function GET() {
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
-    ${urls}
+
+    <url>
+      <loc>${baseUrl}/vinyls/genres</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+        <url>
+      <loc>${baseUrl}/vinyls/genres/Country/8</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Blues/13</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Classical/10</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Dance-Electronic/6</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Folk-Acoustic/9</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Hip-Hop/4</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Jazz/11</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Latin/5</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Metal/1</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/New%20Age/12</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Pop/3</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/R&B/7</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/Rock/2</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/vinyls/genres/R&B/7</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.8</priority>
+    </url>
+        ${urls}
+    ${urlsTopics}
   </urlset>`;
 
   return new NextResponse(sitemap, {
