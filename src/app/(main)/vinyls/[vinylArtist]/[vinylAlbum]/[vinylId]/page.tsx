@@ -11,8 +11,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import VinylAffiliate from "@/components/VinylAffiliate"
 import { MusicAlbumJsonLd } from "@/components/JsonLd"
-import sharp from "sharp";
-import fetch from "node-fetch";
 
 interface PageProps {
   params: { vinylArtist: string; vinylAlbum: string; vinylId: string }
@@ -44,50 +42,6 @@ export async function generateMetadata({ params }: PageProps) {
   // Use the first attachment as the image or fallback to a default
   const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
 
-  // Fetch the original image
-  const response = await fetch(originalImageUrl);
-  if (!response.ok) {
-    return {
-      title: pageTitle,
-      description: pageDescription,
-      openGraph: {
-        type: "music.album",
-        title: pageTitle,
-        description: pageDescription,
-        url: pageUrl
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: pageTitle,
-        description: pageDescription,
-      },
-      robots: {
-        index: true,
-        follow: true,
-      },
-    }
-  }
-  const buffer = await response.buffer();
-
-  // Resize the image to 1200x630
-  const fs = require("fs");
-  const path = require("path");
-  const tempFilePath = path.join(process.cwd(), "temp-og-image.jpg");
-
-  await sharp(buffer)
-    .resize(1200, 630, { fit: "cover" })
-    .toFile(tempFilePath);
-
-  const resizedImage = tempFilePath;
-
-  // Make sure the image URL is absolute
-  // const imageUrl = originalImageUrl.startsWith("http")
-  //   ? originalImageUrl
-  //   : `https://vinylovers.vercel.app${originalImageUrl}`
-
-  // // Create a URL for the OG image API with all necessary parameters
-  // const ogImageUrl = `https://vinylovers.vercel.app/api/og?artist=${encodeURIComponent(vinyl.artist)}&album=${encodeURIComponent(vinyl.album)}&image=${encodeURIComponent(imageUrl)}${vinyl.genre ? `&genre=${encodeURIComponent(vinyl.genre.name)}` : ""}`
-  // console.log('ogImageUrl',ogImageUrl);
   return {
     title: pageTitle,
     description: pageDescription,
@@ -98,7 +52,7 @@ export async function generateMetadata({ params }: PageProps) {
       url: pageUrl,
       images: [
         {
-          url: resizedImage,
+          url: originalImageUrl,
           width: 1200,
           height: 630,
           alt: `${vinyl.artist} - ${vinyl.album} vinyl cover`,
@@ -109,7 +63,7 @@ export async function generateMetadata({ params }: PageProps) {
       card: "summary_large_image",
       title: pageTitle,
       description: pageDescription,
-      images: [resizedImage],
+      images: [originalImageUrl],
     },
     robots: {
       index: true,
@@ -125,7 +79,7 @@ export default async function Page({ params }: PageProps) {
   const vinyl = await getVinyl(vinylId, user?.id)
 
   const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}`
-  const imageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
+  const imageUrl = vinyl.attachments[0]?.thumbnailUrl || "https://vinylovers.vercel.app/logo192.png"
 
   return (
     <main className="flex w-full min-w-0 gap-5">

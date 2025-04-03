@@ -103,6 +103,21 @@ export async function GET() {
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
+    <url>
+      <loc>${baseUrl}/bookmarks</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.9</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/notifications</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.9</priority>
+    </url>
+    <url>
+      <loc>${baseUrl}/messages</loc>
+      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
+      <priority>0.9</priority>
+    </url>
     ${urls}
     <url>
       <loc>${baseUrl}/vinyls/genres</loc>

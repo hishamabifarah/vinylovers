@@ -108,6 +108,7 @@ model Media {
   vinyl   Vinyl?    @relation(fields: [vinylId], references: [id], onDelete: SetNull) // same as vinylId, setNull: if we delete  a vinyl we want to still be able to find its corresponding media to delete them
   type    MediaType
   url     String
+  thumbnailUrl  String
 
   createdAt DateTime @default(now())
 
