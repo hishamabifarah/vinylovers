@@ -1,6 +1,6 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { isWithinExpirationDate } from "oslo";
 import { lucia } from "@/auth";
@@ -30,9 +30,10 @@ export async function verify(
         });
       }
       if (!tokenDB || !isWithinExpirationDate(tokenDB.expires_at)) {
-        return {
-            error: "Something went wrong. Please try again.",
-          };
+        // return {
+        //     error: "Something went wrong. Please try again.",
+        //   };
+        return  notFound();
       }
     
       const user = await prisma.user.findUnique({

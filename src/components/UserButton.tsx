@@ -105,8 +105,8 @@ console.log('user', user);
 
   // Guest users (not logged in)
   return (
-    <Link href="/login">
-        <p>Guest</p>
-    </Link>
+    <div className={cn("flex items-center gap-2", className)}>
+    <UnverifiedUserButton />
+  </div>
   );
 }
