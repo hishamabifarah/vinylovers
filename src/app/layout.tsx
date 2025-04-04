@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes"
 import ReactQueryProvider from "./ReactQueryProvider"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -85,7 +86,8 @@ export default function RootLayout({
          <meta name="google-site-verification" content="-7GGj5Z4Y23rNlOrBmYAqRoA16epUrp2UahAIgeFtuY" />
         {/* Viewport Meta Tag */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+        <meta charSet="utf-8" />
+        <meta name="robots" content="index, follow"/>
         {/* Canonical URL */}
         <link rel="canonical" href={siteUrl} />
 
@@ -117,6 +119,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
             <Analytics />
+            <SpeedInsights/>
           </ThemeProvider>
         </ReactQueryProvider>
         <Toaster />
