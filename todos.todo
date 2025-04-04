@@ -35,3 +35,26 @@ https://v3.lucia-auth.com/guides/email-and-password/password-reset
 https://github.com/constgenius/ImageCard/blob/main/src/App.jsx
 https://github.com/Thenaveen-hub/Spotify?tab=readme-ov-file
 https://thenaveen-hub.github.io/Spotify/
+
+
+2️⃣ Run ESLint for Full Code Analysis
+If you're using ESLint, run:
+
+sh
+Copy
+Edit
+npx eslint . --ext .js,.jsx,.ts,.tsx
+This will check all JavaScript and TypeScript files in your project.
+
+If you want automatic fixes, run:
+
+sh
+Copy
+Edit
+npx eslint . --ext .js,.jsx,.ts,.tsx --fix
+👉 Make sure ESLint is installed:
+
+sh
+Copy
+Edit
+npm install eslint --save-dev

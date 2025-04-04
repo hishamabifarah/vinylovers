@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: PageProps) {
 
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`
   const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}"`
-  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(params.vinylArtist)}/${encodeURIComponent(params.vinylAlbum)}/${vinylId}`
+  const pageUrl = `https://vinylovers.net/vinyls/${encodeURIComponent(params.vinylArtist)}/${encodeURIComponent(params.vinylAlbum)}/${vinylId}`
 
   // Use the first attachment as the image or fallback to a default
-  const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.vercel.app/logo192.png"
+  const originalImageUrl = vinyl.attachments[0]?.url || "https://vinylovers.net/logo192.png"
 
   return {
     title: pageTitle,
@@ -78,8 +78,8 @@ export default async function Page({ params }: PageProps) {
   const { user } = await validateRequest()
   const vinyl = await getVinyl(vinylId, user?.id)
 
-  const pageUrl = `https://vinylovers.vercel.app/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}`
-  const imageUrl = vinyl.attachments[0]?.thumbnailUrl || "https://vinylovers.vercel.app/logo192.png"
+  const pageUrl = `https://vinylovers.net/vinyls/${encodeURIComponent(vinylArtist)}/${encodeURIComponent(vinylAlbum)}/${vinylId}`
+  const imageUrl = vinyl.attachments[0]?.thumbnailUrl || "https://vinylovers.net/logo192.png"
 
   return (
     <main className="flex w-full min-w-0 gap-5">

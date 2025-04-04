@@ -30,7 +30,7 @@ export const ResetPasswordTemplateEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src="https://vinylovers.vercel.app/viny.png"
+          src="https://vinylovers.net//viny.png"
           width="100%"
           height="auto"
           alt="Vinylovers logo"

@@ -28,13 +28,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://vinylovers.vercel.app',
+    url: 'https://vinylovers.net/',
     title: 'Vinylovers - Your Vinyl Collection Community',
     description: 'Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.',
     siteName: 'Vinylovers',
     images: [
       {
-        url: 'https://vinylovers.vercel.app/logo192.png', // Custom OG Image
+        url: 'https://vinylovers.net/logo192.png', // Custom OG Image
         width: 1200,
         height: 630,
         alt: 'Vinylovers - Your Vinyl Collection Community',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     description: 'Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.',
     images: [
       {
-        url: 'https://vinylovers.vercel.app/logo192.png', // Custom OG Image
+        url: 'https://vinylovers.net/logo192.png', // Custom OG Image
         width: 1200,
         height: 630,
         alt: 'Vinylovers - Your Vinyl Collection Community',
@@ -82,7 +82,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {/* Canonical URL */}
-        <link rel="canonical" href="https://vinylovers.vercel.app" />
+        <link rel="canonical" href="https://vinylovers.net/" />
 
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" />
@@ -102,7 +102,7 @@ export default function RootLayout({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Vinylovers - Your Vinyl Collection Community" />
         <meta name="twitter:description" content="Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts." />
-        <meta name="twitter:image" content="https://vinylovers.vercel.app/logo192.png" />
+        <meta name="twitter:image" content="https://vinylovers.net/logo192.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       {/* <SessionProvider value={session}> */}

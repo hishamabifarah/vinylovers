@@ -7,21 +7,20 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { sendVerificationEmail } from "../hooks/useSendVerificationEmail";
 import { cookies } from "next/headers";
 import { isWithinExpirationDate } from "oslo";
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"
 
-export async function resend(
-  values : ResendVerifcationEmailValues,
-): Promise<{ error: string }> { 
+
+export async function resend(values: ResendVerifcationEmailValues): Promise<{ error: string } | { success: string }> {
   try {
     // Parse and validate input
-    const { email } = resendVerificationEmailSchema.parse(values);
+    const { email } = resendVerificationEmailSchema.parse(values)
 
     // Get the current user's ID from session
-    const session = await validateRequest();
+    const session = await validateRequest()
     if (!session || !session.user) {
       return {
         error: "You must be logged in to resend a verification email",
-      };
+      }
     }
 
     // Find user with both session ID and email matching
@@ -33,20 +32,20 @@ export async function resend(
           mode: "insensitive",
         },
       },
-    });
+    })
 
     // Check if user exists and email matches session user
     if (!user) {
       return {
         error: "Email address doesn't match your account",
-      };
+      }
     }
 
     // Check if user is already verified
     if (user.verified) {
       return {
         error: "Your email is already verified",
-      };
+      }
     }
 
     // Rate limiting: Check for recent verification emails
@@ -56,132 +55,44 @@ export async function resend(
         email: user.email ?? undefined,
         // Only check tokens created in the last 1 minute
         createdAt: {
-          gte: new Date(Date.now() - 60 * 1000)
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
-    });
-
-    if (recentToken) {
-      return {
-        error: "Please wait at least 1 minute before requesting another verification email",
-      };
-    }
-  
-    // Send verification email
-    try {
-      await sendVerificationEmail(user.id, email, user.username);
-      
-      return redirect("/verification-sent");
-      
-    } catch (error) {
-      console.error("Error sending verification email:", error);
-      return {
-        error: "Failed to send verification email. Please try again.",
-      };
-    }
-
-  } catch (error) {
-    // Handle redirect errors
-    if (isRedirectError(error)) throw error;
-    
-    // Log other errors
-    console.error("Resend verification error:", error);
-    return {
-      error: "Something went wrong. Please try again.",
-    };
-  }
-}
-
-export async function resendold(
-  values: ResendVerifcationEmailValues,
-): Promise<{ error: string } | { success: string }> { 
-  try {
-    // Parse and validate input
-    const { email } = resendVerificationEmailSchema.parse(values);
-
-    // Get the current user's ID from session
-    const session = await validateRequest();
-    if (!session || !session.user) {
-      return {
-        error: "You must be logged in to resend a verification email",
-      };
-    }
-
-    // Find user with both session ID and email matching
-    const user = await prisma.user.findFirst({
-      where: {
-        id: session.user.id,
-        email: {
-          equals: email,
-          mode: "insensitive",
+          gte: new Date(Date.now() - 60 * 1000),
         },
       },
-    });
-
-    // Check if user exists and email matches session user
-    if (!user) {
-      return {
-        error: "Email address doesn't match your account",
-      };
-    }
-
-    // Check if user is already verified
-    if (user.verified) {
-      return {
-        error: "Your email is already verified",
-      };
-    }
-
-    // Rate limiting: Check for recent verification emails
-    const recentToken = await prisma.emailVerificationToken.findFirst({
-      where: {
-        userId: user.id,
-        email: user.email ?? undefined,
-        // Only check tokens created in the last 1 minute
-        createdAt: {
-          gte: new Date(Date.now() - 60 * 1000)
-        }
-      },
       orderBy: {
-        createdAt: 'desc'
-      }
-    });
+        createdAt: "desc",
+      },
+    })
 
     if (recentToken) {
       return {
         error: "Please wait at least 1 minute before requesting another verification email",
-      };
-    }
-  
-    // Send verification email
-    try {
-      await sendVerificationEmail(user.id, email, user.username);
-      
-      return {
-        success: "Verification email sent successfully",
-      };
-      
-    } catch (error) {
-      console.error("Error sending verification email:", error);
-      return {
-        error: "Failed to send verification email. Please try again.",
-      };
+      }
     }
 
+    // Send verification email
+    try {
+      await sendVerificationEmail(user.id, email, user.username)
+    } catch (error) {
+      console.error("Error sending verification email:", error)
+      return {
+        error: "Failed to send verification email. Please try again.",
+      }
+    }
+
+    // Redirect outside of the inner try-catch block
+    return redirect("/verification-sent")
   } catch (error) {
     // Handle redirect errors
-    if (isRedirectError(error)) throw error;
-    
+    if (isRedirectError(error)) throw error
+
     // Log other errors
-    console.error("Resend verification error:", error);
+    console.error("Resend verification error:", error)
     return {
       error: "Something went wrong. Please try again.",
-    };
+    }
   }
 }
+
 
 export async function verify(
   token: string,

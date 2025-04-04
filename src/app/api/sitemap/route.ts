@@ -54,7 +54,7 @@ const getVinyls = unstable_cache(
 )
 
 export async function GET() {
-  const baseUrl = "https://vinylovers.vercel.app"
+  const baseUrl = "https://vinylovers.net/"
   const vinyls = await getVinyls()
   const trendingTopics = await getTrendingTopics()
 
