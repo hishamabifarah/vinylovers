@@ -99,9 +99,9 @@ export default function RootLayout({
 
         {/* Explicit OpenGraph tags for WhatsApp */}
         <meta property="og:image" content={ogImageUrl} />
-        <meta property="og:image:width" content="1200" />
+        {/* <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Vinylovers - Your Vinyl Collection Community" />
+        <meta property="og:image:alt" content="Vinylovers - Your Vinyl Collection Community" /> */}
         <meta property="og:title" content="Vinylovers - Your Vinyl Collection Community" />
         <meta
           property="og:description"
