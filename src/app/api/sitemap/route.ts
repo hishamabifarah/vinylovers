@@ -67,136 +67,132 @@ export async function GET() {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&apos;")
   }
-
+  
   const urls = vinyls
     .map(
       (vinyl) => `
       <url>
-        <loc>${encodeXML(`${baseUrl}/vinyls/${vinyl.artist}/${vinyl.album}/${vinyl.id}`)}</loc>
-        <lastmod>${vinyl.modifiedAt}</lastmod>
+        <loc>${encodeXML(`${baseUrl}vinyls/${vinyl.artist}/${vinyl.album}/${vinyl.id}`)}</loc>
+        <lastmod>${new Date(vinyl.modifiedAt).toISOString().split("T")[0]}</lastmod>
         <priority>0.8</priority>
       </url>
     `
     )
     .join("")
-    const urlsTopics = trendingTopics
-      .map(
-        (topic) => `
+  
+  const urlsTopics = trendingTopics
+    .map(
+      (topic) => `
         <url>
-          <loc>${encodeXML(`${baseUrl}/hashtag/${topic.hashtag.replace('#', '')}`)}</loc>
+          <loc>${encodeXML(`${baseUrl}hashtag/${topic.hashtag.replace("#", "")}`)}</loc>
           <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
           <priority>0.8</priority>
         </url>
-      `,
-      )
-      .join("")
-
+      `
+    )
+    .join("")
+  
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-      <loc>${baseUrl}</loc>
+      <loc>${encodeXML(baseUrl)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>1.0</priority>
     </url>
     <url>
-      <loc>${baseUrl}/home</loc>
+      <loc>${encodeXML(`${baseUrl}home`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
     <url>
-      <loc>${baseUrl}/bookmarks</loc>
+      <loc>${encodeXML(`${baseUrl}bookmarks`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
     <url>
-      <loc>${baseUrl}/notifications</loc>
+      <loc>${encodeXML(`${baseUrl}notifications`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
     <url>
-      <loc>${baseUrl}/messages</loc>
+      <loc>${encodeXML(`${baseUrl}messages`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.9</priority>
     </url>
     ${urls}
     <url>
-      <loc>${baseUrl}/vinyls/genres</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Country/8</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Country/8`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Blues/13</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Blues/13`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Classical/10</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Classical/10`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Dance-Electronic/6</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Dance-Electronic/6`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Folk-Acoustic/9</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Folk-Acoustic/9`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Hip-Hop/4</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Hip-Hop/4`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Jazz/11</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Jazz/11`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Latin/5</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Latin/5`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Metal/1</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Metal/1`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/New%20Age/12</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/New Age/12`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Pop/3</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Pop/3`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/R&amp;B/7</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/R&B/7`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     <url>
-      <loc>${baseUrl}/vinyls/genres/Rock/2</loc>
-      <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-      <priority>0.8</priority>
-    </url>
-    <url>
-      <loc>${baseUrl}/vinyls/genres/R&amp;B/7</loc>
+      <loc>${encodeXML(`${baseUrl}vinyls/genres/Rock/2`)}</loc>
       <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
       <priority>0.8</priority>
     </url>
     ${urlsTopics}
   </urlset>`
-
+  
   return new NextResponse(sitemap, {
     headers: {
       "Content-Type": "application/xml",
