@@ -18,7 +18,7 @@ const geistMono = localFont({
 
 // Define the absolute URL for your site
 const siteUrl = "https://vinylovers.net"
-const ogImageUrl = "https://vinylovers.net/logo192.png" // Full absolute URL to the image
+const ogImageUrl = "https://vinylovers.net/viny.png" // Full absolute URL to the image
 
 export const metadata: Metadata = {
   title: {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Vinylovers",
     images: [
       {
-        url: "/logo192.png",
+        url: "/viny.png",
         width: 1200,
         height: 630,
         alt: "Vinylovers - Your Vinyl Collection Community",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
       "Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.",
     images: [
       {
-        url: "/logo192.png",
+        url: "/viny.png",
         width: 1200,
         height: 630,
         alt: "Vinylovers - Your Vinyl Collection Community",
