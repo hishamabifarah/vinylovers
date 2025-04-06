@@ -74,7 +74,6 @@ const AddVinylForm: React.FC<AddVinylFormProps> = React.memo(({ genres }) => {
 
   const onSubmit = useCallback(
     (values: NewVinylValues) => {
-      console.log('values', values);
       if (values.mediaIds.length === 0) {
         toast({
           variant: "destructive",

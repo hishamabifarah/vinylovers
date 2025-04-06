@@ -26,7 +26,6 @@ interface PostProps {
 export default function Vinyl({ vinyl }: PostProps) {
   const { user } = useSession();
 
-  console.log('user', user);
   const [showComments, setShowComments] = useState(true);
   const [commentsCount, setCommentsCount] = useState(vinyl._count.comments);
   const [showShareOptions, setShowShareOptions] = useState(false);
