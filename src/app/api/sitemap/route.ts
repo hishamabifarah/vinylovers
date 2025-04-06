@@ -9,7 +9,7 @@ const getTrendingTopics = unstable_cache(
             FROM vinyls
             GROUP BY (hashtag)
             ORDER BY count DESC, hashtag ASC
-            LIMIT 5
+            LIMIT 5 
         `
 
     return result.map((row) => ({

@@ -23,42 +23,42 @@ const ogImageUrl = "https://vinylovers.net/viny.png" // Full absolute URL to the
 
 export const metadata: Metadata = {
   title: {
-    default: "Vinylovers - Your Vinyl Collection Community",
+    default: "Vinylovers - Connect with Vinyl Lovers & Share Your Collection",
     template: "%s | Vinylovers",
   },
   description:
-    "Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.",
-  keywords: ["vinyl", "records", "music", "collection", "community"],
+    "Join a vibrant vinyl lovers' community where you can share your record collection, discover fresh sounds, and connect with fellow vinyl enthusiasts from around the world",
+  keywords: ["vinyl", "records", "music", "collection", "community" , "vinyl lovers" , "For every vinyl lover" , "A space for vinyl lovers"],
   authors: [{ name: "Vinylovers" }],
   metadataBase: new URL(siteUrl),
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Vinylovers - Your Vinyl Collection Community",
+    title: "Vinylovers - Connect with Vinyl Lovers & Share Your Collection",
     description:
-      "Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.",
+      "Join a vibrant vinyl lovers' community where you can share your record collection, discover fresh sounds, and connect with fellow vinyl enthusiasts from around the world",
     siteName: "Vinylovers",
     images: [
       {
         url: "/viny.png",
         width: 1200,
         height: 630,
-        alt: "Vinylovers - Your Vinyl Collection Community",
+        alt: "vinyl lovers community sharing records",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vinylovers - Your Vinyl Collection Community",
+    title: "Vinylovers - Connect with Vinyl Lovers & Share Your Collection",
     description:
-      "Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts.",
+      "Join a vibrant vinyl lovers' community where you can share your record collection, discover fresh sounds, and connect with fellow vinyl enthusiasts from around the world",
     images: [
       {
         url: "/viny.png",
         width: 1200,
         height: 630,
-        alt: "Vinylovers - Your Vinyl Collection Community",
+        alt: "vinyl lovers community sharing records",
       },
     ],
   },
@@ -104,8 +104,8 @@ export default function RootLayout({
         <meta property="og:image" content={ogImageUrl} />
         {/* <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Vinylovers - Your Vinyl Collection Community" /> */}
-        <meta property="og:title" content="Vinylovers - Your Vinyl Collection Community" />
+        <meta property="og:image:alt" content="Vinylovers - Connect with Vinyl Lovers & Share Your Collection" /> */}
+        <meta property="og:title" content="Vinylovers - Connect with Vinyl Lovers & Share Your Collection" />
         <meta
           property="og:description"
           content="Join the vinyl community to share your collection, discover new music, and connect with fellow vinyl enthusiasts."
