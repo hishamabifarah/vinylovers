@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps) {
   const vinyl = await getVinyl(vinylId, user?.id)
 
   const pageTitle = `${vinyl.artist} - ${vinyl.album}`
-  const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}"`
+  const pageDescription = `Discover ${vinyl.artist}'s album "${vinyl.album}" on Vinylovers.`
   const pageUrl = `https://vinylovers.net/vinyls/${encodeURIComponent(params.vinylArtist)}/${encodeURIComponent(params.vinylAlbum)}/${vinylId}`
 
   // Use the first attachment as the image or fallback to a default
