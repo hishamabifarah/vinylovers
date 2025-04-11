@@ -4,12 +4,20 @@ import { cn } from "@/lib/utils";
 import { NotificationType } from "@prisma/client";
 import { Heart, MessageCircle, User2 } from "lucide-react";
 import Link from "next/link";
+import slugify from "slugify";
 
 interface NotificationProps {
   notification: NotificationData;
 }
 
 export default function Notification({ notification }: NotificationProps) {
+  let vinylArtist = '';
+  let vinylAlbum = '';
+  if (notification.vinyl) {
+    vinylArtist = slugify(notification.vinyl.artist, { lower: true, strict: true });
+    vinylAlbum = slugify(notification.vinyl.album, { lower: true, strict: true });
+  }
+
   const notificationTypeMap: Record<
     NotificationType,
     { message: string; icon: JSX.Element; href: string }
@@ -27,7 +35,7 @@ export default function Notification({ notification }: NotificationProps) {
     LIKE: {
       message: `${notification.issuer.displayName} liked your vinyl`,
       icon: <Heart className="size-7 fill-red-500 text-red-500" />,
-      href: `/vinyls/${notification.vinylId}`,
+      href: `/vinyls/${vinylArtist}/${vinylAlbum}/${notification.vinylId}`,
     },
   };
 
@@ -50,7 +58,7 @@ export default function Notification({ notification }: NotificationProps) {
           </div>
           {notification.vinyl && (
             <div className="line-clamp-3 whitespace-pre-line text-muted-foreground">
-              {notification.vinyl.artist} - {notification.vinyl.album} 
+              {notification.vinyl.artist} - {notification.vinyl.album}
             </div>
           )}
         </div>
