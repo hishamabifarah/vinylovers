@@ -7,6 +7,7 @@ import ReactQueryProvider from "./ReactQueryProvider"
 import { Toaster } from "@/components/ui/toaster"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Chatbot from "@/components/Chatbot"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -94,6 +95,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
+            {/* <Chatbot /> */}
             <Analytics />
             <SpeedInsights/>
           </ThemeProvider>

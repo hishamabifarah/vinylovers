@@ -51,7 +51,7 @@ export async function getRandomVinyls(): Promise<VinylWithDetails[]> {
     orderBy: {
       createdAt: "desc",
     },
-    take: 100,
+    take: 6,
   })
 
   // Filter vinyls with at least 2 attachments
