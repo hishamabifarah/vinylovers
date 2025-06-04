@@ -189,6 +189,19 @@ model Genre {
   @@map("genres")
 }
 
+
+model BannedIPAddress {
+  id            Int      @id @default(autoincrement())
+  ip            String   @unique
+  hits          Int      @default(1) // number of profanity hits
+  reason        String?
+  banned        Boolean  @default(false)
+  lastWarningAt DateTime?
+  country       String?
+  city          String?
+  createdAt     DateTime @default(now())
+}
+
 model Post {
   id      String @id @default(cuid())
   content String

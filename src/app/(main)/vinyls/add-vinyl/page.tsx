@@ -1,7 +1,19 @@
+import { validateRequest } from "@/auth";
 import AddVinylForm from "./AddVinylForm";
 import prisma from "@/lib/prisma";
 
 export default async function Page() {
+
+  const { user } = await validateRequest();
+  
+  if (!user || !user.verified) {
+    return (
+      <p className="text-destructive">
+        You&apos;re not authorized to view this page.
+      </p>
+    );
+  }
+
   const genres = await prisma.genre.findMany({
     select: { id: true, name: true },
     orderBy: { name: 'asc' },

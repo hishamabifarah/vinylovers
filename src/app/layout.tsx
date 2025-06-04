@@ -95,7 +95,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             {children}
-            {/* <Chatbot /> */}
+             {/* <Chatbot />  */}
             <Analytics />
             <SpeedInsights/>
           </ThemeProvider>
