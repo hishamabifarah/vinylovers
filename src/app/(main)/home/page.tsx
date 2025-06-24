@@ -9,10 +9,10 @@ export default async function Home() {
 
   // const pageStart = Date.now();
 
-  const validateStart = Date.now();
+  // const validateStart = Date.now();
   const { user } = await validateRequest();
-  const validateDuration = Date.now() - validateStart;
-  console.log(`[Home] validateRequest User took ${validateDuration}ms`);
+  // const validateDuration = Date.now() - validateStart;
+  // console.log(`[Home] validateRequest User took ${validateDuration}ms`);
 
   // const featuredStart = Date.now();
   // Optionally, if FeaturedVinyls fetches data server-side, you can time its render:

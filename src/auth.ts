@@ -53,7 +53,14 @@ export const validateRequest = cache(
   async (): Promise<
     { user: User; session: Session } | { user: null; session: null } // type of the Promise, User and Session are Lucia types , request could be invalid so we add the or clause, user could be null and session could be null
   > => {
+
+    const totalStart = Date.now();
+    const cookieStart = Date.now();
+
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
+
+    const cookieDuration = Date.now() - cookieStart;
+    console.log(`[validateRequest] Cookie read took ${cookieDuration}ms`);
 
     if (!sessionId) {
       return {
@@ -62,9 +69,13 @@ export const validateRequest = cache(
       };
     }
 
+    const validateStart = Date.now();
     const result = await lucia.validateSession(sessionId);
+    const validateDuration = Date.now() - validateStart;
+    console.log(`[validateRequest] lucia.validateSession took ${validateDuration}ms`);
 
     try {
+      const cookieSetStart = Date.now();
       if (result.session && result.session.fresh) {
         const sessionCookie = lucia.createSessionCookie(result.session.id);
         cookies().set(
@@ -82,8 +93,13 @@ export const validateRequest = cache(
           sessionCookie.attributes,
         );
       }
-    } catch {}
+      const cookieSetDuration = Date.now() - cookieSetStart;
+      console.log(`[validateRequest] Cookie set took ${cookieSetDuration}ms`);
+    } catch (e) {
+      console.log(`[validateRequest] Cookie set error:`, e);
+    }
 
+    console.log(`[validateRequest] Total time: ${Date.now() - totalStart}ms`);
     return result;
   },
 );
