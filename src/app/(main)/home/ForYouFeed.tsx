@@ -1,7 +1,6 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/InfiniteScrollContainer";
-import Vinyl from "@/components/vinyls/Vinyl";
 import { VinylCard } from "@/components/vinyls/VinylsCard";
 import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 import kyInstance from "@/lib/ky";

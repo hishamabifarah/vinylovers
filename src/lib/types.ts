@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { get } from "http";
 
 export type UserData = Prisma.UserGetPayload<{
   select: ReturnType<typeof getUserDataSelect>;
@@ -16,6 +17,25 @@ export function getUserDataVinylSelect() {
       },
     },
   } satisfies Prisma.UserSelect;
+}
+
+export function getUserDataVinylActivitySelect() {
+  return {
+    id: true,
+    artist: true,
+    thumbnail: true,
+    album: true,
+    createdAt: true,
+    attachments: true,
+    user: {
+      select: {
+        id: true,
+        username: true,
+        avatarUrl: true,
+      }
+    },
+
+  } satisfies Prisma.VinylSelect;
 }
 
 export function getUserDataSelect(loggedInUserId: string) {
@@ -153,6 +173,18 @@ export function getVinylFeaturedDataInclude() {
     },
   } satisfies Prisma.VinylInclude;
 }
+
+export function getVinylActivitesDataInclude() {
+  return {
+    user: {
+      select: getUserDataVinylActivitySelect(),
+    },
+  } satisfies Prisma.VinylInclude;
+}
+
+export type UserDataVinylActivity = Prisma.VinylGetPayload<{
+  select: ReturnType<typeof getUserDataVinylActivitySelect>;
+}>;
 
 export const notificationsInclude = {
   issuer: {

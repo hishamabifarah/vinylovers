@@ -4,6 +4,7 @@ import ForYouFeed from "./ForYouFeed";
 import FollowingFeed from "./FollowingFeed";
 import FeaturedVinyls from "./FeaturedVinyls";
 import { validateRequest } from "@/auth";
+import RecentActivities from "./RecentActivities";
 
 export default async function Home() {
 
@@ -49,8 +50,13 @@ export default async function Home() {
 
           <TabsContent value="discover">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-              <FeaturedVinyls />
-              <TrendsSidebar />
+              <div className="flex flex-col gap-8 lg:col-span-2">
+                <FeaturedVinyls />
+                <RecentActivities />
+              </div>
+              <div className="lg:col-span-1">
+                <TrendsSidebar />
+              </div>
             </div>
           </TabsContent>
 
@@ -65,6 +71,7 @@ export default async function Home() {
               </TabsContent>
             </>
           )}
+          
         </Tabs>
       </div>
     </main>
