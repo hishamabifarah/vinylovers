@@ -37,7 +37,7 @@ export function VinylCard({ vinyl }: PostProps) {
           src={firstImageUrl || avatarPlaceholder}
           alt={`${vinyl.album} by ${vinyl.artist}`}
           fill
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: "cover", position: "absolute" }}
         />
         </Link>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-1 sm:p-2">
