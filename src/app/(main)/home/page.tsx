@@ -7,27 +7,29 @@ import { validateRequest } from "@/auth";
 
 export default async function Home() {
 
-  const pageStart = Date.now();
+  // const pageStart = Date.now();
 
   const validateStart = Date.now();
   const { user } = await validateRequest();
   const validateDuration = Date.now() - validateStart;
   console.log(`[Home] validateRequest User took ${validateDuration}ms`);
 
-  const featuredStart = Date.now();
+  // const featuredStart = Date.now();
   // Optionally, if FeaturedVinyls fetches data server-side, you can time its render:
   // (If it's a client component, this will not measure its fetch time)
   // await FeaturedVinyls.preload?.(); // Uncomment if your component supports preload
-  const featuredDuration = Date.now() - featuredStart;
-  console.log(`[Home] FeaturedVinyls render/preload took ${featuredDuration}ms`);
 
-  const trendsStart = Date.now();
+  // const featuredDuration = Date.now() - featuredStart;
+  // console.log(`[Home] FeaturedVinyls render/preload took ${featuredDuration}ms`);
+
+  // const trendsStart = Date.now();
   // await TrendsSidebar.preload?.(); // Uncomment if your component supports preload
-  const trendsDuration = Date.now() - trendsStart;
-  console.log(`[Home] TrendsSidebar render/preload took ${trendsDuration}ms`);
 
-  const pageDuration = Date.now() - pageStart;
-  console.log(`[Home] Total page render took ${pageDuration}ms`);
+  // const trendsDuration = Date.now() - trendsStart;
+  // console.log(`[Home] TrendsSidebar render/preload took ${trendsDuration}ms`);
+
+  // const pageDuration = Date.now() - pageStart;
+  // console.log(`[Home] Total page render took ${pageDuration}ms`);
 
   return (
     <main className="flex w-full min-w-0 gap-5">

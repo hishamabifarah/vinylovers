@@ -26,9 +26,9 @@ const getRandomVinyls = unstable_cache(
           }
         },
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      // orderBy: {
+      //   createdAt: 'desc'
+      // }
     })
   },
   ["vinyl-featured"],
