@@ -60,7 +60,7 @@ export const validateRequest = cache(
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
 
     const cookieDuration = Date.now() - cookieStart;
-    console.log(`[validateRequest] Cookie read took ${cookieDuration}ms`);
+    console.log(`Cookie read took ${cookieDuration}ms`);
 
     if (!sessionId) {
       return {
@@ -72,7 +72,7 @@ export const validateRequest = cache(
     const validateStart = Date.now();
     const result = await lucia.validateSession(sessionId);
     const validateDuration = Date.now() - validateStart;
-    console.log(`[validateRequest] lucia.validateSession took ${validateDuration}ms`);
+    console.log(`lucia.validateSession took ${validateDuration}ms`);
 
     try {
       const cookieSetStart = Date.now();
@@ -94,12 +94,12 @@ export const validateRequest = cache(
         );
       }
       const cookieSetDuration = Date.now() - cookieSetStart;
-      console.log(`[validateRequest] Cookie set took ${cookieSetDuration}ms`);
+      console.log(`[Cookie set] took ${cookieSetDuration}ms`);
     } catch (e) {
-      console.log(`[validateRequest] Cookie set error:`, e);
+      console.log(`[Cookie set] error:`, e);
     }
 
-    console.log(`[validateRequest] Total time: ${Date.now() - totalStart}ms`);
+    console.log(`[validateRequest] Total: ${Date.now() - totalStart}ms`);
     return result;
   },
 );
