@@ -7,10 +7,10 @@ import { FeaturedVinylsCard } from '@/components/vinyls/FeaturedVinylsCard'
 const getRandomVinyls = unstable_cache(
   async () => {
     const vinylCount = await prisma.vinyl.count()
-    const skip = Math.max(0, Math.floor(Math.random() * (vinylCount - 8)))
+    const skip = Math.max(0, Math.floor(Math.random() * (vinylCount - 9)))
     
     return await prisma.vinyl.findMany({
-      take: 8,
+      take: 9,
       skip: skip,
       select: {
         id: true,
@@ -26,9 +26,9 @@ const getRandomVinyls = unstable_cache(
           }
         },
       },
-      // orderBy: {
-      //   createdAt: 'desc'
-      // }
+      orderBy: {
+        // createdAt: 'desc'
+      }
     })
   },
   ["vinyl-featured"],

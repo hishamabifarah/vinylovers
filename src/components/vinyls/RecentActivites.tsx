@@ -15,7 +15,7 @@ export default function RecentActivitiesList({ activity }: ActivityProps) {
   const vinylAlbum = slugify(activity.album, { lower: true, strict: true });
 
     return (
-        <div className="py-2 px-4">
+        <div className="py-2 px-1">
             <Link href={`/vinyls/${vinylArtist}/${vinylAlbum}/${activity.id}`}>
             <div key={activity.id} className="flex flex-col p-6 rounded-2xl bg-card">
                 <div className="flex items-center mb-2">
