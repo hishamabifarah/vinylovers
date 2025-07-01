@@ -29,7 +29,7 @@ export default function RecentActivitiesList({ activity }: ActivityProps) {
                     <span className="font-semibold text-gray-900 dark:text-white">{activity.user.username}</span>
                 </div>
                 <div className="mb-2 text-sm text-gray-700 dark:text-gray-300 text-left">
-                    added the vinyl by <span className="font-bold">{activity.artist}</span> named <span className="font-bold">{activity.album}</span>
+                    added the vinyl <span className="font-bold">{activity.album}</span> by <span className="font-bold">{activity.artist}</span> 
                 </div>
                 {/* <Image
                     src={activity.user.avatarUrl || '/default-avatar.png'}
