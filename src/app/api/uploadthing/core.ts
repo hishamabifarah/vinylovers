@@ -150,7 +150,12 @@ export const fileRouter = {
       // If it's an image, try to generate a thumbnail
       if (file.type.startsWith("image")) {
         try {
-          thumbnailUrl = await generateThumbnail(originalUrl);
+          const rawThumbnailUrl = await generateThumbnail(originalUrl);
+          // Transform the thumbnail URL to match your app's format
+          thumbnailUrl =
+            process.env.NODE_ENV === "production"
+              ? rawThumbnailUrl.replace("f90wrdja4t.ufs.sh/f/", `utfs.io/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+              : rawThumbnailUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`);
         } catch (error) {
           console.error("Error generating thumbnail:", error);
           // Fallback: use the transformedUrl as the thumbnail
