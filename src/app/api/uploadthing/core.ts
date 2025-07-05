@@ -84,8 +84,8 @@ export const fileRouter = {
       //     ? newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
       //     : newAvatarUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
 
-      const transformedUrl =  newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
- 
+      const transformedUrl = newAvatarUrl.replace("f90wrdja4t.ufs.sh/a/", `utfs.io/a/`)
+
 
       // await prisma.user.update({
       //   where: { id: metadata.user.id },
@@ -137,32 +137,35 @@ export const fileRouter = {
       //   },
       // });
 
-      const originalUrl = file.url
+      const originalUrl = file.url;
 
-      let thumbnailUrl = "";
+      // Transform the URL to the correct format based on environment
+      const transformedUrl =
+        process.env.NODE_ENV === "production"
+          ? originalUrl.replace("f90wrdja4t.ufs.sh/f/", `utfs.io/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
+          : originalUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`);
 
-      // If it's an image, generate a thumbnail
+      let thumbnailUrl: string | undefined = transformedUrl;
+
+      // If it's an image, try to generate a thumbnail
       if (file.type.startsWith("image")) {
         try {
           thumbnailUrl = await generateThumbnail(originalUrl);
         } catch (error) {
           console.error("Error generating thumbnail:", error);
+          // Fallback: use the transformedUrl as the thumbnail
+          thumbnailUrl = transformedUrl;
         }
       }
-      // Transform the URL to the correct format based on environment
-      const transformedUrl =
-        process.env.NODE_ENV === "production"
-          ? originalUrl.replace("f90wrdja4t.ufs.sh/f/", `utfs.io/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
-          : originalUrl.replace("/f/", `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)
 
       // Create the media record with the appropriate URL
       const media = await prisma.media.create({
         data: {
           url: transformedUrl,
           type: file.type.startsWith("image") ? "IMAGE" : "VIDEO",
-          thumbnailUrl
+          thumbnailUrl, // Always set thumbnailUrl
         },
-      })
+      });
 
       // return { mediaId: media.id }
 

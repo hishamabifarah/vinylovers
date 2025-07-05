@@ -4,9 +4,7 @@ import prisma from '@/lib/prisma'
 import VinylsLoadingSkeleton from "@/components/vinyls/VinylsLoadingSkeleton";
 import RecentActivitiesList from "@/components/vinyls/RecentActivites";
 
-const getRecentActivities = unstable_cache(
-    async () => {
-
+const getRecentActivities = async () =>{
     return await prisma.vinyl.findMany({
         take: 5,
         orderBy: {
@@ -27,7 +25,7 @@ const getRecentActivities = unstable_cache(
                 }
             },
         }
-    });})
+    });}
 
 
 export default async function RecentActivities() {

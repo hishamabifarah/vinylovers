@@ -67,7 +67,7 @@ const getRandomVinyls = unstable_cache(
   },
   ["vinyl-featured"],
   { 
-    revalidate: 2 * 60 * 60, // 2 hours
+    revalidate: 2 * 60 * 60, 
     tags: ['vinyl-featured']
   }
 );
